@@ -128,7 +128,7 @@ setInterval(hearbeat, 30000);
             </li>
       <li><a href="javaScript:void();" class="waves-effect"><i class="zmdi zmdi-map"></i> <span>Upload Payment Status</span> </a>
 
-      <li><a href="javaScript:void();" class="waves-effect"><i class="zmdi zmdi-map"></i> <span>Upload Admit Card</span> </a>
+      <li><a href="<?php echo base_url('admin/Admitcard'); ?>"" class="waves-effect"><i class="zmdi zmdi-map"></i> <span>Upload Admit Card</span> </a>
 
       <li><a href="javaScript:void();" class="waves-effect"><i class="zmdi zmdi-map"></i> <span>Reports</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="sidebar-submenu">

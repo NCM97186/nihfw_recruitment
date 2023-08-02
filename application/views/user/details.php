@@ -949,7 +949,7 @@ echo '</pre>';
                 },
                 // Specify validation error messages
                 messages: {
-                    category: "Please Slect Category",
+                    category: "Please Select Category",
                     benchmark: "Please Select Are you a person with benchmark",
                     dob: "Please Select Date Of Birth",
                     gender: "Please Select gender",
