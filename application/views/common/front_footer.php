@@ -37,7 +37,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.15.0/additional-methods.js"></script>
 <!-- Bootstrap js -->
 <script type="text/javascript" src="<?= base_url('assets/js/bootstrap.min.js'); ?>"></script>
-
+<script src="<?= base_url('assets/js/common.js'); ?>"></script>
 
 </body>
 

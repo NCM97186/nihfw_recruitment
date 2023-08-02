@@ -3,7 +3,7 @@
 echo '<pre>';
 print_r($work_experience);
 
-echo '</pre>';  dsfsdf
+echo '</pre>';
 */
 ?>
 <div class="btn offbtn">
@@ -40,6 +40,7 @@ echo '</pre>';  dsfsdf
                             } else {
                                 $detailId = '';
                             }
+                           
                             ?>
                             <!-- <input type="hidden" name="detailId" value="<?php echo $detailId ?>">-->
                             <table class="table table-bordered">
@@ -69,11 +70,12 @@ echo '</pre>';  dsfsdf
                                                                     $this->db->where('post_id', $postid);
                                                                     $jobpost =  $this->db->get('jobpost');
                                                                     $dataj = $jobpost->result_array();
-                                                                    // print_r($dataj);
+                                                                    
                                                                 ?>
                                                                     <option value="<?php echo $dataj[0]['post_id']; ?>"><?php echo $dataj[0]['post_name']; ?> </option>
                                                                 <?php
                                                                 }
+                                                                
                                                                 ?>
                                                             </select>
                                                             <span class="form_error"><?php echo form_error('post_id'); ?></span>
@@ -98,7 +100,13 @@ echo '</pre>';  dsfsdf
                                                         </td>
                                                         <td align="left" style="width: 70%;">
                                                             <div class="form-inline">
-                                                                <input type="date" name="dob" id="dob" class="form-control" value="<?php echo set_value('dob', @$user_details->dob); ?>">
+                                                                <?php if(isset($_POST['dob'])){
+                                                                            $do=$_POST['dob'];
+                                                                        } else{
+                                                                            $do="";
+                                                                        }
+                                                                        $dob=!empty(@$user_details->dob)?@$user_details->dob:$do; ?>
+                                                                <input type="date" name="dob" id="dob" class="form-control" value="<?php echo set_value('dob', @$dob); ?>">
                                                                 <span style="color:Black;font-family:Times New Roman;font-weight:normal;"></span>
                                                                 <br>
                                                                 <em><span style="color: #7d7e7f; font-size:13px">( Please Select your DOB As given in Matriculation Certificate.
@@ -106,11 +114,11 @@ echo '</pre>';  dsfsdf
                                                                 <span class="form_error"><?php echo form_error('dob'); ?></span>
                                                             </div>
                                                             <input type="hidden" name="old_dob_doc" value="<?php echo @$user_details->dob_doc; ?>">
-                                                            <input type="file" name="dob_doc" id="age_calculator" onchange="onlyDobpdf(this);" />
+                                                            <input type="file" name="dob_doc" id="dob_doc" onchange="onlyDobpdf(this);" />
                                                             <span class="form_error"><?php echo form_error('dob_doc'); ?></span>
 
                                                             <span class="dob_doc_error" style="color:red;"></span>
-                                                            <span style="font-size:13px">Please select pdf format file<br>Max file size 1MB</span>
+                                                            <span style="font-size:13px">Please select pdf format file<br>Max file size 1 MB</span>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -121,8 +129,8 @@ echo '</pre>';  dsfsdf
                                                         <td align="left" style="width: 70%;">
                                                             <div class="form-inline" id="cand_age"></div>
                                                             <input type="hidden" name="candtotal_age" id="candtotal_age" value="" />
-                                                            <!-- <input type="checkbox" name ="age_calculator" id="age_calculator" /> Please checked here for Age Calculation -->
-                                                            <span class="form_error"><?php //echo form_error('age_calculator'); ?></span>
+                                                           <!-- <input type="checkbox" name ="age_calculator" id="age_calculator" /> Please checked here for Age Calculation
+                                                                    --><span class="form_error"><?php echo form_error('age_calculator'); ?></span>
                                                         </td>
                                                     </tr>
                                                     <tr>
@@ -131,7 +139,15 @@ echo '</pre>';  dsfsdf
                                                             <span>Whether belongs to SC/ST/OBC(as per central government list)/EWS if so, specify the category</span><span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
                                                         <td align="left" style="width: 60%;">
-                                                            <?php $category = set_value('category', @$user_details->category); ?>
+                                                        <?php 
+                                                            if(isset($_POST['category'])){
+                                                                $cat=$_POST['category'];
+                                                            } else{
+                                                                $cat="";
+                                                            }
+                                                            $category1=!empty(@$user_details->category)?@$user_details->category:$cat; 
+                                                        ?>
+                                                            <?php $category = set_value('category', @$category1); ?>
                                                             <select name="category" id="categorys" class="form-control" style="width: 40%;" required onchange="categories()">
                                                                 <option value="2" <?php if ($category == '2') { ?> selected <?php } ?>>No</option>
                                                                 <option value="1" <?php if ($category == '1') { ?> selected <?php } ?>>Yes</option>
@@ -147,8 +163,16 @@ echo '</pre>';  dsfsdf
                                                                                                                                         ?>> GENERAL 
                                                         <input type="radio" name="category_name" value="EWS" <?php //echo set_radio('category', 'EWS'); 
                                                                                                                 ?>> EWS-->
+                                                         <?php 
+                                                            if(isset($_POST['category_name'])){
+                                                                $cat_name=$_POST['category_name'];
+                                                            } else{
+                                                                $cat_name="";
+                                                            }
+                                                            $category_name1=!empty(@$user_details->category_name)?@$user_details->category_name:$cat_name; 
+                                                        ?>
 
-                                                                        <?php $category_name = set_value('category_name', @$user_details->category_name); ?>
+                                                                        <?php $category_name = set_value('category_name', @$category_name1); ?>
                                                                         <input type="radio" name="category_name" value="OBC" <?php if ($category_name == 'OBC') { ?> checked <?php } ?> <?php //echo set_radio('category', 'OBC'); 
                                                                                                                                                                                         ?>> OBC
                                                                         <input type="radio" name="category_name" value="ST" <?php if ($category_name == 'ST') { ?> checked <?php } ?> <?php //echo set_radio('category', 'ST'); 
@@ -186,7 +210,7 @@ echo '</pre>';  dsfsdf
                                                                         <input type="file" onchange="onlyCatpdf(this);" name="category_attachment" id="cat_doc" />
                                                                         <span class="form_error"><?php echo form_error('category_attachment'); ?></span>
                                                                         <span class="cat_doc_error" style="color:red;"></span>
-                                                                        <span style="font-size:13px">Please select pdf format file<br>Max file size 1MB</span>
+                                                                        <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -199,7 +223,15 @@ echo '</pre>';  dsfsdf
                                                             <span>Is Candidate belongs to NIHFW?</span><span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
                                                         <td align="left" style="width: 60%;">
-                                                            <?php $department = set_value('department', @$user_details->department); ?>
+                                                        <?php 
+                                                            if(isset($_POST['department'])){
+                                                                $dep=$_POST['department'];
+                                                            } else{
+                                                                $dep="";
+                                                            }
+                                                            $department1=!empty(@$user_details->department)?@$user_details->department:$dep; 
+                                                        ?>
+                                                            <?php $department = set_value('department', @$department1); ?>
                                                             <select name="department" id="department" class="form-control" style="width: 40%;">
                                                                 <option value="2" <?php if ($department == '2') { ?> selected <?php } ?>>No</option>
                                                                 <option value="1" <?php if ($department == '1') { ?> selected <?php } ?>>YES</option>
@@ -221,7 +253,17 @@ echo '</pre>';  dsfsdf
 
                                                         </td>
                                                         <td align="left" style="width: 60%;">
-                                                            <?php $benchmark = set_value('benchmark', @$user_details->benchmark); ?>
+                                                        <?php 
+                                                            if(isset($_POST['benchmark'])){
+                                                                $ben=$_POST['benchmark'];
+                                                            } else{
+                                                                $ben="";
+                                                            }
+                                                            $benchmark1=!empty(@$user_details->benchmark)?@$user_details->benchmark:$ben; 
+                                                        ?>
+                                                            <?php 
+                                                            
+                                                            $benchmark = set_value('benchmark', @$benchmark1); ?>
                                                             <input name="benchmark" id="benchmark_yes" class="benchmark" type="radio" value="Yes" <?php if ($benchmark == 'Yes') { ?> checked <?php } ?>> Yes
                                                             <input name="benchmark" id="benchmark_no" class="benchmark" type="radio" value="No" <?php if ($benchmark == 'No') { ?> checked <?php } ?>> No
                                                             <span class="form_error"><?php echo form_error('benchmark'); ?></span>
@@ -235,15 +277,30 @@ echo '</pre>';  dsfsdf
                                                                 <tr>
                                                                     <td align="left" style="width: 60%;">
                                                                         <span>Disability Details</span><br><br>
-                                                                        <input name="add_disablity" type="text" value="<?php echo set_value("add_disablity", @$user_details->add_disablity); ?>">
+                                                                    <?php 
+                                                                        if(isset($_POST['add_disablity'])){
+                                                                            $add_dis=$_POST['add_disablity'];
+                                                                        } else{
+                                                                            $add_dis="";
+                                                                        }
+                                                                        $add_disablity1=!empty(@$user_details->add_disablity)?@$user_details->add_disablity:$add_dis; 
+                                                                    ?>
+                                                                        <input name="add_disablity" type="text" value="<?php echo set_value("add_disablity", @$add_disablity1); ?>">
                                                                         <span class="form_error"><?php echo form_error('add_disablity'); ?></span><br><br>
+                                                                     <?php 
+                                                                        if(isset($_POST['person_disability'])){
+                                                                            $person_dis=$_POST['person_disability'];
+                                                                        } else{
+                                                                            $person_dis="";
+                                                                        }
+                                                                        $person_disability1=!empty(@$user_details->person_disability)?@$user_details->person_disability:$person_dis; 
+                                                                    ?>
 
-
-                                                                        <input type="hidden" name="old_person_disability" value="<?php echo @$user_details->person_disability; ?>">
+                                                                        <input type="hidden" name="old_person_disability" value="<?php echo @$person_disability1; ?>">
                                                                         <input type="file" onchange="onlyDisablitypdf(this);" name="person_disability" id="person_disability" class="form-control" style="width: 40%;" />
                                                                         <span class="form_error"><?php echo form_error('person_disability'); ?></span>
                                                                         <span class="person_disability_error" style="color:red;"></span>
-                                                                        <span style="font-size:13px">Please select pdf format file<br>Max file size 1MB</span>
+                                                                        <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span>
 
                                                                     </td>
 
@@ -277,8 +334,16 @@ echo '</pre>';  dsfsdf
                                                             <span id="">Gender </span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
+                                                        <?php 
+                                                            if(isset($_POST['gender'])){
+                                                                $gre=$_POST['gender'];
+                                                            } else{
+                                                                $gre="";
+                                                            }
+                                                            $gender1=!empty(@$user_details->gender)?@$user_details->gender:$gre; 
+                                                        ?>
                                                         <td align="left" style="width: 70%;">
-                                                            <?php $gender = set_value('gender', @$user_details->gender); ?>
+                                                            <?php $gender = set_value('gender', @$gender1); ?>
                                                             <input name="gender" type="radio" value="Male" <?php if ($gender == 'Male') { ?> checked <?php } ?>> Male
                                                             <input name="gender" type="radio" value="Female" <?php if ($gender == 'Female') { ?> checked <?php } ?>> Female
                                                             <input name="gender" type="radio" value="Others" <?php if ($gender == 'Others') { ?> checked <?php } ?>> Others
@@ -291,7 +356,15 @@ echo '</pre>';  dsfsdf
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
                                                         <td align="left" style="width: 70%;">
-                                                            <?php $marital_status = set_value('marital_status', @$user_details->marital_status); ?>
+                                                        <?php 
+                                                            if(isset($_POST['marital_status'])){
+                                                                $mar=$_POST['marital_status'];
+                                                            } else{
+                                                                $mar="";
+                                                            }
+                                                            $marital_status1=!empty(@$user_details->marital_status)?@$user_details->marital_status:$mar; 
+                                                        ?>
+                                                            <?php $marital_status = set_value('marital_status', @$marital_status1); ?>
                                                             <input name="marital_status" type="radio" value="Unmarried" <?php if ($marital_status == 'Unmarried') { ?> checked <?php } ?>> Unmarried
                                                             <input name="marital_status" type="radio" value="Married" <?php if ($marital_status == 'Married') { ?> checked <?php } ?>> Married
                                                             <input name="marital_status" type="radio" value="Widow" <?php if ($marital_status == 'Widow') { ?> checked <?php } ?>> Widow
@@ -307,8 +380,16 @@ echo '</pre>';  dsfsdf
                                                             <span id="">Father's Name </span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
+                                                        <?php 
+                                                            if(isset($_POST['father_name'])){
+                                                                $father=$_POST['father_name'];
+                                                            } else{
+                                                                $father="";
+                                                            }
+                                                            $father_name1=!empty(@$user_details->father_name)?@$user_details->father_name:$father; 
+                                                        ?>
                                                         <td align="left" style="width: 70%;">
-                                                            <input name="father_name" type="text" onkeypress="return onlyAlphabets(event,this);" maxlength="50" title="Please Type Father's Name, Do not entered Mr./Mrs./Km./Dr./Er. etc. in Prefix of your Name " class="CapLetter form-control" style=" width:70%; display: inline" value="<?php echo set_value("father_name", @$user_details->father_name); ?>">
+                                                            <input name="father_name" type="text" onkeypress="return onlyAlphabets(event,this);" maxlength="50" title="Please Type Father's Name, Do not entered Mr./Mrs./Km./Dr./Er. etc. in Prefix of your Name " class="CapLetter form-control" style=" width:70%; display: inline" value="<?php echo set_value("father_name", @$father_name1); ?>">
                                                             <span class="form_error"><?php echo form_error('father_name'); ?></span>
                                                         </td>
                                                     </tr>
@@ -318,8 +399,16 @@ echo '</pre>';  dsfsdf
                                                             <span id="">Mother's Name </span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
+                                                        <?php 
+                                                            if(isset($_POST['mother_name'])){
+                                                                $mother=$_POST['mother_name'];
+                                                            } else{
+                                                                $mother="";
+                                                            }
+                                                            $mother_name=!empty(@$user_details->mother_name)?@$user_details->mother_name:$mother; 
+                                                        ?>
                                                         <td align="left" style="width: 70%;">
-                                                            <input name="mother_name" onkeypress="return onlyAlphabets(event,this);" type="text" maxlength="50" class="CapLetter form-control" style=" width:70%;display: inline" value="<?php echo set_value("mother_name", @$user_details->mother_name); ?>">
+                                                            <input name="mother_name" onkeypress="return onlyAlphabets(event,this);" type="text" maxlength="50" class="CapLetter form-control" style=" width:70%;display: inline" value="<?php echo set_value("mother_name", @$mother_name); ?>">
                                                             <span class="form_error"><?php echo form_error('mother_name'); ?></span>
                                                         </td>
 
@@ -330,12 +419,20 @@ echo '</pre>';  dsfsdf
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
                                                         <td align="left" style="width: 70%;">
-                                                            <?php $gender = set_value('identity_proof', @$user_details->identity_proof); ?>
-                                                            <input name="identity_proof" type="radio" value="DL" <?php if ($gender == 'DL') { ?> checked <?php } ?>> DL
+                                                        <?php 
+                                                            if(isset($_POST['identity_proof'])){
+                                                                $identity_proof1=$_POST['identity_proof'];
+                                                            } else{
+                                                                $identity_proof1="";
+                                                            }
+                                                            $identity_proof=!empty(@$user_details->identity_proof)?@$user_details->identity_proof:$identity_proof1; 
+                                                        ?>
+                                                            <?php $identity_pr = set_value('identity_proof', @$user_details->identity_proof); ?>
+                                                            <input name="identity_proof" type="radio" value="DL" <?php if ($identity_pr == 'DL') { ?> checked <?php } ?>> DL
                                                             <!-- <input name="identity_proof" type="radio" value="Adhaar" <?php //if ($gender == 'Adhaar') { ?> checked <?php //} ?>> Adhaar -->
-                                                            <input name="identity_proof" type="radio" value="Pan" <?php if ($gender == 'Pan') { ?> checked <?php } ?>> Pan
-                                                            <input name="identity_proof" type="radio" value="Passport" <?php if ($gender == 'Passport') { ?> checked <?php } ?>> Passport
-                                                            <input name="identity_proof" type="radio" value="Voter" <?php if ($gender == 'Voter') { ?> checked <?php } ?>> Voter Id
+                                                            <input name="identity_proof" type="radio" value="Pan" <?php if ($identity_pr == 'Pan') { ?> checked <?php } ?>> Pan
+                                                            <input name="identity_proof" type="radio" value="Passport" <?php if ($identity_pr == 'Passport') { ?> checked <?php } ?>> Passport
+                                                            <input name="identity_proof" type="radio" value="Voter" <?php if ($identity_pr == 'Voter') { ?> checked <?php } ?>> Voter Id
                                                             <span class="form_error"><?php echo form_error('identity_proof'); ?></span>
                                                         </td>
 
@@ -353,7 +450,7 @@ echo '</pre>';  dsfsdf
                                                             <input type="file" onchange="onlyIdentitypdf(this);" name="adhar_card_doc" id="identity_doc" />
                                                             <span class="form_error"><?php echo form_error('adhar_card_doc'); ?></span>
                                                             <span class="identity_doc_error" style="color:red;"></span>
-                                                            <span style="font-size:13px">Please select pdf format file<br>Max file size 1MB</span>
+                                                            <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span>
                                                         </td>
                                                     </tr>
 
@@ -362,8 +459,16 @@ echo '</pre>';  dsfsdf
                                                             <span>Present postal Address </span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
+                                                        <?php 
+                                                            if(isset($_POST['corr_address'])){
+                                                                $corr_address1=$_POST['corr_address'];
+                                                            } else{
+                                                                $corr_address1="";
+                                                            }
+                                                            $corr_address=!empty(@$user_details->corr_address)?@$user_details->corr_address:$corr_address1; 
+                                                        ?>
                                                         <td align="left" style="width: 70%;">
-                                                            <textarea name="corr_address" id="corr_address" type="text" rows="4" class="CapLetter form-control" style="width: 70%;"><?php echo set_value("corr_address", @$user_details->corr_address); ?></textarea>
+                                                            <textarea name="corr_address" id="corr_address" type="text" rows="4" class="CapLetter form-control" style="width: 70%;"><?php echo set_value("corr_address", @$corr_address); ?></textarea>
                                                             <span class="form_error"><?php echo form_error('corr_address'); ?></span>
                                                         </td>
                                                     </tr>
@@ -375,7 +480,15 @@ echo '</pre>';  dsfsdf
                                                         </td>
 
                                                         <td align="left" style="width: 60%;">
-                                                            <?php $state_id = set_value('corr_state', @$user_details->corr_state);
+                                                        <?php 
+                                                            if(isset($_POST['corr_state'])){
+                                                                $corr_state1=$_POST['corr_state'];
+                                                            } else{
+                                                                $corr_state1="";
+                                                            }
+                                                            $corr_state=!empty(@$user_details->corr_state)?@$user_details->corr_state:$corr_state1; 
+                                                        ?>
+                                                            <?php $state_id = set_value('corr_state', @$corr_state);
                                                             ?>
                                                             <select name="corr_state" id="corr_state" class="form-control" style="width: 40%;">
                                                                 <option value="">--Select--</option>
@@ -403,8 +516,16 @@ echo '</pre>';  dsfsdf
                                                             <span>Pincode</span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
+                                                        <?php 
+                                                            if(isset($_POST['corr_pincode'])){
+                                                                $corr_pincode1=$_POST['corr_pincode'];
+                                                            } else{
+                                                                $corr_pincode1="";
+                                                            }
+                                                            $corr_pincode=!empty(@$user_details->corr_pincode)?@$user_details->corr_pincode:$corr_pincode1; 
+                                                        ?>
                                                         <td align="left" style="width: 30%;">
-                                                            <input name="corr_pincode" id="corr_pincode" type="text" maxlength="6" onkeypress="return validateNumber(event)" value="<?php echo set_value('corr_pincode', @$user_details->corr_pincode); ?>" class="CapLetter form-control" style=" width:30%; display: inline;"> (6 Digits)
+                                                            <input name="corr_pincode" id="corr_pincode" type="text" maxlength="6" onkeypress="return validateNumber(event)" value="<?php echo set_value('corr_pincode', @$corr_pincode); ?>" class="CapLetter form-control" style=" width:30%; display: inline;"> (6 Digits)
                                                             <span class="form_error"><?php echo form_error('corr_pincode') ?></span>
                                                         </td>
                                                     </tr>
@@ -418,6 +539,14 @@ echo '</pre>';  dsfsdf
                                                             <span>Permanent Address</span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
+                                                        <?php 
+                                                            if(isset($_POST['perm_address'])){
+                                                                $perm_address1=$_POST['perm_address'];
+                                                            } else{
+                                                                $perm_address1="";
+                                                            }
+                                                            $perm_address=!empty(@$user_details->perm_address)?@$user_details->perm_address:$perm_address1; 
+                                                        ?>
                                                         <td align="left" style="width: 70%;">
                                                             <textarea name="perm_address" id="perm_address" type="text" rows="4" class="CapLetter form-control" style="width: 70%;"><?php echo set_value('perm_address', @$user_details->perm_address);
                                                                                                                                                                                     ?></textarea>
@@ -432,7 +561,15 @@ echo '</pre>';  dsfsdf
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
                                                         <td align="left" style="width: 60%;">
-                                                            <?php $state_id = set_value('perm_state', @$user_details->perm_state);
+                                                        <?php 
+                                                            if(isset($_POST['perm_state'])){
+                                                                $perm_state1=$_POST['perm_state'];
+                                                            } else{
+                                                                $perm_state1="";
+                                                            }
+                                                            $perm_state=!empty(@$user_details->perm_state)?@$user_details->perm_state:$perm_state1; 
+                                                        ?>
+                                                            <?php $state_id = set_value('perm_state', @$perm_state);
                                                             ?>
                                                             <select name="perm_state" id="perm_state" class="form-control" style="width: 40%;">
                                                                 <option value="">--Select--</option>
@@ -455,6 +592,14 @@ echo '</pre>';  dsfsdf
                                                             <span id="">Pincode</span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
+                                                        <?php 
+                                                            if(isset($_POST['perm_pincode'])){
+                                                                $perm_pincode1=$_POST['perm_pincode'];
+                                                            } else{
+                                                                $perm_pincode1="";
+                                                            }
+                                                            $perm_pincode=!empty(@$user_details->perm_pincode)?@$user_details->perm_pincode:$perm_pincode1; 
+                                                        ?>
                                                         <td align="left" style="width: 30%;">
                                                             <input name="perm_pincode" id="perm_pincode" maxlength="6" type="text" onkeypress="return validateNumber(event)" class="CapLetter form-control" style=" width:30%; display: inline;" value="<?php echo set_value('perm_pincode', @$user_details->perm_pincode);
                                                                                                                                                                                                                                                         ?>"> (6 Digits)
@@ -514,12 +659,13 @@ echo '</pre>';  dsfsdf
                                                                         <span class="form_error"><?php echo @$value->deg_error; ?></span>
                                                                     </td>
                                                                     <td align="left" style="" valign="top">
-                                                                        <input type="text" onkeypress="return onlyAlphabets(event,this);" name="degree_diploma[year][<?php echo $i ?>]" value="<?php echo @$value->year; ?>" class="form-control">
+                                                                        <input type="text" id="degree_diploma_<?php echo $i ?>" onkeypress="return onlyAlphabets(event,this);"  onchange="checkValueN(<?php echo $i; ?>)"
+                                                                        name="degree_diploma[year][<?php echo $i ?>]" value="<?php echo @$value->year; ?>" class="form-control">
                                                                         <span class="form_error"><?php echo @$value->year_error; ?></span>
                                                                     </td>
                                                                     <td align="left" style="" valign="top">
-                                                                        <input type="text" name="degree_diploma[sub][<?php echo $i ?>]" maxlength="4" onkeypress="return validateNumber(event)" value="<?php echo @$value->sub; ?>" class="form-control">
-                                                                        <span class="form_error"><?php echo @$value->sub_error; ?></span>
+                                                                        <input type="text"  id="degree_diploma_year_<?php echo $i ?>" name="degree_diploma[sub][<?php echo $i ?>]" maxlength="4" onchange="checkValueddate(<?php echo $i; ?>)" onkeypress="return validateNumber(event)" value="<?php echo @$value->sub; ?>" class="form-control">
+                                                                        <span class="form_error"><?php echo @$value->year_error; ?></span>
                                                                     </td>
                                                                     <td align="left" style="" valign="top">
                                                                         <input type="text" id="degree_diploma_uni_add_<?php echo $i; ?>" onchange="checkValueN(<?php echo $i; ?>)" onkeypress="return validateNumber(event)" name="degree_diploma[uni][<?php echo $i ?>]" value="<?php echo @$value->uni; ?>" class="form-control maxmarks">
@@ -539,7 +685,7 @@ echo '</pre>';  dsfsdf
                                                                         <input type="file" name="education_file[education_file][<?php echo $i ?>]" value="" onchange="onlyeducationpdf(this,<?php echo $i; ?>);" class="form-control" />
                                                                         <span class="form_error"><?php echo @$value->file_error; ?></span>
                                                                         <span class="education_doc_<?php echo $i; ?>_error" style="color:red;"></span>
-                                                                        <span style="font-size:13px">Please select pdf format file<br>Max file size 1MB</span>
+                                                                        <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span>
                                                                         <button type="button" name="remove" id="<?php echo $i ?>" class="btn btn-danger btn_remove" style="width:16%;  float:right">X</button>
                                                                     </td>
                                                                 </tr>
@@ -557,11 +703,13 @@ echo '</pre>';  dsfsdf
                                                                 </td>
                                                                 <td align="left" style="" valign="top">
                                                                     <input type="text" onkeypress="return onlyAlphabets(event,this);" name="degree_diploma[year][<?php echo $i ?>]" value="<?php echo @$value->year; ?>" class="form-control">
-                                                                    <span class="form_error"><?php echo form_error('degree_diploma[year]'); ?></span>
+                                                                    <span  id="degree_diploma_<?php echo $i ?>"  class="form_error"><?php echo form_error('degree_diploma[year]'); ?></span>
                                                                 </td>
                                                                 <td align="left" style="" valign="top">
-                                                                    <input type="text" onkeypress="return validateNumber(event)" name="degree_diploma[sub][<?php echo $i ?>]" value="<?php echo @$value->sub; ?>" class="form-control" maxlength="4">
-                                                                    <span class="form_error"><?php echo form_error('degree_diploma[sub]'); ?></span>
+                                                                    <input type="text" onkeypress="return validateNumber(event)" onchange="checkValueddate(<?php echo $i; ?>)" id="degree_diploma_year_<?php echo $i ?>"
+                                                                     name="degree_diploma[sub][<?php echo $i ?>]"  value="<?php echo @$value->sub; ?>" 
+                                                                     class="form-control" maxlength="4">
+                                                                    <span class="form_error"><?php echo form_error('diploma_year_<?php echo $i; ?>'); ?></span>
                                                                 </td>
                                                                 <td align="left" style="" valign="top">
                                                                     <input type="text" id="degree_diploma_uni_add_<?php echo $i; ?>" onchange="checkValueN(<?php echo $i; ?>)" onkeypress="return validateNumber(event)" name="degree_diploma[uni][<?php echo $i ?>]" value="<?php echo @$value->uni; ?>" class="form-control maxmarks">
@@ -582,7 +730,7 @@ echo '</pre>';  dsfsdf
                                                                     <span class="form_error"><?php echo !empty($file_error) ? $file_error : ''; //form_error('education_file[education_file][]'); 
                                                                                                 ?></span>
                                                                     <span class="education_doc_<?php echo $i; ?>_error" style="color:red;"></span>
-                                                                    <span style="font-size:13px">Please select pdf format file<br>Max file size 1MB</span>
+                                                                    <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span>
                                                                     <button type="button" name="remove" id="<?php echo $i ?>" class="btn btn-danger btn_remove" style="width:16%;  float:right">X</button>
                                                                 </td>
                                                             </tr>
@@ -661,7 +809,7 @@ echo '</pre>';  dsfsdf
                                                                     <td align="left" style="" valign="top">
                                                                         <input type="file" name="organization_file[organization_file][]" id="organization_doc_<?php echo $i; ?>" onchange="onlyorganizationpdf(this,<?php echo $i; ?>);" class="form-control" />
                                                                         <span class="organization_doc_<?php echo $i; ?>_error" style="color:red;"></span>
-                                                                        <span style="font-size:13px">Please select pdf format file<br>Max file size 1MB</span>
+                                                                        <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span>
                                                                         <button type="button" name="remove" id="<?php echo $i ?>" class="btn btn-danger btn_remove_work" style="width:16%;  float:right">X</button>
                                                                     </td>
                                                                 </tr>
@@ -689,19 +837,19 @@ echo '</pre>';  dsfsdf
                                                                                                 ?></span>
                                                                 </td>
                                                                 <td align="left" style="" valign="top">
-                                                                    <input type="date" id="work_experience_from" name="work_experience[from_date][]" value="" class="form-control">
-                                                                    <span class="form_error"><?php //echo form_error('work_experience[from_date][]'); 
+                                                                    <input type="date" id="work_experience_from_<?php echo $i; ?>" onchange="ValidateFromdate(<?php echo $i ?>);" id="work_experience_from_<?php echo $i ?>"  name="work_experience[from_date][]" value="" class="form-control">
+                                                                    <span class="form_error"><?php echo form_error('work_experience[from_date][]'); 
                                                                                                 ?></span>
                                                                 </td>
                                                                 <td align="left" style="" valign="top">
-                                                                    <input type="date" name="work_experience[to_date][]" id="work_experience_to" value="" class="form-control" style="width:100%; float:left">
-                                                                    <span class="form_error"><?php //echo form_error('work_experience[to_date][]'); 
+                                                                    <input type="date" name="work_experience[to_date][]" onchange="ValidateTodate(<?php echo $i ?>);" id="work_experience_to_<?php echo $i; ?>" value="" class="form-control" style="width:100%; float:left">
+                                                                    <span class="form_error"><?php echo form_error('work_experience[to_date][]'); 
                                                                                                 ?></span>
                                                                 </td>
                                                                 <td align="left" style="" valign="top">
                                                                     <input type="file" name="organization_file[organization_file][]" id="organization_doc_<?php echo $i; ?>" onchange="onlyorganizationpdf(this,<?php echo $i; ?>);" class="form-control" />
                                                                     <span class="organization_doc_<?php echo $i; ?>_error" style="color:red;"></span>
-                                                                    <span style="font-size:13px">Please select pdf format file<br>Max file size 1MB</span>
+                                                                    <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span>
                                                                     <button type="button" name="remove" id="<?php echo $i ?>" class="btn btn-danger btn_remove_work" style="width:16%;  float:right">X</button>
                                                                 </td>
                                                             </tr>
@@ -818,7 +966,7 @@ echo '</pre>';  dsfsdf
                                                                 <input type="hidden" name="old_photo" value="<?php echo @$user_details->photograph; ?>">
                                                                 <img src="<?= base_url('uploads/photograph/') . @$user_details->photograph; ?>" class="img-responsive" target="_blank" width="80" height="50">
                                                             <?php }else{?>
-                                                                <img src="<?php echo base_url('uploads/photograph/download.jpg'); ?>" class="img-responsive" target="_blank" width="80" height="50"><br>
+                                                                <img src="<?= base_url('uploads/photograph/download.jpg');?>" class="img-responsive" target="_blank" width="80" height="50"><br>
                                                                 <span>Sample Photograph</span>
                                                            <?php } ?>
                                                         </td>
@@ -905,7 +1053,7 @@ echo '</pre>';  dsfsdf
             <!-- Main body End Here -->
         </div>
     </div>
-    <script>
+    <script>   
         /* $(function() {
             $("#work_experience_from").datepicker({
                 numberOfMonths: 2,
@@ -978,7 +1126,7 @@ echo '</pre>';  dsfsdf
             var b = i;
             $('#add').click(function() {
                 b = b + 1;
-                $('#dynamic_field').append('<tr id="row' + b + '" class="edu_row"><td><input type="text"   name="degree_diploma[deg][]"  class="form-control" /></td><td><input type="text" name="degree_diploma[year][]"  onkeypress="return onlyAlphabets(event,this);" class="form-control" /></td><td><input type="text" name="degree_diploma[sub][]" maxlength="4" onkeypress="return validateNumber(event)" class="form-control " /></td><td><input type="text" onkeypress="return validateNumber(event)" onchange="checkValueN(' + b + ')" id="degree_diploma_uni_add_' + b + '" name="degree_diploma[uni][]" class="form-control maxmarks" /></td><td><input type="text" id="edu_div_add_' + b + '" name="degree_diploma[div][]" onkeypress="return validateNumber(event)" onchange="checkValueN(' + b + ')" class="form-control obtainmarks" style="width:80%; float:left" data-log /><span id="obtain_add_' + b + '" style="color:red"></span><td><input type="text" id="edu_div_per_'+b+'" name="degree_diploma[per][]" onkeypress="return validateNumber(event)" onchange="checkValueN('+b+')" class="form-control obtainper" style="width:80%; float:left" data-log readonly /><td><input type="file" name="education_file[education_file][]" id="education_doc_'+b+'" onchange="onlyeducationpdf(this,'+b+');"  class="form-control" /><span class="education_doc_'+b+'_error" style="color:red;"></span>  <span style="font-size:13px">Please select pdf format file<br>Max file size 1MB</span><button type="button" name="remove" id="' + b + '" class="btn btn-danger btn_remove" style="width:16%;  float:right">X</button></td></tr>');
+                $('#dynamic_field').append('<tr id="row' + b + '" class="edu_row"><td><input type="text"   name="degree_diploma[deg][]"  class="form-control" /></td><td><input type="text" name="degree_diploma[year][]" onkeypress="return onlyAlphabets(event,this);" class="form-control" /></td><td><input type="text" name="degree_diploma[sub][]" id="degree_diploma_year_' + b + '" onchange="checkValueddate(' + b + ')"  maxlength="4" onkeypress="return validateNumber(event)" class="form-control " /> <span id="diploma_year_' + b + '" style="color:red"></span> </td><td><input type="text" onkeypress="return validateNumber(event)" onchange="checkValueN(' + b + ')" id="degree_diploma_uni_add_' + b + '" name="degree_diploma[uni][]" class="form-control maxmarks" /></td><td><input type="text" id="edu_div_add_' + b + '" name="degree_diploma[div][]" onkeypress="return validateNumber(event)" onchange="checkValueN(' + b + ')" class="form-control obtainmarks" style="width:80%; float:left" data-log /><span id="obtain_add_' + b + '" style="color:red"></span><td><input type="text" id="edu_div_per_'+b+'" name="degree_diploma[per][]" onkeypress="return validateNumber(event)" onchange="checkValueN('+b+')" class="form-control obtainper" style="width:80%; float:left" data-log readonly /><td><input type="file" name="education_file[education_file][]" id="education_doc_'+b+'" onchange="onlyeducationpdf(this,'+b+');"  class="form-control" /><span class="education_doc_'+b+'_error" style="color:red;"></span>  <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span><button type="button" name="remove" id="' + b + '" class="btn btn-danger btn_remove" style="width:16%;  float:right">X</button></td></tr>');
             });
             if ($('#tq_work').val() != '') {
                 var j = $('#tq_work').val();
@@ -988,7 +1136,7 @@ echo '</pre>';  dsfsdf
 
             $('#addwork').click(function() {
                 b = j++;
-                $('#dynamic_field_work').append('<tr id="rowwork' + b + '" class="org_row"><td><input type="text" name="work_experience[organization][]" class="form-control" /></td><td><input type="text" name="work_experience[post_held][]" onkeypress="return ValidateAlphnumeric(event);" class="form-control" /></td><td><input type="text" name="work_experience[pay_scale][]" onkeypress="return validateNumber(event)"  class="form-control" /></td><td><input type="date" onchange="ValidateFromdate(' + b + ');"  id="work_experience_from_' + b + '" name="work_experience[from_date][]" class="form-control" /><span class="work_experience_From_error_' + b + '" style="color:red;"></span></td><td><input type="date" onchange="ValidateTodate(' + b + ');"  id="work_experience_to_' + b + '" name="work_experience[to_date][]" class="form-control" style="width:100%; float:left"/><span class="work_experience_to_error_' + b + '" style="color:red;"></span><td><input type="file" name="organization_file[organization_file][]"  class="form-control" id="organization_doc_' + b + '" onchange="onlyorganizationpdf(this,' + b + ');" /><span class="organization_doc_' + b + '_error" style="color:red;"></span>   <span style="font-size:13px">Please select pdf format file<br>Max file size 1MB</span><button type="button" name="remove" id="' + b + '" class="btn btn-danger btn_remove_work" style="width:16%;  float:right">X</button></td></tr>');
+                $('#dynamic_field_work').append('<tr id="rowwork' + b + '" class="org_row"><td><input type="text" name="work_experience[organization][]" class="form-control" /></td><td><input type="text" name="work_experience[post_held][]" onkeypress="return ValidateAlphnumeric(event);" class="form-control" /></td><td><input type="text" name="work_experience[pay_scale][]" onkeypress="return validateNumber(event)"  class="form-control" /></td><td><input type="date" onchange="ValidateFromdate(' + b + ');"  id="work_experience_from_' + b + '" name="work_experience[from_date][]" class="form-control" /><span class="work_experience_From_error_' + b + '" style="color:red;"></span></td><td><input type="date" onchange="ValidateTodate(' + b + ');"  id="work_experience_to_' + b + '" name="work_experience[to_date][]" class="form-control" style="width:100%; float:left"/><span class="work_experience_to_error_' + b + '" style="color:red;"></span><td><input type="file" name="organization_file[organization_file][]"  class="form-control" id="organization_doc_' + b + '" onchange="onlyorganizationpdf(this,' + b + ');" /><span class="organization_doc_' + b + '_error" style="color:red;"></span>   <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span><button type="button" name="remove" id="' + b + '" class="btn btn-danger btn_remove_work" style="width:16%;  float:right">X</button></td></tr>');
                 $('#tq_work').val(b);
             });
             $(document).on('click', '.btn_remove', function() {
@@ -1074,6 +1222,9 @@ echo '</pre>';  dsfsdf
             const pattern = /^[a-z0-9]+$/i;
 
             return pattern.test(e.key)
+        }
+        function ValidateYearPassing(e) {
+            alert(e.key);
         }
     </script>
 
@@ -1223,11 +1374,11 @@ echo '</pre>';  dsfsdf
             }
 
         }
-        $('#age_calculator').click(function() {
+        $('#dob').change(function() {
             var dob = $('#dob').val();
             dateAgo(dob);
         })
-
+        
         function isValid_License_Number(license_Number) {
 
             // Regex to check valid
@@ -1415,20 +1566,20 @@ echo '</pre>';  dsfsdf
         datePicker.max = getDate();
 
 
-        const datePickerf = document.getElementById("work_experience_from");
+        //const datePickerf = document.getElementById("work_experience_from");
 
-        datePickerf.min = getDate(10000000);
-        datePickerf.max = getDate();
+        //datePickerf.min = getDate(10000000);
+       // datePickerf.max = getDate();
 
         // const datePickerf1 = document.getElementById("work_experience_from1");
 
         // datePickerf1.min = getDate(10000000);
         // datePickerf1.max = getDate();
 
-        const datePickert = document.getElementById("work_experience_to");
+      //  const datePickert = document.getElementById("work_experience_to");
 
-        datePickert.min = getDate(10000000);
-        datePickert.max = getDate();
+      //  datePickert.min = getDate(10000000);
+        //datePickert.max = getDate();
 
         // const datePickert1 = document.getElementById("work_experience_to1");
 
@@ -1570,39 +1721,7 @@ echo '</pre>';  dsfsdf
             }
         }
 
-        function ValidateFromdate(id) {
-
-            var fromdate = $('#work_experience_from_' + id).val();
-            var todate = $('#work_experience_to_' + id).val();
-
-            var Fromdate = new Date(fromdate);
-            var Todate = new Date(todate);
-            $(".work_experience_From_error_" + id).html("");
-            $(".work_experience_to_error_" + id).html("");
-
-            if (Fromdate > Todate) {
-                // alert("from");
-                // $("#work_experience_from_"+id).val("");
-                $(".work_experience_From_error_" + id).html("From Date Should Be Less Than To Date").addClass("error-msg");
-                return false;
-            }
-        }
-
-        function ValidateTodate(id) {
-
-            var fromdate = $('#work_experience_from_' + id).val();
-            var todate = $('#work_experience_to_' + id).val();
-
-            var Fromdate = new Date(fromdate);
-            var Todate = new Date(todate);
-            $(".work_experience_From_error_" + id).html("");
-            $(".work_experience_to_error_" + id).html("");
-            if (Fromdate > Todate) {
-
-                $(".work_experience_to_error_" + id).html("To Date Should Be Greater Than From Date").addClass("error-msg");
-                return false;
-            }
-        }
+  
 
         Filevalidation = (id) => {
             const fi = document.getElementById(id);
@@ -1653,4 +1772,5 @@ echo '</pre>';  dsfsdf
         //    }
 
         // }
+ 
     </script>
