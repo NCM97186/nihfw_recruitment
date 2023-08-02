@@ -1,0 +1,178 @@
+<?php
+$csrf = array(
+    'name' => $this->security->get_csrf_token_name(),
+    'hash' => $this->security->get_csrf_hash()
+);
+$user_id = $_SESSION['USER']['user_id'];
+$this->db->where('user_id', $user_id);
+// here we select every column of the table
+$this->db->where('status_id',5);
+$q = $this->db->get('users_detail');
+$data = $q->result_array();
+// echo '<pre>';
+// print_r($data);
+// echo '</pre>';
+
+
+
+?>
+<a href="<?php echo base_url() . "user/ChangePassword"; ?>"">Change password</a>
+<div class="btn offbtn">
+    
+<a href="<?php echo base_url() . "user/logout"; ?>"">Logout</a>
+    </div>
+<div class="contact-page-area container-fluid padding-bottom">
+    
+    <div class="container">
+        
+        <div id="national_form" class="container" style="text-align: center">
+
+            <div class="panel panel-info national_form_border">
+
+                <div class="panel-body">
+                    <div id="" style="text-align: left; background-color: White; width: 100%">
+
+                        <form method="post" action="<?php echo base_url('dashboard/basicinfo')?>" enctype="multipart/form-data">
+                        <input type="hidden" name="<?php echo $csrf['name'];?>" value="<?php echo $csrf['hash'];?>" />    
+                        <table class="table table-bordered" id="tbl_Candidate">
+                                <tbody>
+                                    <tr>
+                                        <td colspan="2" style="text-align: left; width: 100%;">
+                                            <table align="left" class="table table-bordered" style="width: 100%" id="tblcndt">
+                                                <tbody>
+                                                    <tr>
+                                                        <td align="right" style="width: 30%;">
+                                                            <span id="">First Name </span><span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
+                                                        </td>
+                                                        <td align="left" style="width: 70%;">
+                                                            
+                                                            <?php echo set_value("first_name", @$basic_info->first_name); ?>
+                                                            <br />
+                                                            
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right" style="width: 30%;">
+
+                                                            <span id="">Middle Name </span>
+                                                        </td>
+                                                        <td align="left" style="width: 70%;">
+                                                            <?php echo set_value("middel_name", @$basic_info->middel_name); ?>
+                                                            
+                                                        </td>
+
+                                                    </tr>
+                                                    <tr>
+                                                        <td align="right" style="width: 30%;">
+
+                                                            <span id="">Last Name </span><span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
+                                                        </td>
+                                                        <td align="left" style="width: 70%;">
+                                                            <?php echo set_value("last_name", @$basic_info->last_name); ?>
+                                                            
+                                                        </td>
+                                                    </tr>
+
+
+                                                    <tr>
+                                                        <td align="right" style="width: 30%;">
+                                                            <span >Mobile No </span><span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
+															
+                                                        </td>
+                                                        <td align="left" style="width: 70%;">
+                                                            <div class="form-inline">
+                                                                <span class="form-control" maxlength="3" readonly="True" style="display:inline-block;color:Navy;width:50px;">+91 </span>
+                                                                -
+                                                                <?php echo set_value("cand_mob", @$basic_info->cand_mob); ?>
+                                                            </div>
+                                                           
+                                                            
+                                                        </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td align="right" style="width: 30%;">
+                                                            <span id="">E-mail ID </span><span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
+                                                        </td>
+                                                        <td align="left" style="width: 70%;">
+                                                            <?php echo set_value("cand_email", @$basic_info->cand_email); ?>
+                                                            
+                                                        </td>
+                                                    </tr>
+
+
+                                                </tbody>
+                                            </table>
+
+
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+
+                        </form>
+
+                        <h3>Applications</h3>
+                        <table class="table table-bordered" id="tbl_Candidate">
+                            <tbody>
+                                    <tr>
+                                        <td>No.</td>
+                                        <td>Application ID</td>
+                                        <td>Post</td>
+                                        <td>Name</td>
+                                        <td>status</td>
+                                         <td>Action</td> 
+                                </tr>
+                                <?php
+                                // echo '<pre>';
+                                // print_r($data);
+                                // echo '</pre>';
+                                if(isset($data)){
+                                    $i = 1;
+                                    foreach($data as $application){?>
+                                        <tr>
+                                        <td><?php echo $i; ?></td>
+                                        <td><?php echo $application['application_id']; ?></td>
+                                        <?php
+                                        //echo 'appid'.$application['post_id'];
+                                        //echo $application['post_id'];
+                                            $this->db->where('post_id', $application['post_id']);
+                                            // here we select every column of the table
+                                            $query = $this->db->get('jobpost');
+                                            $jdata = $query->result_array();
+                                           // print_r($jdata);
+                                            
+                                        ?>
+                                        <td><?php if(!empty($jdata)){ echo $jdata[0]['post_name']; } ?></td>
+                                        <td><?php echo $_SESSION['USER']['first_name'].' '.$_SESSION['USER']['last_name']; ?></td>
+                                        <?php
+                                        $this->db->where('status_id', $application['status_id']);
+                                            // here we select every column of the table
+                                            $query = $this->db->get('cand_profile_status_master');
+                                            $sdata = $query->result_array();
+                                        ?>
+                                        <td><?php
+                                        if(isset($sdata[0])){
+                                            echo $sdata[0]['status_name'];
+                                        }
+                                        ?></td>
+                                         <td><a target='_blank' href="<?php  echo site_url('Dashboard/get_all_data/' . $application['application_id']); ?>">View</td>
+                                </tr>
+                                    <?php
+                                $i++;    
+                                }
+                                }
+                                ?>
+                                
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Main body End Here -->
+    </div>
+</div>
