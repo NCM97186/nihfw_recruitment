@@ -114,6 +114,7 @@ class Dashboard extends CI_Controller
 			$data['basic_info']  = $this->users->get_basicInfo($user_id);
 		}
 		$data['result']=$this->Notifications_model->get_jobPost();
+		
 		loadLayout('user/dashboard', $data);
 	}
 
@@ -144,10 +145,6 @@ class Dashboard extends CI_Controller
 	public function details()
 	{
 		$_SESSION['profile_filled'] = 'N';
-		/*if(!empty($this->input->post())){
-		echo '<pre>';
-		print_r($this->input->post());
-		die();}*/
 		$data = null;
 		$data['category'] = $this->Category_model->get_list();
 		$user_id = $_SESSION['USER']['user_id'];
@@ -157,7 +154,7 @@ class Dashboard extends CI_Controller
 		// die();
 		if ($application_id == null && $post_id != null) {
 			$this->db->select('id,application_id');
-			$this->db->where(array('user_id' => $user_id, 'post_id' => $post_id, 'status_id' => 6));
+			$this->db->where(array('user_id' => $user_id, 'post_id' => $post_id, 'status_id' => 5));
 			$this->db->order_by('id', 'DESC');
 			$q = $this->db->get('users_detail');
 			if ($q) {
@@ -179,11 +176,7 @@ class Dashboard extends CI_Controller
 			$degree_diploma = $this->users->get_user_degree_diploma($application_id);
 
 			$edu_file_error = False;
-			/*if(!empty($_POST['degree_diploma']) ){
-			if(empty($degree_diploma)){
-				$degree_diploma=[];
-			}
-			*/
+			
 			if (!empty($_POST['degree_diploma']) && !empty($degree_diploma)) {
 				$degree_diploma_count = count($degree_diploma);
 				$post_count = count($_POST['degree_diploma']['deg']);
@@ -300,20 +293,7 @@ class Dashboard extends CI_Controller
 			}
 		}
 		$edu_file_error = False;
-		/*
-if(!empty($_FILES)){
-	
-	foreach ($_FILES['education_file']['name']['education_file'] as $file_name){
-		if(empty($file_name)){
-			//$this->form_validation->set_rules('education_file[education_file]', 'Education File', 'required',array(
-            //    'required'      => 'You have not provided %s.'));
 
-			$edu_file_error = True;
-		}
-	}
-
-}*/
-	
 
 
 	if ($this->form_validation->run() != FALSE && !$edu_file_error) {
@@ -392,6 +372,7 @@ if(!empty($_FILES)){
 				$minageindaysforpost = round($datediff / (60 * 60 * 24));
 
 				if ($minageindaysforpost >= $candidate_age) {
+
 
 					$years = ($candidate_age / 365); // days / 365 days
 					$years = floor($years); // Remove all decimals
@@ -655,83 +636,113 @@ if(!empty($_FILES)){
 				}
 			}
 			if (isset($_FILES['category_attachment']) && $_FILES['category_attachment']['name'] != '') {
-				$file_name = time() . '_' . $_FILES["category_attachment"]['name'];
-				$config['upload_path'] = 'uploads/category_attachment';
+				$file_name = $_FILES["category_attachment"]['name'];
+				$user_id=$_SESSION['USER']['user_id'];
+				$post_id=$_COOKIE['post_id'];
+				$unlink ='uploads/category_attachment/'.$user_id."_".$post_id."_".$file_name;
+				if (file_exists($unlink)) {
+					unlink($unlink);
+				}
+				$config['upload_path'] = 'uploads/category_attachment/';
 				$config['allowed_types'] = 'pdf';
 				$config['max_size'] = '1024';
-				$config['file_name'] = $file_name;
+				$config['file_name'] =$user_id."_".$post_id."_".$file_name;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
 				if ($this->upload->do_upload('category_attachment')) {
 					$upload_data = $this->upload->data();
 					$category_attachment = $upload_data['file_name'];
-					$post_val['category_attachment'] = $category_attachment;
+					$post_val['category_attachment'] = $user_id."_".$post_id."_".$file_name;
 				} else {
 					$error = array('error' => $this->upload->display_errors());
 					$label = "Category Attachment";
 				}
 			}
 			if (isset($_FILES['adhar_card_doc']) && $_FILES['adhar_card_doc']['name'] != '') {
-				$file_name = time() . '_' . $_FILES["adhar_card_doc"]['name'];
-				$config['upload_path'] = 'uploads/adhar_card_doc';
+				$file_name = $_FILES["adhar_card_doc"]['name'];
+				$user_id=$_SESSION['USER']['user_id'];
+				$post_id=$_COOKIE['post_id'];
+				$unlink ='uploads/adhar_card_doc/'.$user_id."_".$post_id."_".$file_name;
+				if (file_exists($unlink)) {
+					unlink($unlink);
+				}
+				$config['upload_path'] = 'uploads/adhar_card_doc/';
 				$config['allowed_types'] = 'pdf';
 				$config['max_size'] = '1024';
-				$config['file_name'] = $file_name;
+				$config['file_name'] = $user_id."_".$post_id."_".$file_name;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
 				if ($this->upload->do_upload('adhar_card_doc')) {
 					$upload_data = $this->upload->data();
 					$adhar_card_doc = $upload_data['file_name'];
-					$post_val['adhar_card_doc'] = $adhar_card_doc;
+					$post_val['adhar_card_doc'] =$user_id."_".$post_id."_".$file_name;
 				} else {
 					$error = array('error' => $this->upload->display_errors());
 					$label = "Adhar Card Doc";
 				}
 			}
 			if (isset($_FILES['person_disability']) && $_FILES['person_disability']['name'] != '') {
-				$file_name = time() . '_' . $_FILES["person_disability"]['name'];
-				$config['upload_path'] = 'uploads/person_disability';
+				$file_name =$_FILES["person_disability"]['name'];
+				$user_id=$_SESSION['USER']['user_id'];
+				$post_id=$_COOKIE['post_id'];
+				$unlink ='uploads/person_disability/'.$user_id."_".$post_id."_".$file_name;
+				if (file_exists($unlink)) {
+					unlink($unlink);
+				}
+				$config['upload_path'] = 'uploads/person_disability/';
 				$config['allowed_types'] = 'pdf';
 				$config['max_size'] = '1024';
-				$config['file_name'] = $file_name;
+				$config['file_name'] =$user_id."_".$post_id."_".$file_name;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
 				if ($this->upload->do_upload('person_disability')) {
 					$upload_data = $this->upload->data();
 					$person_disability = $upload_data['file_name'];
-					$post_val['person_disability'] = $person_disability;
+					$post_val['person_disability'] = $user_id."_".$post_id."_".$file_name;
 				} else {
 					$error = array('error' => $this->upload->display_errors());
 					$label = "Person Disability";
 				}
 			}
 			if (isset($_FILES['photograph']) && $_FILES['photograph']['name'] != '') {
-				$file_name = time() . '_' . $_FILES["photograph"]['name'];
-				$config['upload_path'] = 'uploads/photograph';
+				$file_name = $_FILES["photograph"]['name'];
+				$user_id=$_SESSION['USER']['user_id'];
+				$post_id=$_COOKIE['post_id'];
+				$unlink ='uploads/photograph/'.$user_id."_".$post_id."_".$file_name;
+				if (file_exists($unlink)) {
+					unlink($unlink);
+				}
+				$config['upload_path'] = 'uploads/photograph/';
 				$config['allowed_types'] = 'jpg|jpeg|png';
 				$config['max_size'] = '55';
 				$config['height']  = '535';
 				$config['width']   = '415';
-				$config['file_name'] = $file_name;
+				$config['file_name'] = $user_id."_".$post_id."_".$file_name;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
 				if ($this->upload->do_upload('photograph')) {
 					$upload_data = $this->upload->data();
 					$photograph = $upload_data['file_name'];
-					$post_val['photograph'] = $photograph;
+					$post_val['photograph'] =$user_id."_".$post_id."_".$file_name;
 				} else {
 					$error = array('error' => $this->upload->display_errors());
 					$label = "Photograph";
 				}
 			}
 			if (isset($_FILES['signature']) && $_FILES['signature']['name'] != '') {
-				$file_name = time() . '_' . $_FILES["signature"]['name'];
-				$config['upload_path'] = 'uploads/signature';
+				$file_name = $_FILES["signature"]['name'];
+				$user_id=$_SESSION['USER']['user_id'];
+				$post_id=$_COOKIE['post_id'];
+				$unlink ='uploads/signature/'.$user_id."_".$post_id."_".$file_name;
+				if (file_exists($unlink)) {
+					unlink($unlink);
+				}
+				$config['upload_path'] = 'uploads/signature/';
 				$config['allowed_types'] = 'jpg|jpeg|png';
 				$config['max_size'] = '55';
 				$config['height']  = '535';
 				$config['width']   = '415';
-				$config['file_name'] = $file_name;
+				$config['file_name'] =$user_id."_".$post_id."_".$file_name;
 				// print_r($config);
 				// die();
 				$this->load->library('upload', $config);
@@ -739,24 +750,31 @@ if(!empty($_FILES)){
 				if ($this->upload->do_upload('signature')) {
 					$upload_data = $this->upload->data();
 					$signature = $upload_data['file_name'];
-					$post_val['signature'] = $signature;
+					$post_val['signature'] = $user_id."_".$post_id."_".$file_name;
 				} else {
 					$error = array('error' => $this->upload->display_errors());
 					$label = "Signature";
 				}
 			}
 			if (isset($_FILES['dob_doc']) && $_FILES['dob_doc']['name'] != '') {
-				$file_name = time() . '_' . $_FILES["dob_doc"]['name'];
-				$config['upload_path'] = 'uploads/dob_proof';
+				$file_name = $_FILES["dob_doc"]['name'];
+				$user_id=$_SESSION['USER']['user_id'];
+				$post_id=$_COOKIE['post_id'];
+				$unlink ='uploads/dob_proof/'.$user_id."_".$post_id."_".$file_name; //die();
+				
+				if (file_exists($unlink)) {
+					unlink($unlink);
+				}
+				$config['upload_path'] = 'uploads/dob_proof/';
 				$config['allowed_types'] = 'pdf';
 				$config['max_size'] = '1024';
-				$config['file_name'] = $file_name;
+				$config['file_name'] = $user_id."_".$post_id."_".$file_name;;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
 				if ($this->upload->do_upload('dob_doc')) {
 					$upload_data = $this->upload->data();
 					$dob_doc = $upload_data['file_name'];
-					$post_val['dob_doc'] = $dob_doc;
+					$post_val['dob_doc'] = $user_id."_".$post_id."_".$file_name;
 				} else {
 					$error = array('error' => $this->upload->display_errors());
 					$label = "Date Of Birth Document";
@@ -819,8 +837,15 @@ if(!empty($_FILES)){
 						$_FILES['file']['size']     = $_FILES['education_file']['size']['education_file'][$i];
 
 						// File upload configuration 
-						$uploadPath = 'uploads/education_proof/';
-						$config['upload_path'] = $uploadPath;
+						//$uploadPath = 'uploads/education_proof/';
+						$user_id=$_SESSION['USER']['user_id'];
+						$post_id=$_COOKIE['post_id'];
+						$unlink ='uploads/education_proof/'.$user_id."_".$post_id."_".$_FILES['file']['name'];
+						if (file_exists($unlink)) {
+							unlink($unlink);
+						}
+						$config['upload_path'] = 'uploads/education_proof/';
+						
 						$config['allowed_types'] = 'pdf';
 						$config['max_size']    = '1024';
 						//$config['max_width'] = '1024'; 
@@ -865,8 +890,14 @@ if(!empty($_FILES)){
 					$_FILES['file']['size']     = $_FILES['organization_file']['size']['organization_file'][$i];
 
 					// File upload configuration 
-					$uploadPath = 'uploads/organization_file/';
-					$config['upload_path'] = $uploadPath;
+					
+					$user_id=$_SESSION['USER']['user_id'];
+					$post_id=$_COOKIE['post_id'];
+					$unlink ='uploads/organization_file/'.$user_id."_".$post_id."_".$_FILES['file']['name'];
+					if (file_exists($unlink)) {
+						unlink($unlink);
+					}
+					$config['upload_path'] = 'uploads/organization_file/';
 					$config['allowed_types'] = 'pdf';
 					$config['max_size']    = '1024';
 					//$config['max_width'] = '1024'; 
@@ -1045,20 +1076,22 @@ if(!empty($_FILES)){
 		if($data['user_details']->gender == "Female"){
 			
 			$status_id = 1;
-			$this->db->where('id', $lasid);
+			$this->db->where('application_id', $application_id);
 			$this->db->update('users_detail', array('status_id' => $status_id));
 			$this->users->update_user_details($application_id, $post_val);
 			redirect(base_url('dashboard/success'));
 		}
 			if($gid->fee_applicable == 1){
+				echo "hiii1";
 				if($data['fee'] == ""){
+					echo "hiii222";
 				$status_id = 1;
-				$this->db->where('id', $lasid);
+				$this->db->where('application_id', $application_id);
 				$this->db->update('users_detail', array('status_id' => $status_id));
 				$this->users->update_user_details($application_id, $post_val);
 				redirect( base_url('dashboard/success'));
 				}
-			$this->db->where('id', $lasid);
+			$this->db->where('application_id',$application_id);
 			$this->db->update('users_detail', array('status_id' => $status_id));
 			$this->users->update_user_details($application_id, $post_val);
 			unset($_SESSION['application_id']);
@@ -1067,10 +1100,14 @@ if(!empty($_FILES)){
 			$_SESSION['profile_filled'] = 'Y';
 			redirect('https://www.onlinesbi.sbi/sbicollect/icollecthome.htm?corpID=5451210', 'refresh');
 		}else{
+			// echo "hii333";
 			$status_id = 1;
-			$this->db->where('id', $lasid);
+			$this->db->where('application_id', $application_id);
 			$this->db->update('users_detail', array('status_id' => $status_id));
+			// echo $this->db->last_query();
+			// die();
 			$this->users->update_user_details($application_id, $post_val);
+			
 			redirect( base_url('dashboard/success'));
 		}
 	
@@ -1149,6 +1186,8 @@ if(!empty($_FILES)){
 		}
 
 		curl_close($ch);
+		$this->session->unset_userdata('application_id');
+
 		loadLayout('home/success', $data);
 	}
 	public function already_apply()
@@ -1199,5 +1238,40 @@ if(!empty($_FILES)){
 		$data= null;
 		$html = $this->load->view('user/admitcard',$data, true);
 		$this->pdf->createPDF($html, 'admincard', false, "A4");
+	}
+	public function upload_pdf($application_id='',$filename='',$tempname='',$path='',$msg='')
+	{
+		print_r($_FILES);die();
+		$user_id=$_REQUEST['user_id'];
+		$post_id=$_REQUEST['post_id'];
+		$filename=$_FILES["file"]["name"] ;
+		$tempname=$_FILES["file"]["tmp_name"];
+		$path=$_REQUEST['path'];
+		$msg='update';
+		if ($tempname != '') {
+			$file_name = $tempname;
+			$unlink= 'uploads/'.$path.'/'.$user_id.'_'.$post_id.'_'.$file_name;
+			if($unlink){
+				unlink($unlink);
+			}
+			echo $unlink; 
+			$config['upload_path'] = $unlink;
+			$config['allowed_types'] = 'pdf';
+			$config['max_size'] = '1024';
+			$config['file_name'] = $user_id."_".$post_id."_".$file_name;
+			$this->load->library('upload', $config);
+			print_r($config);
+			$this->upload->initialize($config);
+			if ($this->upload->do_upload($path)) {
+				$upload_data = $this->upload->data();
+				$pdf_response = $upload_data['file_name'];
+				return $pdf_response;
+			} else {
+				$error = array('error' => $this->upload->display_errors());
+				$label = $msg;
+			}
+			
+		}
+
 	}
 }

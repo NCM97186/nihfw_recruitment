@@ -1,3 +1,11 @@
+<style>
+    .copy-right-area{
+        position:absolute;
+        bottom:0;
+        left:0;
+        right:0;
+    }
+</style>
 <div class="btn offbtn">
 <a href="<?php echo base_url() . "user/logout"; ?>"">Logout</a>
     </div>

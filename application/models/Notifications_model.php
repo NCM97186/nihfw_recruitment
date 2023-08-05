@@ -9,9 +9,10 @@ Class Notifications_model extends CI_Model
 
     public function get_jobPost(){
 
-      $query = $this->db->query('select j.*,a.adver_no,a.adver_date,a.link_to_pdf
-        from jobpost j inner join advertisement a on j.adver_id=a.adver_id
-        where j.post_status=1 AND last_date >= CURDATE() AND CURDATE() >= start_date');
+      $query = $this->db->query('select j.*,a.adver_no,a.adver_date,a.link_to_pdf,ud.status_id
+      from jobpost j inner join advertisement a on j.adver_id=a.adver_id
+      left join users_detail ud on ud.post_id=j.post_id
+      where j.post_status=1 AND last_date >= CURDATE() AND CURDATE() >= start_date');
       /*$query = $this->db->query('select j.*,a.adver_no,a.adver_date,a.link_to_pdf
         from jobpost j inner join advertisement a on j.adver_id=a.adver_id
         where j.post_status=1 AND last_date >= CURDATE() AND j.post_id='.$post_id 

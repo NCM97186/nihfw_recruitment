@@ -208,16 +208,22 @@ ON
         unset($post_val['org_doc']);
         unset($post_val['edu_doc']);
         if (!empty($post_val)) {
-            $id = !empty($_SESSION['users_detail_id'])?$_SESSION['users_detail_id']:false;
+          
+            $user_id = $_SESSION['USER']['user_id'];
+            $status=array(5,6);
+            $id=  $this->db->select('*')->from('users_detail')->where(array('user_id'=>$user_id, 'post_id'=>$post_val['post_id']))->where_in('status_id', $status)->get()->row();
             if($id){
-                $this->db->where(array('id'=>$id));
                  unset($post_val['application_id']);
+                 ($_SESSION['application_id']);
                  unset($post_val['id']);
                  unset($post_val['status_id']);
+              $this->db->where(array('user_id'=>$user_id, 'post_id'=>$post_val['post_id']))->where_in('status_id', $status);
+            // $this->db->where('id',$id)
                  $this->db->update('users_detail', $post_val);
                  return $this->db->insert_id();
              } else {
                 $this->db->insert('users_detail', $post_val);
+              
                 return $this->db->insert_id();
             }
         }

@@ -4,6 +4,8 @@ $csrf = array(
     'hash' => $this->security->get_csrf_hash()
 );
 // echo $_SESSION['saltCookie'].'<br>'.$_SESSION['salt'];
+// print_r($captcha);
+// die();
 ?>
 <div class="login-box-area">
 
@@ -20,7 +22,7 @@ $csrf = array(
                     if($this->session->flashdata('message')!=''){
                         $message    =   $this->session->flashdata('message');
                         if($message!=''){
-                            echo '<div class="alert alert-danger"><button type="button" class="btn btn-danger" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Oh snap!</strong> '.$message.'.</div>';
+                            echo '<div style="padding:5px !important;" class="alert alert-danger"><button type="button" class="btn btn-danger" data-dismiss="alert" aria-hidden="true">&times;</button><strong>Oh snap!</strong> '.$message.'.</div>';
                         }
                         $this->session->unset_userdata('message');
                     }
@@ -33,23 +35,27 @@ $csrf = array(
                 <input class="box" id="password" type="password" placeholder="Password" name="password" value="<?php echo set_value('password'); ?>">
                 <span class="form_error"><?php echo form_error('password'); ?></span>
             </div>
-            <?php if($this->config->item('captcha_enabled')) { ?>
+            <?php if(isset($captcha['image']) || isset($captcha['word'])) { ?>
                             
                             <div class="field-row">
-                                
-                                <div class="">
-                                    <!--<img id="cID" src="<?php echo base_url('') ?>assets/img/cap.png" alt="image" width="120">-->
-                                        <?php echo $captcha['image'];?>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                    <p style="display:flex;"><span id="captImg"><?php echo $captcha['image'];?></span>
+                               
+                               <img id="refreshCaptcha" style="width: 27px; margin: 10px 6px;" src="<?php echo base_url('') ?>assets/img/refresh.png" alt="image">
+                               </p>
                                     </div>
-                                <div class="captchaposition">
-                                   
-                                    <img style="width: 22px; margin: 35px 10px;" src="<?php echo base_url() ?>assets/img/RefreshCaptcha.png" />
-                                </div>
-                                 <input type='hidden' name='code' value='<?php echo $captcha["word"];?>'>
-                                <input type="text" class="captchabox" name="captcha" id="captcha" autocomplete="off" placeholder="Enter text here">
+                                    <div class="col-md-6">
+                                    <input type="text" class="box" name="captcha" id="captcha" autocomplete="off" placeholder="Enter text here">
                                 <span class="form_error"><?php echo form_error('captcha'); ?></span>
+                                    </div>
+                                </div>
+                                   
+                                   
+                                 <input type='hidden' name='code' value='<?php echo $captcha["word"];?>'>
+                              
                             </div>
-                        <?php } ?>
+                        <?php  } ?>
             
             <div class="field-row"><a class="forgot-password" href="<?php echo base_url('user/forgotPassword')?>" target="_parent">Forgot Username &amp; Password</a>
                 
@@ -164,6 +170,16 @@ $csrf = array(
         <!-- Main body End Here -->
     </div>
 </div>
+<!-- captcha refresh code -->
+<script>
+jQuery(document).ready(function(){
+    jQuery('#refreshCaptcha').on('click', function(){
+        jQuery.get('<?php echo base_url().'User/refresh_captcha'; ?>', function(data){
+            $('#captImg').html(data);
+        });
+    });
+});
+</script>
 <script>
     function setCookie(key, value, expiry) {
    

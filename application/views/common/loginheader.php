@@ -13,7 +13,7 @@
   <link rel="shortcut icon" type="image/x-icon" href="<?= base_url('assets/images/favicon.ico'); ?>">
   <!-- Main Menu CSS -->
 
-  <!-- Bootstrap CSS -->
+  <!-- Bootstrap CSS -->   
   <link href="<?= base_url('assets/backend/css/bootstrap.min.css'); ?>" rel="stylesheet">
   <!-- Animate CSS -->
   <link href="<?= base_url('assets/backend/css/animate.css'); ?>" rel="stylesheet">
@@ -22,6 +22,8 @@
   <link href="<?= base_url('assets/backend/css/app-style.css'); ?>" rel="stylesheet" />
   <!-- Custom CSS -->
   <link href="<?= base_url('assets/backend/css/style.css'); ?>" rel="stylesheet">
+  <script type="text/javascript" src="<?= base_url('assets/js/jquery-3.2.1.min.js'); ?>"></script>
+
 
   <base href="<?php echo base_url(); ?>">
 </head>

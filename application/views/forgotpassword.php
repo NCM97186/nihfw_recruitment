@@ -35,9 +35,10 @@
           </div>
          </div>
         </div>       
-         <p id="captImg"><?php echo $captcha;?>
-      <a tabindex="-1" style="border-style: none" href="<?php echo site_url('login/forgotpassword'); ?>" title="Refresh Image" ><img src="<?= base_url('assets/images/refresh_icon-big.png'); ?>" alt="Reload Image" border="0"  align="bottom" /></a>
-   		</p>
+        <input type='hidden' name='code' value='<?php echo $captcha["word"];?>'>
+        <p><span id="captImg"><?php echo $captcha['image'];?></span>
+        <img id="refreshCaptcha" style="float:left; height: 23px; margin: 5px 11px" src="<?php echo base_url() ?>assets/img/refresh.png" />
+          </p>
      Enter the code : 
 		<input type="text" name="captcha" value="" autocomplete="off"/><br>
 <!-- <?php //if($this->config->item('captcha_enabled')) { ?>
@@ -62,8 +63,8 @@
 <!-- captcha refresh code -->
 <script>
 jQuery(document).ready(function(){
-    jQuery('.refreshCaptcha').on('click', function(){
-        jQuery.get('<?php echo base_url().'login/refresh_captcha'; ?>', function(data){
+    jQuery('#refreshCaptcha').on('click', function(){
+        jQuery.get('<?php echo base_url().'Login/refresh_captcha'; ?>', function(data){
             $('#captImg').html(data);
         });
     });

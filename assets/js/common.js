@@ -3,7 +3,7 @@ function checkValueddate(id) {
     var lastDate =parseInt($('#degree_diploma_year_'+id).val());
     var did=id-1;
     var old=parseInt($('#degree_diploma_year_'+did).val());
-    if(lastDate < old){
+    if(lastDate < old || lastDate == old ){
        $('#diploma_year_' + id).html('Year of Passing not be lese  ');
     }else{
        $('#diploma_year_' + id).html('');
@@ -16,20 +16,24 @@ function ValidateFromdate(id) {
   
     var Fromdate = new Date(fromdate);
     var Todate = new Date(todate);
+    
     $(".work_experience_From_error_" + id).html("");
     $(".work_experience_to_error_" + id).html("");
-  alert(Fromdate);
-    if (Fromdate > Todate) {
+ 
+    if (Fromdate > Todate || Fromdate == Todate) {
         // alert("from");
         // $("#work_experience_from_"+id).val("");
         $(".work_experience_From_error_" + id).html("From Date Should Be Less Than To Date").addClass("error-msg");
         return false;
     }
     var did=id-1;
-    var old=parseInt($('#work_experience_to_'+did).val());
+   
+    var old= $('#work_experience_to_' + did).val();
+    
     var Todateold = new Date(old);
-    if(Fromdate > Todateold){
-       $('#work_experience_From_error_' + id).html('Please Enter next years');
+    if(Date.parse(Fromdate) < Todateold || Date.parse(Fromdate) == Todateold){
+       
+       $('.work_experience_From_error_' + id).html('Please Enter next years').addClass("error-msg");
     }
 }
 
@@ -37,7 +41,7 @@ function ValidateTodate(id) {
 
     var fromdate = $('#work_experience_from_' + id).val();
     var todate = $('#work_experience_to_' + id).val();
-        alert(fromdate);
+        //alert(fromdate);
     var Fromdate = new Date(fromdate);
     var Todate = new Date(todate);
     $(".work_experience_From_error_" + id).html("");

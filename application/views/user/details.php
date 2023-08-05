@@ -23,7 +23,7 @@ echo '</pre>';
                             <?php
                             $attributes = array('name' => 'details_form', 'id' => 'details_form', 'onsubmit' => "return SubmitForm()");
                             $action =   base_url() . "dashboard/details/";
-                            // $action = '#';
+                          //  $action = '#';
                             $last_date = date("01-07-Y");
                             // if(isset($last_date)){
                             // $last_date=$post_detail->last_date;
@@ -56,11 +56,11 @@ echo '</pre>';
                                             <table align="left" class="table table-bordered" style="width: 100%" id="tblcndt">
                                                 <tbody>
                                                     <tr>
-                                                        <td align="right" style="width: 40%;">
+                                                        <td align="right" style="width:25%;">
 
-                                                            <span>Name of the Post Applied for</span><span style="font-size: medium; color: #CC0000"></span>
+                                                        <span>Name of the Post Applied for</span><span style="font-size: medium; color: #CC0000"></span>
                                                         </td>
-                                                        <td align="left" style="width: 60%;">
+                                                        <td align="left" style="width: 20%;">
                                                             <?php $post_id = set_value('post_id', $_COOKIE['post_id']); ?>
                                                             <select name="post_id" class="form-control" style="width: 40%;">
 
@@ -80,25 +80,24 @@ echo '</pre>';
                                                             </select>
                                                             <span class="form_error"><?php echo form_error('post_id'); ?></span>
                                                         </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td align="right" style="width: 40%;">
+                                                        <td align="left" style="width: 30%;">
 
                                                             <span>Name of Candidate in full</span><span style="font-size: medium; color: #CC0000"></span>
                                                         </td>
-                                                        <td align="left" style="width: 60%;">
+                                                        <td align="left" style="width: 25%;">
                                                             <?php echo set_value('first_name', @$basic_info->first_name); ?> <?php echo set_value('middel_name', @$basic_info->middel_name); ?> <?php echo set_value('last_name', @$basic_info->last_name); ?>
                                                         
                                                             <input name="name" type="hidden" value="<?php echo set_value("name", $basic_info->first_name." ".$basic_info->middel_name." ".$basic_info->last_name); ?>">
                                                         </td>
                                                     </tr>
+
+                                                   
                                                     <tr>
-                                                        <td align="right" style="width: 30%;">
+                                                        <td align="right" style="">
                                                             <span id="">Date Of Birth (DD-MM-YYYY) </span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
-                                                        <td align="left" style="width: 70%;">
+                                                        <td align="left" style="">
                                                             <div class="form-inline">
                                                                 <?php if(isset($_POST['dob'])){
                                                                             $do=$_POST['dob'];
@@ -120,25 +119,12 @@ echo '</pre>';
                                                             <span class="dob_doc_error" style="color:red;"></span>
                                                             <span style="font-size:13px">Please select pdf format file<br>Max file size 1 MB</span>
                                                         </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td align="right" style="width: 30%;">
-                                                            Age as on <span id="dob_calcdate"> </span> <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
 
-                                                        </td>
-                                                        <td align="left" style="width: 70%;">
-                                                            <div class="form-inline" id="cand_age"></div>
-                                                            <input type="hidden" name="candtotal_age" id="candtotal_age" value="" />
-                                                           <!-- <input type="checkbox" name ="age_calculator" id="age_calculator" /> Please checked here for Age Calculation
-                                                                    --><span class="form_error"><?php echo form_error('age_calculator'); ?></span>
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td align="right" style="width: 40%;">
+                                                        <td align="left" style="">
 
                                                             <span>Whether belongs to SC/ST/OBC(as per central government list)/EWS if so, specify the category</span><span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
-                                                        <td align="left" style="width: 60%;">
+                                                        <td align="left" style="">
                                                         <?php 
                                                             if(isset($_POST['category'])){
                                                                 $cat=$_POST['category'];
@@ -158,7 +144,7 @@ echo '</pre>';
                                                             <br />
                                                             <table class="" id="a1" name="category_proof" style="display:none;">
                                                                 <tr>
-                                                                    <td align="right" style="width: 40%;">
+                                                                    <td align="left" style="">
                                                                         <!-- <input type="radio" name="category_name" value="GENERAL" <?php // echo set_radio('category', 'GENERAL'); 
                                                                                                                                         ?>> GENERAL 
                                                         <input type="radio" name="category_name" value="EWS" <?php //echo set_radio('category', 'EWS'); 
@@ -203,7 +189,7 @@ echo '</pre>';
 
 
                                                                 <tr>
-                                                                    <td align="right" style="width: 40%;">
+                                                                    <td align="left" style="">
                                                                         <span style="font-size:13px">(Self Attested copy of latest certificate to be attached):</span>
 
                                                                         <input type="hidden" name="old_category_attachment" value="<?php echo @$user_details->category_attachment; ?>">
@@ -219,10 +205,27 @@ echo '</pre>';
                                                         </td>
                                                     </tr>
                                                     <tr>
-                                                        <td align="right" style="width: 40%;">
+                                                        <td align="right" style="">
+                                                            Age as on <span id="dob_calcdate"> </span> <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
+
+                                                        </td>
+                                                        <td align="left" style="">
+                                                            <div class="form-inline" id="cand_age"></div>
+                                                            <?php if(isset($_POST['candtotal_age'])){
+                                                                            $candtotal_age=$_POST['candtotal_age'];
+                                                                        } else{
+                                                                            $candtotal_age="";
+                                                                        }
+                                                                        $candtotalsss=!empty(@$user_details->candtotal_age)?@$user_details->candtotal_age:$candtotal_age; ?>
+                                                            <input type="hidden" name="candtotal_age" id="candtotal_age" value="<?php echo $candtotalsss; ?>" />
+                                                           <!-- <input type="checkbox" name ="age_calculator" id="age_calculator" /> Please checked here for Age Calculation
+                                                                    --><span class="form_error"><?php echo form_error('age_calculator'); ?></span>
+                                                        </td>
+
+                                                        <td align="left" style="">
                                                             <span>Is Candidate belongs to NIHFW?</span><span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
-                                                        <td align="left" style="width: 60%;">
+                                                        <td align="left" style="">
                                                         <?php 
                                                             if(isset($_POST['department'])){
                                                                 $dep=$_POST['department'];
@@ -244,15 +247,16 @@ echo '</pre>';
                                                             <br />
                                                         </td>
                                                     </tr>
+                                                   
                                                     <!-- <tr>
                                                     <td colspan="2" style="background: #fff; font-size: 13px; color: #6969de;">No change in category will be permitted after final submission of your application.</td>
                                                 </tr> -->
                                                     <tr>
-                                                        <td align="right" style="width: 40%;">
+                                                        <td colspan="2" align="right" style="">
                                                             <span id="">Are you a person with benchmark disability of 40% and above? </span><span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
 
                                                         </td>
-                                                        <td align="left" style="width: 60%;">
+                                                        <td colspan="2" align="left" style="">
                                                         <?php 
                                                             if(isset($_POST['benchmark'])){
                                                                 $ben=$_POST['benchmark'];
@@ -269,14 +273,14 @@ echo '</pre>';
                                                             <span class="form_error"><?php echo form_error('benchmark'); ?></span>
                                                             <table class="" id="a2" name="disability_proof" style="display:none;">
                                                                 <tr>
-                                                                    <td align="right" style="width: 40%;">
-                                                                        <span id="" style="font-size:13px">Whether person with disability<br />(enclosed self-attested copy of certificate)</span><span style="font-size: medium; color: #CC0000"><?php if (!empty($user_details->person_disability)) { ?><strong>*</strong><?php } ?></span>
+                                                                    <td align="left" style="">
+                                                                        <span id="" style="font-size:13px">Whether person with disability (enclosed self-attested copy of certificate)</span><span style="font-size: medium; color: #CC0000"><?php if (!empty($user_details->person_disability)) { ?><strong>*</strong><?php } ?></span>
 
                                                                     </td>
                                                                 </tr>
                                                                 <tr>
-                                                                    <td align="left" style="width: 60%;">
-                                                                        <span>Disability Details</span><br><br>
+                                                                    <td align="left" style="">
+                                                                        <span>Disability Details</span>
                                                                     <?php 
                                                                         if(isset($_POST['add_disablity'])){
                                                                             $add_dis=$_POST['add_disablity'];
@@ -285,8 +289,8 @@ echo '</pre>';
                                                                         }
                                                                         $add_disablity1=!empty(@$user_details->add_disablity)?@$user_details->add_disablity:$add_dis; 
                                                                     ?>
-                                                                        <input name="add_disablity" type="text" value="<?php echo set_value("add_disablity", @$add_disablity1); ?>">
-                                                                        <span class="form_error"><?php echo form_error('add_disablity'); ?></span><br><br>
+                                                                        <input style="margin-top:5px; margin-bottom:5px;" name="add_disablity" type="text" value="<?php echo set_value("add_disablity", @$add_disablity1); ?>">
+                                                                        <span class="form_error"><?php echo form_error('add_disablity'); ?></span>
                                                                      <?php 
                                                                         if(isset($_POST['person_disability'])){
                                                                             $person_dis=$_POST['person_disability'];
@@ -297,7 +301,7 @@ echo '</pre>';
                                                                     ?>
 
                                                                         <input type="hidden" name="old_person_disability" value="<?php echo @$person_disability1; ?>">
-                                                                        <input type="file" onchange="onlyDisablitypdf(this);" name="person_disability" id="person_disability" class="form-control" style="width: 40%;" />
+                                                                        <input type="file" onchange="onlyDisablitypdf(this);" name="person_disability" id="person_disability" class="form-control" style="width: 100%;" />
                                                                         <span class="form_error"><?php echo form_error('person_disability'); ?></span>
                                                                         <span class="person_disability_error" style="color:red;"></span>
                                                                         <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span>
@@ -330,7 +334,7 @@ echo '</pre>';
                                                 </tr> -->
 
                                                     <tr>
-                                                        <td align="right" style="width: 30%;">
+                                                        <td align="right" style="width: 25%;">
                                                             <span id="">Gender </span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
@@ -342,20 +346,19 @@ echo '</pre>';
                                                             }
                                                             $gender1=!empty(@$user_details->gender)?@$user_details->gender:$gre; 
                                                         ?>
-                                                        <td align="left" style="width: 70%;">
+                                                        <td align="left" style="width: 25%;">
                                                             <?php $gender = set_value('gender', @$gender1); ?>
                                                             <input name="gender" type="radio" value="Male" <?php if ($gender == 'Male') { ?> checked <?php } ?>> Male
                                                             <input name="gender" type="radio" value="Female" <?php if ($gender == 'Female') { ?> checked <?php } ?>> Female
                                                             <input name="gender" type="radio" value="Others" <?php if ($gender == 'Others') { ?> checked <?php } ?>> Others
                                                             <span class="form_error"><?php echo form_error('gender'); ?></span>
                                                         </td>
-
-                                                    <tr>
-                                                        <td align="right" style="width: 30%;">
+                                                        
+                                                        <td align="left" style="width: 25%;">
                                                             <span id="">Marital Status </span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
-                                                        <td align="left" style="width: 70%;">
+                                                        <td align="left" style="width: 25%;">
                                                         <?php 
                                                             if(isset($_POST['marital_status'])){
                                                                 $mar=$_POST['marital_status'];
@@ -367,16 +370,15 @@ echo '</pre>';
                                                             <?php $marital_status = set_value('marital_status', @$marital_status1); ?>
                                                             <input name="marital_status" type="radio" value="Unmarried" <?php if ($marital_status == 'Unmarried') { ?> checked <?php } ?>> Unmarried
                                                             <input name="marital_status" type="radio" value="Married" <?php if ($marital_status == 'Married') { ?> checked <?php } ?>> Married
-                                                            <input name="marital_status" type="radio" value="Widow" <?php if ($marital_status == 'Widow') { ?> checked <?php } ?>> Widow
+                                                            <input name="marital_status" type="radio" value="Widow" <?php if ($marital_status == 'Widow') { ?> checked <?php } ?>> Widow <br>
                                                             <input name="marital_status" type="radio" value="Widower" <?php if ($marital_status == 'Widower') { ?> checked <?php } ?>> Widower
                                                             <input name="marital_status" type="radio" value="Divorced" <?php if ($marital_status == 'Divorced') { ?> checked <?php } ?>> Divorced
                                                             <!-- <input name="marital_status" type="radio" value="Judicially Separated" <?php if ($marital_status == 'Judicially Separated') { ?> checked <?php } ?>> Judicially Separated -->
                                                             <span class="form_error"><?php echo form_error('marital_status'); ?></span>
                                                         </td>
-                                                    </tr>
-
+                                                   
                                                     <tr>
-                                                        <td align="right" style="width: 30%;">
+                                                        <td align="right" style="">
                                                             <span id="">Father's Name </span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
@@ -388,14 +390,11 @@ echo '</pre>';
                                                             }
                                                             $father_name1=!empty(@$user_details->father_name)?@$user_details->father_name:$father; 
                                                         ?>
-                                                        <td align="left" style="width: 70%;">
+                                                        <td align="left" style="">
                                                             <input name="father_name" type="text" onkeypress="return onlyAlphabets(event,this);" maxlength="50" title="Please Type Father's Name, Do not entered Mr./Mrs./Km./Dr./Er. etc. in Prefix of your Name " class="CapLetter form-control" style=" width:70%; display: inline" value="<?php echo set_value("father_name", @$father_name1); ?>">
                                                             <span class="form_error"><?php echo form_error('father_name'); ?></span>
                                                         </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td align="right" style="width: 30%;">
+                                                        <td align="left" style="">
                                                             <span id="">Mother's Name </span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
@@ -407,18 +406,19 @@ echo '</pre>';
                                                             }
                                                             $mother_name=!empty(@$user_details->mother_name)?@$user_details->mother_name:$mother; 
                                                         ?>
-                                                        <td align="left" style="width: 70%;">
+                                                        <td align="left" style="">
                                                             <input name="mother_name" onkeypress="return onlyAlphabets(event,this);" type="text" maxlength="50" class="CapLetter form-control" style=" width:70%;display: inline" value="<?php echo set_value("mother_name", @$mother_name); ?>">
                                                             <span class="form_error"><?php echo form_error('mother_name'); ?></span>
                                                         </td>
-
                                                     </tr>
+
+                                                    
                                                     <tr>
-                                                        <td align="right" style="width: 30%;">
+                                                        <td align="right" style="">
                                                             <span id="">Identity Proof</span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
-                                                        <td align="left" style="width: 70%;">
+                                                        <td align="left" style="">
                                                         <?php 
                                                             if(isset($_POST['identity_proof'])){
                                                                 $identity_proof1=$_POST['identity_proof'];
@@ -431,18 +431,16 @@ echo '</pre>';
                                                             <input name="identity_proof" type="radio" value="DL" <?php if ($identity_pr == 'DL') { ?> checked <?php } ?>> DL
                                                             <!-- <input name="identity_proof" type="radio" value="Adhaar" <?php //if ($gender == 'Adhaar') { ?> checked <?php //} ?>> Adhaar -->
                                                             <input name="identity_proof" type="radio" value="Pan" <?php if ($identity_pr == 'Pan') { ?> checked <?php } ?>> Pan
-                                                            <input name="identity_proof" type="radio" value="Passport" <?php if ($identity_pr == 'Passport') { ?> checked <?php } ?>> Passport
+                                                            <input name="identity_proof" type="radio" value="Passport" <?php if ($identity_pr == 'Passport') { ?> checked <?php } ?>> Passport <br>
                                                             <input name="identity_proof" type="radio" value="Voter" <?php if ($identity_pr == 'Voter') { ?> checked <?php } ?>> Voter Id
                                                             <span class="form_error"><?php echo form_error('identity_proof'); ?></span>
                                                         </td>
-
-                                                    <tr>
-                                                    <tr>
-                                                        <td align="right" style="width: 30%;">
+                                                        
+                                                        <td align="left" style="">
                                                             <span id="">Identity Number<br /> (please attach self-attested copy)</span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
-                                                        <td align="left" style="width: 70%;">
+                                                        <td align="left" style="">
                                                             <input name="adhar_card_number" id="identity_number" type="text" maxlength="16" title="" class="form-control" style=" width:70%; display: inline" value="<?php echo set_value("adhar_card_number", @$user_details->adhar_card_number); ?>">
                                                             <span class="identity_error" style="color:red;"></span>
                                                             <span class="form_error"><?php echo form_error('adhar_card_number'); ?></span>
@@ -452,10 +450,10 @@ echo '</pre>';
                                                             <span class="identity_doc_error" style="color:red;"></span>
                                                             <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span>
                                                         </td>
-                                                    </tr>
-
+                                                    
+                                                  
                                                     <tr>
-                                                        <td align="right" style="width: 30%;">
+                                                        <td align="right" style="">
                                                             <span>Present postal Address </span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
@@ -467,19 +465,38 @@ echo '</pre>';
                                                             }
                                                             $corr_address=!empty(@$user_details->corr_address)?@$user_details->corr_address:$corr_address1; 
                                                         ?>
-                                                        <td align="left" style="width: 70%;">
-                                                            <textarea name="corr_address" id="corr_address" type="text" rows="4" class="CapLetter form-control" style="width: 70%;"><?php echo set_value("corr_address", @$corr_address); ?></textarea>
+                                                        <td align="left" style="">
+                                                            <textarea name="corr_address" id="corr_address" type="text" rows="4" class="CapLetter form-control" style="width: 100%;"><?php echo set_value("corr_address", @$corr_address); ?></textarea>
                                                             <span class="form_error"><?php echo form_error('corr_address'); ?></span>
+                                                        </td>
+
+                                                        <td align="left" style="">
+                                                            <span>Permanent Address</span>
+                                                            <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
+                                                        </td>
+                                                        <?php 
+                                                            if(isset($_POST['perm_address'])){
+                                                                $perm_address1=$_POST['perm_address'];
+                                                            } else{
+                                                                $perm_address1="";
+                                                            }
+                                                            $perm_address=!empty(@$user_details->perm_address)?@$user_details->perm_address:$perm_address1; 
+                                                        ?>
+                                                        <td align="left" style="">
+                                                            <textarea name="perm_address" id="perm_address" type="text" rows="4" class="CapLetter form-control" style="width: 100%;"><?php echo set_value('perm_address', @$user_details->perm_address);
+                                                                                                                                                                                    ?></textarea>
+                                                            <span class="form_error"><?php echo form_error('perm_address');
+                                                                                        ?></span>
                                                         </td>
                                                     </tr>
 
                                                     <tr>
-                                                        <td align="right" style="width: 30%;">
+                                                        <td align="right" style="">
                                                             <span>State</span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
 
-                                                        <td align="left" style="width: 60%;">
+                                                        <td align="left" style="">
                                                         <?php 
                                                             if(isset($_POST['corr_state'])){
                                                                 $corr_state1=$_POST['corr_state'];
@@ -490,7 +507,7 @@ echo '</pre>';
                                                         ?>
                                                             <?php $state_id = set_value('corr_state', @$corr_state);
                                                             ?>
-                                                            <select name="corr_state" id="corr_state" class="form-control" style="width: 40%;">
+                                                            <select name="corr_state" id="corr_state" class="form-control" style="width: 100%;">
                                                                 <option value="">--Select--</option>
                                                                 <?php
 
@@ -508,59 +525,11 @@ echo '</pre>';
                                                         <input name="corr_state" id="corr_state" type="text" class="CapLetter form-control" style=" width:30%; display: inline;" value="<?php echo set_value("corr_state", @$user_details->corr_state); ?>">
                                                         <span class="form_error"><?php echo form_error('corr_state'); ?></span>
                                                     </td> -->
-
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td align="right" style="width: 30%;">
-                                                            <span>Pincode</span>
-                                                            <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
-                                                        </td>
-                                                        <?php 
-                                                            if(isset($_POST['corr_pincode'])){
-                                                                $corr_pincode1=$_POST['corr_pincode'];
-                                                            } else{
-                                                                $corr_pincode1="";
-                                                            }
-                                                            $corr_pincode=!empty(@$user_details->corr_pincode)?@$user_details->corr_pincode:$corr_pincode1; 
-                                                        ?>
-                                                        <td align="left" style="width: 30%;">
-                                                            <input name="corr_pincode" id="corr_pincode" type="text" maxlength="6" onkeypress="return validateNumber(event)" value="<?php echo set_value('corr_pincode', @$corr_pincode); ?>" class="CapLetter form-control" style=" width:30%; display: inline;"> (6 Digits)
-                                                            <span class="form_error"><?php echo form_error('corr_pincode') ?></span>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td colspan="2"><input type="checkBox" onclick="FillAddressInput()" id="checkBox"> Same as Address for present (Click if applicable Permanent address)</td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td align="right" style="width: 30%;">
-                                                            <span>Permanent Address</span>
-                                                            <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
-                                                        </td>
-                                                        <?php 
-                                                            if(isset($_POST['perm_address'])){
-                                                                $perm_address1=$_POST['perm_address'];
-                                                            } else{
-                                                                $perm_address1="";
-                                                            }
-                                                            $perm_address=!empty(@$user_details->perm_address)?@$user_details->perm_address:$perm_address1; 
-                                                        ?>
-                                                        <td align="left" style="width: 70%;">
-                                                            <textarea name="perm_address" id="perm_address" type="text" rows="4" class="CapLetter form-control" style="width: 70%;"><?php echo set_value('perm_address', @$user_details->perm_address);
-                                                                                                                                                                                    ?></textarea>
-                                                            <span class="form_error"><?php echo form_error('perm_address');
-                                                                                        ?></span>
-                                                        </td>
-                                                    </tr>
-
-                                                    <tr>
-                                                        <td align="right" style="width: 30%;">
+                                                    <td align="left" style="">
                                                             <span id="">State</span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
-                                                        <td align="left" style="width: 60%;">
+                                                        <td align="left" style="">
                                                         <?php 
                                                             if(isset($_POST['perm_state'])){
                                                                 $perm_state1=$_POST['perm_state'];
@@ -571,7 +540,7 @@ echo '</pre>';
                                                         ?>
                                                             <?php $state_id = set_value('perm_state', @$perm_state);
                                                             ?>
-                                                            <select name="perm_state" id="perm_state" class="form-control" style="width: 40%;">
+                                                            <select name="perm_state" id="perm_state" class="form-control" style="width: 100%;">
                                                                 <option value="">--Select--</option>
                                                                 <?php
 
@@ -588,7 +557,24 @@ echo '</pre>';
                                                     </tr>
 
                                                     <tr>
-                                                        <td align="right" style="width: 30%;">
+                                                        <td align="right" style="">
+                                                            <span>Pincode</span>
+                                                            <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
+                                                        </td>
+                                                        <?php 
+                                                            if(isset($_POST['corr_pincode'])){
+                                                                $corr_pincode1=$_POST['corr_pincode'];
+                                                            } else{
+                                                                $corr_pincode1="";
+                                                            }
+                                                            $corr_pincode=!empty(@$user_details->corr_pincode)?@$user_details->corr_pincode:$corr_pincode1; 
+                                                        ?>
+                                                        <td align="left" style="">
+                                                            <input name="corr_pincode" id="corr_pincode" type="text" maxlength="6" onkeypress="return validateNumber(event)" value="<?php echo set_value('corr_pincode', @$corr_pincode); ?>" class="CapLetter form-control" style=" width:40%; display: inline;"> (6 Digits)
+                                                            <span class="form_error"><?php echo form_error('corr_pincode') ?></span>
+                                                        </td>
+
+                                                        <td align="left" style="">
                                                             <span id="">Pincode</span>
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
@@ -600,12 +586,22 @@ echo '</pre>';
                                                             }
                                                             $perm_pincode=!empty(@$user_details->perm_pincode)?@$user_details->perm_pincode:$perm_pincode1; 
                                                         ?>
-                                                        <td align="left" style="width: 30%;">
-                                                            <input name="perm_pincode" id="perm_pincode" maxlength="6" type="text" onkeypress="return validateNumber(event)" class="CapLetter form-control" style=" width:30%; display: inline;" value="<?php echo set_value('perm_pincode', @$user_details->perm_pincode);
+                                                        <td align="left" style="">
+                                                            <input name="perm_pincode" id="perm_pincode" maxlength="6" type="text" onkeypress="return validateNumber(event)" class="CapLetter form-control" style=" width:40%; display: inline;" value="<?php echo set_value('perm_pincode', @$user_details->perm_pincode);
                                                                                                                                                                                                                                                         ?>"> (6 Digits)
                                                             <span class="form_error"><?php echo form_error('perm_pincode');
                                                                                         ?></span>
                                                         </td>
+                                                    </tr>
+
+                                                    <tr>
+                                                        <td colspan="4"><input type="checkBox" onclick="FillAddressInput()" id="checkBox"> Same as Address for present (Click if applicable Permanent address)</td>
+                                                    </tr>
+
+                                                   
+
+                                                    <tr>
+                                                        
                                                     </tr>
 
 
@@ -840,11 +836,14 @@ echo '</pre>';
                                                                     <input type="date" id="work_experience_from_<?php echo $i; ?>" onchange="ValidateFromdate(<?php echo $i ?>);" id="work_experience_from_<?php echo $i ?>"  name="work_experience[from_date][]" value="" class="form-control">
                                                                     <span class="form_error"><?php echo form_error('work_experience[from_date][]'); 
                                                                                                 ?></span>
+                                                                    <span class="work_experience_From_error_<?php echo $i; ?>" style="color:red;"></span>
+
                                                                 </td>
                                                                 <td align="left" style="" valign="top">
                                                                     <input type="date" name="work_experience[to_date][]" onchange="ValidateTodate(<?php echo $i ?>);" id="work_experience_to_<?php echo $i; ?>" value="" class="form-control" style="width:100%; float:left">
                                                                     <span class="form_error"><?php echo form_error('work_experience[to_date][]'); 
                                                                                                 ?></span>
+                                                                                                <span class="work_experience_to_error_<?php echo $i; ?>" style="color:red;"></span>
                                                                 </td>
                                                                 <td align="left" style="" valign="top">
                                                                     <input type="file" name="organization_file[organization_file][]" id="organization_doc_<?php echo $i; ?>" onchange="onlyorganizationpdf(this,<?php echo $i; ?>);" class="form-control" />
@@ -949,7 +948,7 @@ echo '</pre>';
                                                             
                                                         </td>
                                                         <td align="left" style="width: 40%;">
-                                                            <input name="photograph" type="file" onchange="checkfile('photograph',this.value);" title="Please upload your Signature" class="CapLetter form-control" value="<?php echo set_value("photograph"); ?>" accept="image/jpeg,image/gif,image/png,image/jpg">
+                                                            <input name="photograph" id="imgInp" type="file" onchange="checkfile('photograph',this.value);" title="Please upload your Signature" class="CapLetter form-control" value="<?php echo set_value("photograph"); ?>" accept="image/jpeg,image/gif,image/png,image/jpg">
                                                             <span class="checkphoto" style="color:#006400; font-weight:bold"></span>
                                                             <span style="font-size:13px">NOTE:Please select jpg,jpeg,png format file<br>
                                                                    Photograph Maximum size 50Kb<br>
@@ -964,10 +963,10 @@ echo '</pre>';
                                                         <td align="center" style="width: 30%;">
                                                             <?php if (isset($user_details->photograph)) { ?>
                                                                 <input type="hidden" name="old_photo" value="<?php echo @$user_details->photograph; ?>">
-                                                                <img src="<?= base_url('uploads/photograph/') . @$user_details->photograph; ?>" class="img-responsive" target="_blank" width="80" height="50">
+                                                                <img id="blah" src="<?= base_url('uploads/photograph/') . @$user_details->photograph; ?>" class="img-responsive" target="_blank" width="80" height="50">
                                                             <?php }else{?>
-                                                                <img src="<?= base_url('uploads/photograph/download.jpg');?>" class="img-responsive" target="_blank" width="80" height="50"><br>
-                                                                <span>Sample Photograph</span>
+                                                                <img id="blah" src="<?= base_url('uploads/photograph/download.jpg');?>" class="img-responsive" target="_blank" width="80" height="50"><br>
+                                                                <span id="texthide">Sample Photograph</span>
                                                            <?php } ?>
                                                         </td>
 
@@ -978,7 +977,7 @@ echo '</pre>';
                                                             <span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
                                                         </td>
                                                         <td align="left" style="width: 40%;">
-                                                            <input name="signature" type="file" title="Please upload your Signature" class="CapLetter form-control" onchange="checkfile('signature',this.value);" value="<?php echo set_value("signature", @$user_details->signature); ?>" accept="image/jpeg,image/gif,image/png,image/jpg">
+                                                            <input name="signature" id="sigimg"  type="file" title="Please upload your Signature" class="CapLetter form-control" onchange="checkfile('signature',this.value);" value="<?php echo set_value("signature", @$user_details->signature); ?>" accept="image/jpeg,image/gif,image/png,image/jpg">
                                                             <span class="form_error"><?php echo form_error('signature'); ?></span>
                                                             <span class="checksignature" style="color:#006400; font-weight:bold"></span>
                                                             <span style="font-size:13px">NOTE:Please select jpg,jpeg,png format file<br>
@@ -990,11 +989,11 @@ echo '</pre>';
                                                         <td align="center" style="width: 30%;">
                                                             <?php if (isset($user_details->signature)) { ?>
                                                                 <input type="hidden" name="old_sign" value="<?php echo @$user_details->signature; ?>">
-                                                                <img src="<?= base_url('uploads/signature/') . @$user_details->signature; ?>" class="img-responsive" target="_blank" width="80" height="50">
+                                                                <img id="sigimagpre" src="<?= base_url('uploads/signature/') . @$user_details->signature; ?>" class="img-responsive" target="_blank" width="80" height="50">
                                                                
                                                             <?php }else{?>
-                                                                 <img src="<?= base_url('uploads/signature/signature-sample.png');?>" class="img-responsive" target="_blank" width="80" height="50"><br>
-                                                                 <span>Sample Signature</span>
+                                                                 <img  id="sigimagpre"  src="<?= base_url('uploads/signature/signature-sample.png');?>" class="img-responsive" target="_blank" width="80" height="50"><br>
+                                                                 <span id="sigtexthide" >Sample Signature</span>
                                                           <?php  } ?>
                                                         </td>
                                                     </tr>
@@ -1129,13 +1128,13 @@ echo '</pre>';
                 $('#dynamic_field').append('<tr id="row' + b + '" class="edu_row"><td><input type="text"   name="degree_diploma[deg][]"  class="form-control" /></td><td><input type="text" name="degree_diploma[year][]" onkeypress="return onlyAlphabets(event,this);" class="form-control" /></td><td><input type="text" name="degree_diploma[sub][]" id="degree_diploma_year_' + b + '" onchange="checkValueddate(' + b + ')"  maxlength="4" onkeypress="return validateNumber(event)" class="form-control " /> <span id="diploma_year_' + b + '" style="color:red"></span> </td><td><input type="text" onkeypress="return validateNumber(event)" onchange="checkValueN(' + b + ')" id="degree_diploma_uni_add_' + b + '" name="degree_diploma[uni][]" class="form-control maxmarks" /></td><td><input type="text" id="edu_div_add_' + b + '" name="degree_diploma[div][]" onkeypress="return validateNumber(event)" onchange="checkValueN(' + b + ')" class="form-control obtainmarks" style="width:80%; float:left" data-log /><span id="obtain_add_' + b + '" style="color:red"></span><td><input type="text" id="edu_div_per_'+b+'" name="degree_diploma[per][]" onkeypress="return validateNumber(event)" onchange="checkValueN('+b+')" class="form-control obtainper" style="width:80%; float:left" data-log readonly /><td><input type="file" name="education_file[education_file][]" id="education_doc_'+b+'" onchange="onlyeducationpdf(this,'+b+');"  class="form-control" /><span class="education_doc_'+b+'_error" style="color:red;"></span>  <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span><button type="button" name="remove" id="' + b + '" class="btn btn-danger btn_remove" style="width:16%;  float:right">X</button></td></tr>');
             });
             if ($('#tq_work').val() != '') {
-                var j = $('#tq_work').val();
+                var j = parseInt($('#tq_work').val());
             } else {
                 var j = 1;
             }
 
             $('#addwork').click(function() {
-                b = j++;
+                b = j + 1;
                 $('#dynamic_field_work').append('<tr id="rowwork' + b + '" class="org_row"><td><input type="text" name="work_experience[organization][]" class="form-control" /></td><td><input type="text" name="work_experience[post_held][]" onkeypress="return ValidateAlphnumeric(event);" class="form-control" /></td><td><input type="text" name="work_experience[pay_scale][]" onkeypress="return validateNumber(event)"  class="form-control" /></td><td><input type="date" onchange="ValidateFromdate(' + b + ');"  id="work_experience_from_' + b + '" name="work_experience[from_date][]" class="form-control" /><span class="work_experience_From_error_' + b + '" style="color:red;"></span></td><td><input type="date" onchange="ValidateTodate(' + b + ');"  id="work_experience_to_' + b + '" name="work_experience[to_date][]" class="form-control" style="width:100%; float:left"/><span class="work_experience_to_error_' + b + '" style="color:red;"></span><td><input type="file" name="organization_file[organization_file][]"  class="form-control" id="organization_doc_' + b + '" onchange="onlyorganizationpdf(this,' + b + ');" /><span class="organization_doc_' + b + '_error" style="color:red;"></span>   <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span><button type="button" name="remove" id="' + b + '" class="btn btn-danger btn_remove_work" style="width:16%;  float:right">X</button></td></tr>');
                 $('#tq_work').val(b);
             });
@@ -1616,10 +1615,32 @@ echo '</pre>';
         function onlyDobpdf(data) {
             // alert(val);
             // var myFile="";
-            var myFile = data.value;
+            var myFile = data.value;8
+           
+
             var upld = myFile.split('.').pop();
             if (upld == 'pdf') {
                 $('.dob_doc_error').html('');
+                //$("#dob_doc") new FormData($("#multiFiles"));
+                var fd = new FormData($("#dob_doc"));
+                //fd.append('file',myFile);
+                
+                var user_id=<?php echo $_SESSION['USER']['user_id']; ?>;
+                var post_id=<?php echo $_COOKIE['post_id']; ?>;
+                var path='dob_proof';
+                fd.append('user_id',user_id);
+                fd.append('post_id',post_id);
+                fd.append('path',path);
+
+                $.ajax({
+                    url: "<?php echo base_url(); ?>/dashboard/upload_pdf",
+                    type: "POST",
+                    data:fd,
+                  //  data: "myFile="+myFile+"user_id="+user_id+"post_id="+post_id+"path="+path+",
+                    contentType: false,
+                    cache: false,
+                    processData:false,
+                });
                 if (Filevalidation(data.id)) {
                     return true
                 }
@@ -1743,20 +1764,37 @@ echo '</pre>';
                 }
             }
         }
-
-
-
-        function checkfile(name,id)
+       function checkfile(name,id)
         {
            if(id != " "){
             if(name== "photograph"){
-            $('.checkphoto').html('Document has been uploaded successfully!!');
+             $('.checkphoto').html('Document has been uploaded successfully!!');
+             $("#texthide").css("display", "none");
+            
+                 const [file] = imgInp.files
+                if (file) {
+                    blah.src = URL.createObjectURL(file)
+                }
             }
             if(name== "signature"){
                 $('.checksignature').html('Document has been uploaded successfully!!');
+               
+                $("#sigtexthide").css("display", "none");
+                const [file] = sigimg.files
+                if (file) {
+                    sigimagpre.src = URL.createObjectURL(file)
+                }
+
            }
            if(name== "photograph"){
-            $('.checkphoto').html('Document has been uploaded successfully!!');
+            // $('.checkphoto').html('Document has been uploaded successfully!!');
+                // imgInp.onchange = evt => {
+                //     const [file] = imgInp.files
+                //     alert(file);
+                //     if (file) {
+                //         blah.src = URL.createObjectURL(file)
+                //     }
+                // }
             }
         }
     }

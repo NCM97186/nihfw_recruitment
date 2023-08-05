@@ -17,9 +17,11 @@
 
 <!-- jquery-->
 <!-- Bootstrap core JavaScript-->
-
-<script src="<?= base_url('assets/backend/js/popper.min.js'); ?>"></script>
+<script src="<?= base_url('assets/backend/js/tableExport.js'); ?>"></script>
+<script src="<?= base_url('assets/backend/js/jquery.base64.js'); ?>"></script>
 <script src="<?= base_url('assets/backend/js/bootstrap.min.js'); ?>"></script>
+<script src="<?= base_url('assets/backend/js/popper.min.js'); ?>"></script>
+
 
 <!-- simplebar js -->
 <script src="<?= base_url('assets/backend/plugins/simplebar/js/simplebar.js'); ?>"></script>

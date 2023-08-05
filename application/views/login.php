@@ -42,10 +42,10 @@
           </div>
          </div>
         </div>
-        <p id="captImg"><?php echo $captcha;?>
-        <a tabindex="-1" style="border-style: none" href="<?php echo site_url('login'); ?>" title="Refresh Image" ><img src="<?= base_url('assets/images/refresh_icon-big.png'); ?>" alt="Reload Image" border="0" 
-         align="bottom" /></a>
-   		</p>
+        <input type='hidden' name='code' value='<?php echo $captcha["word"];?>'>
+        <p><span id="captImg"><?php echo $captcha['image'];?></span>
+        <img id="refreshCaptcha" style="float:left; height: 23px; margin: 5px 11px" src="<?php echo base_url() ?>assets/img/refresh.png" />
+          </p>
    		Enter the code : 
 		<input type="text" name="captcha" value="" autocomplete="off"/>
   <div class="forget_pass" style="margin-left:395px"><a href="<?php echo site_url('login/forgotpassword'); ?>">Forget Password</a></div>
@@ -68,18 +68,8 @@
 </div>  
      <!--Start Back To Top Button-->
     <a href="javaScript:void();" class="back-to-top"><i class="fa fa-angle-double-up"></i> </a>
+    </div>
 
-
-<!-- captcha refresh code -->
-<script>
-jQuery(document).ready(function(){
-    jQuery('.refreshCaptcha').on('click', function(){
-        jQuery.get('<?php echo base_url().'login/refresh_captcha'; ?>', function(data){
-            $('#captImg').html(data);
-        });
-    });
-});
-</script>
 <script src="<?php echo base_url('assets/js/sha512.js'); ?>"></script>
 <script src="<?php echo base_url('assets/js/getpwd.js'); ?>"></script>
 		
@@ -120,5 +110,13 @@ jQuery(document).ready(function(){
     
   
   </script>
-		
-</div>
+<script>
+jQuery(document).ready(function(){
+    jQuery('#refreshCaptcha').on('click', function(){
+        jQuery.get('<?php echo base_url().'Login/refresh_captcha'; ?>', function(data){
+          jQuery('#captImg').html(data);
+        });
+    });
+});
+</script>
+

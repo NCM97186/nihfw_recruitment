@@ -14,7 +14,18 @@ $csrf = array(
 
                 <div class="panel-body">
                     <div id="" style="text-align: left; background-color: White; width: 100%">
-                    <!-- <?php //$this->load->view('common/messages.php'); ?> -->
+                    <?php if (($this->session->flashdata('error'))) { ?>
+                        <div class="alert alert-danger alert-dismissible" role="alert">
+                            <button type="button" class="close" data-dismiss="alert">&times;</button>
+                            <!-- <div class="alert-icon">
+                                <i class="fa fa-check"></i>
+                            </div> -->
+                            <div class="alert-message">
+                                <span><strong>Error!</strong> <?php echo $this->session->flashdata('error'); ?></span>
+                                <?php unset($_SESSION['error']); ?>
+                            </div>
+                        </div>
+                    <?php } ?>
                         <form method="post"  action="<?php echo base_url('user/registration')?>" enctype="multipart/form-data">
                         <input type="hidden" name="<?php echo $csrf['name'];?>" value="<?php echo $csrf['hash'];?>" />
                             <table class="table table-bordered" id="tbl_Candidate">
@@ -85,23 +96,6 @@ $csrf = array(
                                                             </em>
                                                         </td>
                                                     </tr>
-
-                                                    <!--<tr>
-                                                        <td align="right" style="width: 30%;">
-                                                            <span id="">Alternative Number<br />(Mobile No/Landline No)</span><span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
-                                                        </td>
-                                                        <td align="left" style="width: 70%;">
-                                                            <textarea name="cand_office" rows="3" id="" title="" class="CapLetter form-control" style="width:70%;" /><?php //echo set_value('cand_office'); ?></textarea>
-                                                            <br />
-                                                            <em>
-                                                                <span class="form_error"><?php //echo form_error('cand_office'); ?></span>
-                                                            </em>
-
-                                                        </td>
-                                                    </tr>-->
-
-
-
                                                     <tr>
                                                         <td align="right" style="width: 30%;">
                                                             <span id="">E-mail ID </span><span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
@@ -117,7 +111,8 @@ $csrf = array(
                                                             </em>
                                                         </td>
                                                     </tr>
-                                                    <?php if($this->config->item('captcha_enabled')) { ?>
+                                                   
+                                                     <?php if(isset($captcha['image']) || isset($captcha['word'])) { ?>
                                                     <tr>
                                                         <td align="right" style="width: 30%;">
                                                             <span >Security Code</span><span style="font-size: medium; color: #CC0000"><strong>*</strong></span>
@@ -126,9 +121,9 @@ $csrf = array(
                                                             
                                                         <input type="text" class="form-control" name="captcha" style="width:20%; float:left;     margin-right: 12px;">
                                                         <input type='hidden' name='code' value='<?php echo $captcha["word"];?>'>
-														<p id="captImg"><?php echo $captcha['image'];?></p>
-                                                        <a href="javascript:void(0);" class="refreshCaptcha"><img style="float:left; height: 23px; margin: 5px 11px" src="<?php echo base_url() ?>assets/img/refresh.png" /></a>
-
+														<p><span id="captImg"><?php echo $captcha['image'];?></span>
+                                                        <a href="javascript:void(0);" class="refreshCaptcha"><img id="refreshCaptcha" style="float:left; height: 23px; margin: 5px 11px" src="<?php echo base_url() ?>assets/img/refresh.png" /></a>
+                                                        </p>
                                                             <span class="form_error"><?php echo form_error('captcha'); ?></span>	
 
                                                         </td>
@@ -166,8 +161,8 @@ $csrf = array(
 <!-- captcha refresh code -->
 <script>
 jQuery(document).ready(function(){
-    jQuery('.refreshCaptcha').on('click', function(){
-        jQuery.get('<?php echo base_url().'login/refresh_captcha'; ?>', function(data){
+    jQuery('#refreshCaptcha').on('click', function(){
+        jQuery.get('<?php echo base_url().'User/refresh_captcha'; ?>', function(data){
             $('#captImg').html(data);
         });
     });

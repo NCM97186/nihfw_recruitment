@@ -1,5 +1,8 @@
 .DS_Store
-
+uploads/*
+application/libraries/Bitauth.php
+application/libraries/phpass.php
+application/views/user/details-bkp.php
 application/cache/*
 !application/cache/index.html
 

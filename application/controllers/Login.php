@@ -19,36 +19,10 @@ class Login extends CI_Controller {
         if(isset($_SESSION['ADMIN']['admin_id']) || $this->loginmodel->remember_me_check()) {
             redirect(base_url('admin/dashboard'));
         }
-        $this->generateSalt();
-        $original_string = array_merge(range(0, 9), range('a', 'z'), range('A', 'Z'));
-        $original_string = implode("", $original_string);
-        $result = substr(str_shuffle($original_string), 0, 6);
-        $vals = array(
-            'word'          => $result,
-            'img_path'      => './captcha/',
-            'img_url'       => base_url().'/captcha/',
-            'font_path'     => './path/to/fonts/texb.ttf',
-            'img_width'     => '150',
-            'img_height'    => 50,
-            'expiration'    => 7200,
-            'word_length'   => 8,
-            'font_size'     => 50,
-            'img_id'        => 'Imageid',
-            'pool'          => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
-    
-            // White background and border, black text and red grid
-            'colors'        => array(
-                    'background' => array(255, 255, 255),
-                    'border' => array(255, 255, 255),
-                    'text' => array(0, 0, 0),
-                    'grid' => array(255, 40, 40)
-            )
-    );
-    
-        $cap = create_captcha($vals);
+      
+        
         $data['page_title'] =   "Login Page";
-        $data['captcha'] =  $cap['image'];
-        $this->session->set_userdata('captcha_word',$cap['word']);
+        $data['captcha'] =  $this->captcha();
         $this->load->view('common/loginheader',$data);
         $this->load->view('login',$data);
         $this->load->view('common/loginfooter',$data); 
@@ -78,18 +52,17 @@ class Login extends CI_Controller {
 					);
 
         $data['remember_me']=$this->input->post('remember_me');
-
+        $this->session->set_userdata('captcha_answer',$this->input->post('code'));
         $this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|callback_validatelogin');
 
         $captcha_error = false;
-   
 
-            $Captchapost = $this->input->post('captcha');
-            $sessCaptcha = $this->session->userdata('captcha_word');
-            if( $Captchapost == '' || $Captchapost != $sessCaptcha ) {
-                $captcha_error = true;
-            }
+        $Captchapost = $this->input->post('captcha');
+        if( $Captchapost != $this->session->userdata('captcha_answer')){
+						
+            $captcha_error = true;
+        }
         
 
         if($captcha_error) {
@@ -136,11 +109,11 @@ class Login extends CI_Controller {
     
     
     private function captcha(){
-        // Captcha configuration
+      
         $config = array(
-            'img_path'      => 'captcha_images/',
-            'img_url'       => base_url().'captcha_images/',
-            // 'font_path'     => 'system/fonts/texb.ttf',
+            'img_path'      => './captcha/',
+            'img_url'       => base_url().'/captcha/',
+           
             'font_path'     => realpath('system/fonts/texb.ttf'),
             'img_width'     => '160',
             'img_height'    => 50,
@@ -155,12 +128,10 @@ class Login extends CI_Controller {
                 )
         );
         $captcha = create_captcha($config);
-        
-        // Unset previous captcha and set new captcha word
+	
         $this->session->unset_userdata('captchaCode');
         $this->session->set_userdata('captchaCode',$captcha['word']);
         
-        // Display captcha image
 
         return $captcha;
     }
@@ -172,35 +143,10 @@ class Login extends CI_Controller {
     }
     public function forgotpassword()
     { 
-        $original_string = array_merge(range(0, 9), range('a', 'z'), range('A', 'Z'));
-        $original_string = implode("", $original_string);
-        $result = substr(str_shuffle($original_string), 0, 6);
-        $vals = array(
-            'word'          => $result,
-            'img_path'      => './captcha/',
-            'img_url'       => base_url().'/captcha/',
-            'font_path'     => './path/to/fonts/texb.ttf',
-            'img_width'     => '150',
-            'img_height'    => 30,
-            'expiration'    => 7200,
-            'word_length'   => 8,
-            'font_size'     => 16,
-            'img_id'        => 'Imageid',
-            'pool'          => '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ',
+       
     
-            // White background and border, black text and red grid
-            'colors'        => array(
-                    'background' => array(255, 255, 255),
-                    'border' => array(255, 255, 255),
-                    'text' => array(0, 0, 0),
-                    'grid' => array(255, 40, 40)
-            )
-    );
-    
-        $cap = create_captcha($vals);
         $data['page_title'] =   "Login Page";
-        $data['captcha'] =  $cap['image'];
-        $this->session->set_userdata('captcha_word',$cap['word']);
+        $data['captcha'] =  $this->captcha();
         $this->load->view('common/loginheader');
         $this->load->view('forgotpassword',$data);
         $this->load->view('common/loginfooter');
@@ -210,6 +156,7 @@ class Login extends CI_Controller {
     {
       
             $data = array();
+            $this->session->set_userdata('captcha_answer',$this->input->post('code'));
             $data['title'] = "Admin Forgot Password";
             if (isset($_POST['user_email'])) {
                 $_POST = $this->security->xss_clean($this->input->post());
@@ -220,11 +167,10 @@ class Login extends CI_Controller {
                 }
                 $captcha_error = false;
                 $Captchapost = $this->input->post('captcha');
-                $sessCaptcha = $this->session->userdata('captcha_word');
-                if( $Captchapost == '' || $Captchapost != $sessCaptcha ) {
+                if($Captchapost == '' || $Captchapost != $this->session->userdata('captcha_answer')) {
                     $captcha_error = true;
                 }
-            
+                            
             if($captcha_error) {
                 $message="captcha is not matched";
                 $this->session->set_flashdata('message', $message);

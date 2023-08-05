@@ -205,7 +205,7 @@
                                 </div>
                             </div>
                         </form>
-                        <div> <a href="#" target="_blank" class="btn btn-info" style="float:right;">Export</a></div>
+                        <div> <button   id="exportexcel" target="_blank" class="btn btn-info" style="float:right;">Export</button></div>
                         <div class="table-responsive">
                             <table id="default-datatabl" class="table table-bordered">
                                 <thead>
@@ -264,3 +264,58 @@
         <!--End Filter-->
     </div>
 </div>
+<table id="default_hiden" style="display:none"class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>S.No</th>
+                                        <th>Name Of The Applicant</th>
+                                        <th>Advertisement title</th>
+                                        <th>POST</th>
+                                        <th>CATEGORY</th>
+                                        <th>GENDER</th>
+                                        <th>STATUS FILTER</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php
+                                    if(isset($applicant_list)){
+                                        $i=1;
+                                        foreach($applicant_list as $applicants){
+                                            $catid = $applicants->category_name;
+                                            if($catid != 0){
+                                                $this->db->where('id', $catid);
+                                                // here we select every column of the table
+                                                $q = $this->db->get('category')->row();
+                                            }
+                                            $statusid = $applicants->status_id;
+                                            if($statusid != 0){
+                                                $this->db->where('status_id', $statusid);
+                                                // here we select every column of the table
+                                                $qs = $this->db->get('cand_profile_status_master')->row();
+                                            }
+                                            
+                                            ?>
+                                            <tr>
+                                                <td><?php echo $i; ?></td>
+                                                <td><?php echo $applicants->name; ?></td>
+                                                <td><?php echo $applicants->adver_title; ?></td>
+                                                <td><?php echo $applicants->post_name; ?></td>
+                                                <td><?php echo $applicants->category_name; ?></td>
+                                                <td>Male</td>
+                                                <td><?php echo !empty($qs->status_name)?$qs->status_name:0; ?></td>
+                                            </tr>
+                                       <?php
+                                        $i++;   
+                                    }
+                                    }
+                                    ?>
+                                    
+                                </tbody>
+                            </table>
+<script>
+    $(document).ready(function () {  
+        $('#exportexcel').bind('click', function (e) {             
+            $('#default_hiden').tableExport({ type: 'excel', escape: 'false' });  
+        }); 
+    }); 
+</script>

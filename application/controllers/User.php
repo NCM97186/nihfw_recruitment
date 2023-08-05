@@ -19,9 +19,11 @@ class User extends CI_Controller {
 	  $data = null;
 	  $data['result']=$this->Notifications_model->get_jobPost();
 	  // Pass captcha image to view
-        if($this->config->item('captcha_enabled')){
+        // if($this->config->item('captcha_enabled')){
             $data['captcha'] =  $this->captcha();
-		}
+		// }
+		// print_r($data['captcha']);
+		// die();
 	  loadLayout('user/index', $data);
 
 	}
@@ -34,13 +36,15 @@ class User extends CI_Controller {
 
 				$this->form_validation->set_rules('cand_mob', 'Mobile', 'trim|required');
 				$this->form_validation->set_rules('password', 'Password', 'trim|required');
-				
-                if($this->config->item('captcha_enabled')){
-	                $this->form_validation->set_rules('captcha', 'Captcha', 'required|callback_check_captcha');
-	               }  
+	            $this->form_validation->set_rules('captcha', 'Captcha', 'trim|required');
+	                $data['captcha'] =  $this->captcha();
 				if($this->form_validation->run() != FALSE ){
 
-					 $credentials      =   array(
+
+					if($this->input->post('captcha') != $this->session->userdata('captcha_answer')){
+						$this->session->set_flashdata('message', 'Captcha incorrect');
+					}else{
+					 $credentials  =   array(
 			            "cand_mob"=>$this->input->post('cand_mob'),
 						"registration_number"=>$this->input->post('cand_mob'),
 			            "password"=>  strtoupper($this->input->post('password'))
@@ -55,144 +59,152 @@ class User extends CI_Controller {
 						redirect(base_url());
 				    }
 				}
+			}
 				
             }
             
-        if($this->config->item('captcha_enabled')){
+        // if($this->config->item('captcha_enabled')){
                 $data['captcha'] =  $this->captcha();
-        }
+        // }
         loadLayout('user/index', $data);
     }
 
-	public function getUserlogin(){
-        $data = null;
+	// public function getUserlogin(){
+    //     $data = null;
 		
-         $data['result']=$this->Notifications_model->get_list();
-        if($this->input->post('login')) {
-			    $this->session->set_userdata('captcha_answer',$this->input->post('code'));
+    //      $data['result']=$this->Notifications_model->get_list();
+    //     if($this->input->post('login')) {
+	// 		    $this->session->set_userdata('captcha_answer',$this->input->post('code'));
 
-				$this->form_validation->set_rules('cand_mob', 'Mobile', 'trim|required');
-				$this->form_validation->set_rules('password', 'Password', 'trim|required');
+	// 			$this->form_validation->set_rules('cand_mob', 'Mobile', 'trim|required');
+	// 			$this->form_validation->set_rules('password', 'Password', 'trim|required');
 				
-                if($this->config->item('captcha_enabled')){
-	                $this->form_validation->set_rules('captcha', 'Captcha', 'required|callback_check_captcha');
-	               }  
-				if($this->form_validation->run() != FALSE ){
+    //             if($this->config->item('captcha_enabled')){
+	//                 $this->form_validation->set_rules('captcha', 'Captcha', 'required|callback_check_captcha');
+	//                }  
+	// 			if($this->form_validation->run() != FALSE ){
 					
-					 $credentials      =   array(
-			            "cand_mob"=>$this->input->post('cand_mob'),
-						"registration_number"=>$this->input->post('cand_mob'),
-			            "password"=>strtoupper($this->input->post('password'))
-			        );
+	// 				 $credentials      =   array(
+	// 		            "cand_mob"=>$this->input->post('cand_mob'),
+	// 					"registration_number"=>$this->input->post('cand_mob'),
+	// 		            "password"=>strtoupper($this->input->post('password'))
+	// 		        );
 
-					//print_r($credentials);die;
+	// 				//print_r($credentials);die;
 					
-			        $user = $this->users->getlogin($credentials);
-					//print_r($user);die;
-					if($user){
-						$this->session->set_flashdata('success', 'Login Successfully Done');
-						redirect('dashboard/basicInfo');
-					}else{
-						$this->session->set_flashdata('message', 'Invalid Login Details'); 
-						redirect(base_url());
-				    }
-				}
+	// 		        $user = $this->users->getlogin($credentials);
+	// 				//print_r($user);die;
+	// 				if($user){
+	// 					$this->session->set_flashdata('success', 'Login Successfully Done');
+	// 					redirect('dashboard/basicInfo');
+	// 				}else{
+	// 					$this->session->set_flashdata('message', 'Invalid Login Details'); 
+	// 					redirect(base_url());
+	// 			    }
+	// 			}
 				
-            }
+    //         }
             
-        if($this->config->item('captcha_enabled')){
-                $data['captcha'] =  $this->captcha();
-        }
-        loadLayout('user/index', $data);
-    }
-	 public function login()
-		{
+    //     if($this->config->item('captcha_enabled')){
+    //             $data['captcha'] =  $this->captcha();
+    //     }
+    //     loadLayout('user/index', $data);
+    // }
+	//  public function login()
+	// 	{
 			
-		  $data = null;
-		  $data['result']=$this->Notifications_model->get_list();
-        if($this->input->post('login')) {
-			    $this->session->set_userdata('captcha_answer',$this->input->post('code'));
+	// 	  $data = null;
+	// 	  $data['result']=$this->Notifications_model->get_list();
+    //     if($this->input->post('login')) {
+	// 		    $this->session->set_userdata('captcha_answer',$this->input->post('code'));
 
-				$this->form_validation->set_rules('cand_reg', 'Mobile', 'trim|required');
-				$this->form_validation->set_rules('password', 'Password', 'trim|required');
+	// 			$this->form_validation->set_rules('cand_reg', 'Mobile', 'trim|required');
+	// 			$this->form_validation->set_rules('password', 'Password', 'trim|required');
 				
-                if($this->config->item('captcha_enabled')){
-	                $this->form_validation->set_rules('captcha', 'Captcha', 'required|callback_check_captcha');
-	               }  
+    //             // if($this->config->item('captcha_enabled')){
+	//                 $this->form_validation->set_rules('captcha', 'Captcha', 'required|callback_check_captcha');
+	//             //    }  
  
 	                 
-				if($this->form_validation->run() != FALSE ){
+	// 			if($this->form_validation->run() != FALSE ){
 
-					 $credentials      =   array(
-			            // "cand_mob"=>$this->input->post('cand_mob'),
-						"registration_number"=>$this->input->post('cand_reg'),
-			            "password"=>md5($this->input->post('password'))
-			        );
-					// print_r($credentials);
-					// die();
-			        $user = $this->users->getlogin($credentials);
-					if($user){
-						$this->session->set_flashdata('success', 'Login Successfully Done');
-						redirect('dashboard/basicinfo');
-					}else{
-						$this->session->set_flashdata('message', 'Invalid Login Details'); 
-						redirect(base_url());
-				    }
-				}
+	// 				 $credentials      =   array(
+	// 		            // "cand_mob"=>$this->input->post('cand_mob'),
+	// 					"registration_number"=>$this->input->post('cand_reg'),
+	// 		            "password"=>md5($this->input->post('password'))
+	// 		        );
+	// 				// print_r($credentials);
+	// 				// die();
+	// 		        $user = $this->users->getlogin($credentials);
+	// 				if($user){
+	// 					$this->session->set_flashdata('success', 'Login Successfully Done');
+	// 					redirect('dashboard/basicinfo');
+	// 				}else{
+	// 					$this->session->set_flashdata('message', 'Invalid Login Details'); 
+	// 					redirect(base_url());
+	// 			    }
+	// 			}
 				
-            }
-            if($this->input->post('register')) {
-            	$post_val = $this->input->post();
-			    $this->session->set_userdata('captcha_answer',$this->input->post('code'));
-				$this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
-				$this->form_validation->set_rules('last_name', 'last name', 'trim|required');
-				$this->form_validation->set_rules('reg_cand_mob', 'Mobile', 'trim|required|is_unique[users.cand_mob]',array('is_unique' => 'The Mobile is already exist'));
-				$this->form_validation->set_rules('reg_cand_email', 'Email', 'trim|required|valid_email|is_unique[users.cand_email]',array('is_unique' => 'The Email is already exist'));
-                if($this->config->item('captcha_enabled')){
-	                $this->form_validation->set_rules('reg_captcha', 'Captcha', 'required|callback_check_captcha');
-	               }  
+    //         }
+    //         if($this->input->post('register')) {
+    //         	$post_val = $this->input->post();
+	// 		    $this->session->set_userdata('captcha_answer',$this->input->post('code'));
+	// 			$this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
+	// 			$this->form_validation->set_rules('last_name', 'last name', 'trim|required');
+	// 			$this->form_validation->set_rules('reg_cand_mob', 'Mobile', 'trim|required|is_unique[users.cand_mob]',array('is_unique' => 'The Mobile is already exist'));
+	// 			$this->form_validation->set_rules('reg_cand_email', 'Email', 'trim|required|valid_email|is_unique[users.cand_email]',array('is_unique' => 'The Email is already exist'));
+    //             if($this->config->item('captcha_enabled')){
+	//                 $this->form_validation->set_rules('reg_captcha', 'Captcha', 'required|callback_check_captcha');
+	//                }  
 			  
-				if($this->form_validation->run() != FALSE ){
+	// 			if($this->form_validation->run() != FALSE ){
 					
-					$password = random_string( 'numeric', 5 );
-					$data_user = array(
-						'first_name' => $post_val['first_name'],
-						'middel_name' => $post_val['middel_name'],
-						'last_name' => $post_val['last_name'],
-						'cand_mob' => empty($post_val['reg_cand_mob']) ? NULL : intval($post_val['reg_cand_mob']),
-						'cand_email' => $post_val['reg_cand_email'],
-						'password' => md5($password)
-						);	
-					$this->users->insert_update($data_user);
-					$this->session->set_flashdata('success', 'Data saved Successfully. An Password has send to your mobile no kindly verify it');
+	// 				$password = random_string( 'numeric', 5 );
+	// 				$data_user = array(
+	// 					'first_name' => $post_val['first_name'],
+	// 					'middel_name' => $post_val['middel_name'],
+	// 					'last_name' => $post_val['last_name'],
+	// 					'cand_mob' => empty($post_val['reg_cand_mob']) ? NULL : intval($post_val['reg_cand_mob']),
+	// 					'cand_email' => $post_val['reg_cand_email'],
+	// 					'password' => md5($password)
+	// 					);	
+	// 				$this->users->insert_update($data_user);
+	// 				$this->session->set_flashdata('success', 'Data saved Successfully. An Password has send to your mobile no kindly verify it');
 					
-					//$_SESSION['user_otp'] = $otp;
-					$mobile=$post_val['reg_cand_mob'];
-					$email=$post_val['reg_cand_email'];
-					$msg='Successfully Registrar';
+	// 				//$_SESSION['user_otp'] = $otp;
+	// 				$mobile=$post_val['reg_cand_mob'];
+	// 				$email=$post_val['reg_cand_email'];
+	// 				$msg='Successfully Registrar';
 					
-					// $this->sendOTP($mobile, $password );
-					$this->save_log($mobile,$email,$msg,'INSERT');
-					redirect('user');
-				}
+	// 				// $this->sendOTP($mobile, $password );
+	// 				$this->save_log($mobile,$email,$msg,'INSERT');
+	// 				redirect('user');
+	// 			}
 				
-            }
-		  // Pass captcha image to view
-	        if($this->config->item('captcha_enabled')){
-	            $data['captcha'] =  $this->captcha();
-			}
-		  loadLayout('user/login', $data);
+    //         }
+	// 	  // Pass captcha image to view
+	//         if($this->config->item('captcha_enabled')){
+	//             $data['captcha'] =  $this->captcha();
+	// 		}
+	// 	  loadLayout('user/login', $data);
 
-		}
+	// 	}
 	
 	public function registration()
 	{
 	    $data = null;
 		
 	    if($this->input->post('register')) {
+			$this->session->set_userdata('captcha_answer',$this->input->post('code'));
+			
 				$where= array('cand_mob' => $this->input->post('cand_mob'), 'verified' => 0);
 				$res= $this->db->select('*')->from('users')->where($where)->get()->row();
+				
 				if($res){
+					if($this->input->post('captcha') != $this->session->userdata('captcha_answer')){
+						$this->session->set_flashdata('error', 'Captcha incorrect');
+						redirect('user/registration');
+					}
 						$registration_number = $res->registration_number;
 						$mobile = $res->cand_mob;
 						$password = random_string( 'numeric', 5 );
@@ -205,21 +217,23 @@ class User extends CI_Controller {
 						$this->sendOTP($cid,$mobile, $otp,$registration_number,$senderid,$smscurl );
 						$this->session->set_flashdata('success', 'Registration Successfully. An otp  has send to your mobile No. Plz verify to login. ');
 						redirect('verify');
+				
 				}else{
 		
-			    $this->session->set_userdata('captcha_answer',$this->input->post('code'));
+			    
 				$this->form_validation->set_rules('first_name', 'First Name', 'trim|required');
 				// $this->form_validation->set_rules('last_name', 'Last Name', 'trim|required');
 				$this->form_validation->set_rules('cand_mob', 'Mobile No.', 'trim|required|is_unique[users.cand_mob]',array('is_unique' => 'This Mobile Number is already exist'));
 				$this->form_validation->set_rules('cand_email', 'E-mail ID', 'trim|required|valid_email|is_unique[users.cand_email]',array('is_unique' => 'The Email is already exist'));
-                if($this->config->item('captcha_enabled')){
-	                $this->form_validation->set_rules('captcha', 'Captcha', 'required|callback_check_captcha');
-	               }  
+	            $this->form_validation->set_rules('captcha', 'Captcha', 'required'); 
 			  
 				if($this->form_validation->run() != FALSE ){
-
-					
-					
+						
+					if($this->input->post('captcha') != $this->session->userdata('captcha_answer')){
+						
+						$this->session->set_flashdata('error', 'Captcha incorrect');
+						redirect('user/registration');
+					}else{
 					$post_val = $this->input->post();
 					
 					$password = random_string( 'numeric', 5 );
@@ -262,14 +276,15 @@ class User extends CI_Controller {
 					
 					redirect('verify');
 				}
+			}
 				
             }
 		}
             
         // Pass captcha image to view
-        if($this->config->item('captcha_enabled')){
+        // if($this->config->item('captcha_enabled')){
             $data['captcha'] =  $this->captcha();
-		}
+		// }
 	  loadLayout('user/registration', $data);
 	}
 	
@@ -325,11 +340,11 @@ class User extends CI_Controller {
     }
 	
     private function captcha(){
-        // Captcha configuration
+      
         $config = array(
-            'img_path'      => 'captcha_images/',
-            'img_url'       => base_url().'captcha_images/',
-            // 'font_path'     => 'system/fonts/texb.ttf',
+            'img_path'      => './captcha/',
+            'img_url'       => base_url().'/captcha/',
+           
             'font_path'     => realpath('system/fonts/texb.ttf'),
             'img_width'     => '160',
             'img_height'    => 50,
@@ -344,12 +359,10 @@ class User extends CI_Controller {
                 )
         );
         $captcha = create_captcha($config);
-        
-        // Unset previous captcha and set new captcha word
+	
         $this->session->unset_userdata('captchaCode');
         $this->session->set_userdata('captchaCode',$captcha['word']);
         
-        // Display captcha image
 
         return $captcha;
     }
@@ -363,9 +376,10 @@ class User extends CI_Controller {
             $this->email->send();
 	}
     function refresh_captcha(){
-
-        $captcha = $this->captcha();
-        echo $captcha['image'];
+        $captcha =  $this->captcha();
+		
+        echo  $captcha['image'];
+		// die();
     }
     /**
      * Callback function. Check if CAPTCHA test is passed.
@@ -649,7 +663,6 @@ public function changePasswordProcess()
 		}
 		loadLayout('user/applications', $data);
 	}
-
 	public function user_manual()
 	{
 		$this->user_info     =  $this->common->__check_user_session();
@@ -663,5 +676,13 @@ public function changePasswordProcess()
 		$this->user_info     =  $this->common->__check_user_session();
 		$this->load->view('user/admitcard');
 	}
+	public function help()
+	{
+		$data = null;
+		// loadLayout('user/admitcard');
+		$this->user_info     =  $this->common->__check_user_session();
+		loadLayout('user/help', $data);
+	}
+	
 
 }

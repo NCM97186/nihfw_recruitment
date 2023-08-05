@@ -16,12 +16,15 @@ Class Participants_model extends CI_Model
         adv.adver_id
     FROM
         users_detail cf
-    INNER JOIN jobpost jp ON
-        cf.post_id = jp.post_id
-    INNER JOIN advertisement adv ON
-        adv.adver_id = jp.adver_id';
+    INNER JOIN jobpost jp ON cf.post_id = jp.post_id
+    INNER JOIN advertisement adv ON  adv.adver_id = jp.adver_id
+    INNER JOIN users_degree udr ON  udr.application_id = cf.application_id
+    left JOIN m_degree mdr ON  mdr.degree_id = udr.degree_id
+    left JOIN users_work_experience uwe ON  uwe.application_id = cf.application_id
+    where 1
+    ';
         if($advertise){
-            $sqlquery .= ' where adv.adver_id = '.$advertise.'';
+            $sqlquery .= ' AND adv.adver_id = '.$advertise.'';
         }
         if($postid){
            $sqlquery .= ' AND cf.post_id = '.$postid.'';
@@ -57,37 +60,7 @@ Class Participants_model extends CI_Model
             $sqlquery .= ' AND cf.created_on  like "%'.$todate.'%"';
         }
   
-        // if($advertise && $postid && $category_id){
-        //     $sqlquery .= ' AND cf.category_name = '.$category_id.'';
-        // }
-        // if($advertise && $postid && $category_id && $status_id){
-        //     $sqlquery .= ' AND X.status_id = '.$status_id.'';
-        // }
-        // if($advertise && $postid && $category_id && $status_id && $fromdate && $todate){
-        //     $sqlquery .= ' AND cf.created_date between '.$fromdate.' AND '.$todate.' ';
-        // }
-        // if($postid && ($advertise ==0 && $postid ==0 && $status_id == 0 && $category_id == 0 && $fromdate == '' && $todate == '')){
-        //     $sqlquery .= ' where cf.post_id = '.$postid.''; 
-        // }
-        // if($postid && $category_id){
-        //     $sqlquery .= ' AND cf.category_name = '.$category_id.'';
-        // }
-        // if($postid && $status_id){
-        //     $sqlquery .= ' AND X.status_id = '.$status_id.'';
-        // }
-        // if($postid && ($fromdate && $todate)){
-        //     $sqlquery .= ' AND cf.created_date between '.$fromdate.' AND '.$todate.' ';
-        // }
-        // if($category_id && ($advertise ==0 && $postid ==0 && $status_id == 0 && $fromdate == '' && $todate == '')){
-        //     $sqlquery .= 'where cf.category_name = '.$category_id.''; 
-        // }
-        // if($status_id && ($advertise ==0 && $postid ==0 && $category_id == 0 && $fromdate == '' && $todate == '')){
-        //     $sqlquery .= 'where X.status_id = '.$status_id.''; 
-        // }
-        // if($fromdate && $todate && ($advertise ==0 && $postid ==0 && $category_id == 0 && $status_id == 0 )){
-        //     $sqlquery .= 'where cf.created_date between '.$fromdate.' AND '.$todate.'';
-        // }
-        //  echo $sqlquery;
+         $sqlquery;
         $query = $this->db->query($sqlquery);
        
         return $query->result();

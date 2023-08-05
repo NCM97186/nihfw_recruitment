@@ -175,8 +175,8 @@ $data = $q->result_array();
                                                 </thead>
                                                 <tbody>
                                                     <?php  
-                                                    // echo "<pre>";
-                                                    // print_r($result);
+                                                     //echo "<pre>";
+                                                     //print_r($result);
                                                     // die();
                                                     $i = 1;
                                                     foreach ($result as $results) { ?>
@@ -198,10 +198,10 @@ $data = $q->result_array();
                                                         </td>
                                                         
                                                         <td align="center">
-                                                         <?php if(isset($_SESSION['USER']['user_id'])){?>
-                                                            <a id="apply_post" onClick="saveCookie(<?php echo $results->post_id; ?>)" class="btn btn-success" data-post="<?php echo $results->post_id; ?>" href="<?php echo base_url('dashboard/basicinfo') ?>"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Apply</a>
+                                                         <?php if($results->status_id==1){?>
+                                                            <a id="apply_post" onClick="saveCookie(<?php echo $results->post_id; ?>)" class="btn btn-success" data-post="<?php echo $results->post_id; ?>" disabled><i class="fa fa-check-circle-o" aria-hidden="true"></i> Applied</a>
                                                         <?php } else{ ?>
-                                                             <a id="apply_post" onClick="saveCookie(<?php echo $results->post_id; ?>)" class="btn btn-success" data-post="<?php echo $results->post_id; ?>" href="<?php echo base_url('user/login') ?>"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Apply</a>
+                                                             <a id="apply_post" onClick="saveCookie(<?php echo $results->post_id; ?>)" class="btn btn-success" data-post="<?php echo $results->post_id; ?>" href="<?php echo base_url('dashboard/basicinfo') ?>"><i class="fa fa-check-circle-o" aria-hidden="true"></i> Apply</a>
                                                         <?php } ?>
                                                         </td>
                                                     </tr>

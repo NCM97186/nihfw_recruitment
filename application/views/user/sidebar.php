@@ -26,7 +26,7 @@
   }
   
   .sidebar a {
-    padding: 8px 8px 8px 10px;
+    padding: 2px 8px 8px 10px;
     text-decoration: none;
     font-size: 16px;
     color: #fff;
@@ -216,6 +216,11 @@ $data = $query->result_array();
             <div class="d-flex p30">
             <i class="fa fa-solid fa-arrow-right" style="color:white;"></i>
                 <a target="_blank" href="<?php echo base_url() . "Dashboard/admit_card"; ?>">Admit Card</a>
+            </div>
+            <hr>
+            <div class="d-flex p30">
+            <i class="fa fa-solid fa-question" style="color:white;"></i>
+                <a target="_blank" href="<?php echo base_url() . "user/help"; ?>">Help</a>
             </div>
             <hr>
             <div class="d-flex p30">
