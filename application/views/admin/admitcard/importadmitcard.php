@@ -14,7 +14,7 @@ $csrf = array(
                     <div class="card-header"><i class="fa fa-table"></i> <?php //echo (isset($ddata)?'Edit':'Add'); ?> Category</div>
                     <div class="card-body">
 
-                        <form method="post" action="<?php //echo site_url('admin/Category/update/'.(isset($ddata)? $ddata->id:'')) ?>">
+                        <form enctype="multipart/form-data" method="post" action="<?php echo site_url('admin/Admitcard/import/') ?>">
                         <input type="hidden" name="<?php echo $csrf['name'];?>" value="<?php echo $csrf['hash'];?>" />
                                 <div class="form-group row">
                                     <label class="col-md-3" style="margin-top:10px; text-align: center;">Import Excel <font color="red">*</font></label>
@@ -35,7 +35,7 @@ $csrf = array(
 
                                <hr/>
                                     <div class="text-center">
-                                        <button type="submit" id="srch" class="btn btn-primary px-5"><i aria-hidden="true" class="fa fa-paper-plane"></i> Save</button>
+                                        <button type="submit" value="upload" name="upload" id="srch" class="btn btn-primary px-5"><i aria-hidden="true" class="fa fa-paper-plane"></i> Upload</button>
                                         <a  href="<?php echo site_url('admin/Admitcard/') ?>" type="reset" id="srch" class="btn btn-danger px-5 editLink"><i aria-hidden="true" class="fa fa-paper-plane"></i> Cancel</a>
                                     </div>
 
