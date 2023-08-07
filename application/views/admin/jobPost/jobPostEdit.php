@@ -200,6 +200,17 @@ $csrf = array(
                                         <span class="form_error"><?php //echo form_error('fee'); ?></span>
                                     </div>
                                 </div> -->
+
+                                <div class="form-group row">
+                                    <label class="col-md-3 mid_con">Experience</label>
+
+                                        <div class="col-md-8">
+                                        <input type="text" name="experience" value="<?php
+                                         echo isset($ddata) ? set_value("experience", $ddata->experience) : set_value("experience"); ?>"
+                                          data-date-inline-picker="true" placeholder="Experience" onkeypress="ValidateNumberOnly();" class="form-control error" maxlength="2">
+                                        <span class="form_error"><?php echo form_error('experience'); ?></span>
+                                    </div>
+                                </div>
                                 <div class="form-group row">
                                     <label class="col-md-3 mid_con">Apply Start Date  <font color="red">*</font></label>
 

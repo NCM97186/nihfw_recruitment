@@ -8,7 +8,12 @@ class Participants extends CI_Controller
 	 $this->admin_info     =  $this->common->__check_session();
     $this->load->model('Participants_model');
 	$this->load->model('Users_model','users');
-		$this->load->model('JobPost_model','jobpost'); 
+	$this->load->model('JobPost_model','jobpost'); 
+	$this->load->model('Users_model','users');
+		$this->load->model('Participants_model');
+		$this->load->model('Advertisement_model');
+		$this->load->model('JobPost_model');
+		$this->load->model('Category_model');
     //$this->load->model('Candidate_view_model');
     }
 
@@ -24,12 +29,116 @@ class Participants extends CI_Controller
   
   public function index()
   {
+		if(isset($_REQUEST['advertisement_ID']) && $_REQUEST['advertisement_ID'] != 0){
+			$advertise = $_REQUEST['advertisement_ID'];
+		}else{
+			$advertise = '';
+		}
 
-    $data = array();
-    $data['results']=$this->users->get_user_lists();
+		if(isset($_REQUEST['Post_ID']) && $_REQUEST['Post_ID'] != 0){
+			$postid = $_REQUEST['Post_ID'];
+		}else{
+			$postid = '';
+		}
+
+		if(isset($_REQUEST['Category_ID']) && $_REQUEST['Category_ID'] != 0){
+			$category_id = $_REQUEST['Category_ID'];
+		}else{
+			$category_id = '';
+		}
+
+		if(isset($_REQUEST['Gender_ID']) && $_REQUEST['Gender_ID'] != 0){
+			$gender_id = $_REQUEST['Gender_ID'];
+		}else{
+			$gender_id = '';
+		}
+
+		if(isset($_REQUEST['StatusFilter_ID']) && $_REQUEST['StatusFilter_ID'] != 0){
+			$status_id = $_REQUEST['StatusFilter_ID'];
+		}else{
+			$status_id = '';
+		}
+
+		if(isset($_REQUEST['adver_datef']) && isset($_REQUEST['adver_datet'])){
+			$fromdate = $_REQUEST['adver_datef'];
+			$todate = $_REQUEST['adver_datet'];
+		}else{
+			$fromdate = '';
+			$todate = '';
+		}
+		$export='';
+       $data = array();
+	   $query=$this->db->get('cand_profile_status_master');
+	   $data['candprofilestatus']=$query->result();
+		$data['advertisement'] = $this->Advertisement_model->get_list();
+		$data['jobpost'] = $this->JobPost_model->get_list(); 
+		$data['category'] = $this->Category_model->get_list();
+        $data['results']=$this->users->get_user_lists($advertise,$postid,$gender_id,$category_id,$status_id,$fromdate, $todate,$export);
     // print_r($data);die;
+	//$data['results'] = $this->Participants_model->get_filteredlist($advertise,$postid,$gender_id,$category_id,$status_id,$fromdate, $todate,$export);
+      
     loadLayout('admin/participants_lists', $data, 'admin');
   }
+  public function exportcsv(){ 
+	//csv file name
+	$filename = 'Participants_'.date('Ymd').'.csv';
+	header("Content-Description: File Transfer");
+	header("Content-Disposition: attachment; filename=$filename");
+	header("Content-Type: application/csv; "); 
+	if(isset($_REQUEST['advertisement_ID']) && $_REQUEST['advertisement_ID'] != 0){
+		$advertise = $_REQUEST['advertisement_ID'];
+	}else{
+		$advertise = '';
+	}
+
+	if(isset($_REQUEST['Post_ID']) && $_REQUEST['Post_ID'] != 0){
+		$postid = $_REQUEST['Post_ID'];
+	}else{
+		$postid = '';
+	}
+
+	if(isset($_REQUEST['Category_ID']) && $_REQUEST['Category_ID'] != 0){
+		$category_id = $_REQUEST['Category_ID'];
+	}else{
+		$category_id = '';
+	}
+
+	if(isset($_REQUEST['Gender_ID']) && $_REQUEST['Gender_ID'] != 0){
+		$gender_id = $_REQUEST['Gender_ID'];
+	}else{
+		$gender_id = '';
+	}
+
+	if(isset($_REQUEST['StatusFilter_ID']) && $_REQUEST['StatusFilter_ID'] != 0){
+		$status_id = $_REQUEST['StatusFilter_ID'];
+	}else{
+		$status_id = '';
+	}
+
+	if(isset($_REQUEST['adver_datef']) && isset($_REQUEST['adver_datet'])){
+		$fromdate = $_REQUEST['adver_datef'];
+		$todate = $_REQUEST['adver_datet'];
+	}else{
+		$fromdate = '';
+		$todate = '';
+	}
+	$export='csv';
+	// get data
+	$applicants = $this->users->get_user_lists($advertise,$postid,$gender_id,$category_id,$status_id,$fromdate, $todate,$export);
+   
+	// file creation
+	$file = fopen('php://output', 'w');
+	$header =     array ( "application_id", "name", "status_id", "post_id", "benchmark", "department", "category_name", "category_attachment", "person_disability", "add_disablity", "dob", "dob_doc", "gender", "marital_status", "father_name", "mother_name", "identity_proof", "adhar_card_number", "adhar_card_doc", "corr_address", "corr_state", "corr_pincode", "perm_address", "perm_state", "perm_pincode", "photograph", "signature", "deg", "year", "sub", "uni", "div", "per", "file_path", "to_date", "organization", "post_held", "pay_scale", "from_date", "post_name", "adver_no", "adver_title");
+	fputcsv($file, $header);
+
+	foreach ($applicants as $key=>$line){
+		//print_r($line['dob_doc']);
+	   fputcsv($file,$line);
+	}
+
+	fclose($file);
+	exit;
+}
 
   public function insertData(){
     $data=array();
@@ -297,40 +406,45 @@ class Participants extends CI_Controller
 	//   die;  
     loadLayout('admin/participant_view_lists', $data, 'admin');
   }
-   public function participantstatus($user_id)
-  {
-	$data = array();
-	$result = array();
-	$data['result']=$this->users->get_participant_status($user_id);
-	$data['user_id']=$user_id;
-		if(!empty($user_id)){
-		
-			 if($this->input->post()) {
-			$post_val = $this->input->post();
-			$this->load->library('form_validation');
-			$this->form_validation->set_rules('status_id', 'status_id', 'required');
-			$this->form_validation->set_rules('varify_comment', 'Comment', 'required');
+	public function participantstatus($application)
+	{
+		// echo $application;
+		// die();
+	$application = explode('_',$application);
+	$user_id = $application[1];
+	$application_id = $application[0];
+
+		$post_val = $this->input->post();
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('status_id', 'status_id', 'required');
+		$this->form_validation->set_rules('varify_comment', 'Comment', 'required');
+				
+		if($this->form_validation->run() != FALSE)
+		{
 			
-		if($this->form_validation->run() != FALSE){
-			$result['cand_id']= $user_id;
-			$result['status_id']= $post_val['status_id'];
-			$result['varify_comment']=$post_val['varify_comment'];
-			$result['by_admin_id']=$this->session->userdata()['ADMIN']['admin_id'];
-			$t=$this->Participants_model->only_insert($result);
-				if($t==1){
-      $this->session->set_flashdata('success', 'Data saved Successfully');
-	  redirect('admin/participants/');
-				}
+			$update = array('status_id' => $post_val['status_id']);
+			$where = array('application_id' => $application_id); 
+			$res = $this->db->where($where)->update('users_detail', $update);
+			if($res)
+			{
+				$result['cand_id']= $application_id;
+				$result['status_id']= $post_val['status_id'];
+				$result['varify_comment']=$post_val['varify_comment'];
+				$result['by_admin_id']=$this->session->userdata()['ADMIN']['admin_id'];
+				$t=$this->Participants_model->only_insert($result);
+				$this->session->set_flashdata('success', 'Data saved Successfully');
+				//redirect('admin/participants/');
+				redirect('admin/Participants/viewlist/'.$application_id.'_'.$user_id);
 			}
-			 }
+		}else{
+			$this->session->set_flashdata('error', 'Comment Required');
+				redirect('admin/Participants/viewlist/'.$application_id.'_'.$user_id);
+           
+			
 		}
-	 /* echo "<pre>";
-	print_r($data['results']);
-	print_r($data['qualification']);
-	die;  */
-	
-    loadLayout('admin/participant_status', $data, 'admin');
+			
   }
+
   /*------------------ End of Target Functions ----------*/
   public function delete_participant($user_id)
   {

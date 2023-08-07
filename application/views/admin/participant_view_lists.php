@@ -1,6 +1,6 @@
 <div class="content-wrapper">
     <div class="container-fluid">
-<?php $this->load->view('common/messages.php');
+<?php 
 $dob_array = explode('-',$user_details->dob);
 $dobdate = (int) $dob_array[2];
 $dobmonth = (int) $dob_array[1]-1;
@@ -31,7 +31,9 @@ $dob_age .=$calculated_month;
 $dob_age .= $calculated_month>1?' Months ':' Month ';
 $dob_age .=$calculated_days;
 $dob_age .= $calculated_days>1?' Days':' Day';
+$this->load->view('common/messages.php');
 ?>
+ 
 <!-- this is form for add new and edit record  -->
         <div class="row ">
             <div class="col-lg-12">
@@ -277,8 +279,14 @@ $dob_age .= $calculated_days>1?' Days':' Day';
 
                 </div>
                     </div>
-                       
-                            <div class="photoSig">
+                    <?php
+                    $csrf = array(
+                        'name' => $this->security->get_csrf_token_name(),
+                        'hash' => $this->security->get_csrf_hash()
+                    );
+
+                    ?>   
+                    <div class="photoSig">
                           <table class="table table-border">
                             <tr>
                                 <th width="50%">Photograph</th>
@@ -289,18 +297,59 @@ $dob_age .= $calculated_days>1?' Days':' Day';
                                 <td><img width="150" height="70" src="<?php echo site_url('uploads/signature/'.@$user_details->signature);?>" alt=""></td>
                             </tr>
 
-                                   </table>
+                        </table>
                             </div>
 							
-								
-                           
-                            
+                            	
+                           <?php $parr= $user_details->application_id."_".$user_details->user_id; ?>
+                    <form method="post" action="<?php echo site_url('admin/participants/participantstatus/'.$parr)?>">
+                    <input type="hidden" name="<?php echo $csrf['name'];?>" value="<?php echo $csrf['hash'];?>" /> 
+                    <table class="table table-border">
+                        <tr>
+                            <th style="vertical-align: middle;">Verify Status </th>
+                            <td><select name="status_id" class="form-control error" required="1">
+                                  <?php $prestatus_id =   isset($user_details) ? set_value("status_id", @$user_details ->status_id) : set_value("status_id");
+                                  
+                                  $cos=get_cand_profile_status_list();
+
+                                  foreach($cos as $key_cos =>$value_cos) {
+                                    // if($key_cos !=1){
+                                      ?>
+                                      <option value="<?php  echo $key_cos; ?>"
+                                      <?php if($prestatus_id  == $key_cos) { echo 'selected'; }  ?>
+                                      ><?php  echo $value_cos; ?></option>
+                                      <?php
+                                  }
+                                //   }
+                                  ?>
+                              </select>
+                                    <span class="form_error"><?php echo form_error('status_id'); ?></span></td>
+                                    </tr>
+                        <tr>
+                            <th style="vertical-align: middle;">Comment</th>
+                            <td>
+                            <?php $varify_comment =   isset($result) ? set_value("varify_comment", @$result ->varify_comment) : set_value("varify_comment");?>
+                              <textarea name="varify_comment" class="form-control" style="width:70%;"><?php echo $varify_comment;?></textarea>
+                                                    <span class="form_error"><?php echo form_error('varify_comment'); ?></span></td>
+                        </tr>
+                               </table>
+                       
+                        
+                                <div class="text-center" style="margin-top: 20px">
+                                  <button type="submit" id="srch" class="btn btn-primary px-5"><i aria-hidden="true" class="fa fa-paper-plane"></i> Save</button>
+                                    <a  href="<?php echo site_url('admin/participants/') ?>" type="reset" id="srch" class="btn btn-danger px-5 editLink"><i aria-hidden="true" class="fa fa-paper-plane"></i> Cancel</a>
+                                   
+                                </div>
+
+                   
+                    </form>
+                      
 							
                                <hr/>
-                                    <div class="text-center">
+                                    <!--div class="text-center">
                                         <a  href="<?php echo site_url('admin/participants/') ?>" type="reset" id="srch" class="btn btn-danger px-5 editLink"><i aria-hidden="true" class="fa fa-paper-plane"></i> Cancel</a>
                                        
-                                    </div>
+                                    </div-->
 
                             </div>
                        

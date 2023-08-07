@@ -83,39 +83,62 @@ class Users_model extends CI_Model
     {
         return $this->db->get_where('users_detail', array('application_id' => $application_id))->row();
     }
-    public function get_user_lists()
+    public function get_user_lists($advertise,$postid,$gender_id,$category_id,$status_id,$fromdate, $todate,$export)
     {
-        $query = $this->db->query(
+        $sqlquery = '';
+        $sqlquery .= 
             'select i.*,u.application_id,j.post_name,j.max_age_date,j.min_age_date,a.adver_no,a.adver_title,a.adver_date,
-    X.status_id 
+            u.status_id 
         from users i inner join users_detail u
 		on u.user_id=i.user_id
         left join jobpost j on u.post_id=j.post_id
         inner join advertisement a on j.adver_id=a.adver_id
-LEFT JOIN(
-    SELECT
-        a.cand_vari_id,
-        a.cand_id,
-        a.status_id
-    FROM
-        cand_profile_status a
-    INNER JOIN(
-        SELECT
-            b.cand_id,
-            MAX(b.cand_vari_id) AS b_cand_vari_id
-        FROM
-            cand_profile_status b
-        GROUP BY
-            b.cand_id
-    ) t
-ON
-    a.cand_id = t.cand_id AND a.cand_vari_id = t.b_cand_vari_id
-) X
-ON
-    X.cand_id = i.user_id
-        '
-        );
-        return  $query->result();
+where 1'
+        ;
+        if($advertise){
+            $sqlquery .= ' AND a.adver_id = '.$advertise.'';
+        }
+        if($postid){
+           $sqlquery .= ' AND u.post_id = '.$postid.'';
+        }
+        if($category_id){
+            $result = $this->db->select('category')->from('category')->where('id', $category_id)->limit(1)->get()->row();
+            $catname= $result->category;
+            if($catname){
+                $sqlquery .= ' AND u.category_name like "%'.$catname.'%"'; 
+            }
+           
+        }
+        if($status_id){
+            $sqlquery .= ' AND u.status_id = '.$status_id.'';
+        }
+        if($gender_id){
+            if($gender_id=1){
+                $gender="Male";
+            }elseif($gender_id=2){
+                $gender="Female";
+            }else{
+                $gender="Other";
+            }
+            $sqlquery .= ' AND u.gender like "%'.$gender.'%"';
+        }
+        if($fromdate && $todate){
+            $sqlquery .= ' AND u.created_on between "'.$fromdate.' 00:00:00" AND "'.$todate.' 23:59:59"';
+        }
+        elseif($fromdate ){
+            $sqlquery .= ' AND u.created_on like "%'.$fromdate.'%" ';
+        }
+        elseif($todate){
+            $sqlquery .= ' AND u.created_on  like "%'.$todate.'%"';
+        }
+  
+        //echo $sqlquery; die();
+        $query = $this->db->query($sqlquery);
+        if($export){
+            return $query->result_array();
+        }else{
+            return $query->result();
+        }
     }
     public function get_candidate($cand_id)
     {

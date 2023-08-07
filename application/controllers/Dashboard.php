@@ -450,6 +450,19 @@ class Dashboard extends CI_Controller
 						//echo $totalexperience = $totalyears.' years '.$totalmonth.' month '.$totaldays.' days <br>';
 					}
 
+					// Kesh Experience Validation
+                    if(!empty($datapost[0]['experience']))
+					{
+						$post_experince = $datapost[0]['experience'];
+						$min_experience = $post_experince/365;
+						if($post_experince > $totalexpinday)
+						{
+							$this->session->set_flashdata('error', ' You have minimum of ' . $min_experience . ' years of experience for applying for this post.');
+							redirect(base_url('dashboard/details'));
+					    }
+					}
+					// End Experience Validation
+
 					if (!empty($age_rel)) {
 
 						// ST +pwbd category age relaxation

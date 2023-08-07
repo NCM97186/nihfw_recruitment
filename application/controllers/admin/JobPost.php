@@ -100,6 +100,9 @@ class JobPost extends CI_Controller
    $this->session->set_flashdata('error', 'Category Job Quatity Greater Then Total Number Of Jobs' );
    redirect('admin/JobPost/edit');
    }
+   if(!empty($this->input->post('experience'))){
+    $experience =  365 * $this->input->post('experience');
+}
       $categories = array_combine($cat,$post_quantity);
       // print_r($categories);
       // die();
@@ -112,6 +115,7 @@ class JobPost extends CI_Controller
         'fee_applicable' => $this->input->post('fee_applicable'),
         'fee_categories' => $this->input->post('fee_categories'),
         'category_type'  => $this->input->post('category_type'),
+        'experience'     => $experience,
         'post_status'    => $this->input->post('post_status'),
         'start_date'     => $this->input->post('start_date'),
         'last_date'      => $this->input->post('last_date'),

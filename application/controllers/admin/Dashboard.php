@@ -55,10 +55,10 @@ class Dashboard extends CI_Controller {
 			$fromdate = '';
 			$todate = '';
 		}
-		
+		$export='';
 		
 		$data = [];
-		$applicants = $this->Participants_model->get_filteredlist($advertise,$postid,$gender_id,$category_id,$status_id,$fromdate, $todate);
+		$applicants = $this->Participants_model->get_filteredlist($advertise,$postid,$gender_id,$category_id,$status_id,$fromdate, $todate,$export);
         $fee_paid= 0;
 		$rejected= 0;
 		$shortlisted= 0;
@@ -105,6 +105,86 @@ class Dashboard extends CI_Controller {
 	  //$data = null;
 	  loadLayout('admin/dashboard', $data,'admin');
 
+	}
+	public function exportcsv(){ 
+		//csv file name
+		$filename = 'users_'.date('Ymd').'.csv';
+		header("Content-Description: File Transfer");
+		header("Content-Disposition: attachment; filename=$filename");
+		header("Content-Type: application/csv; "); 
+		if(isset($_REQUEST['advertisement_ID']) && $_REQUEST['advertisement_ID'] != 0){
+			$advertise = $_REQUEST['advertisement_ID'];
+		}else{
+			$advertise = '';
+		}
+
+		if(isset($_REQUEST['Post_ID']) && $_REQUEST['Post_ID'] != 0){
+			$postid = $_REQUEST['Post_ID'];
+		}else{
+			$postid = '';
+		}
+
+		if(isset($_REQUEST['Category_ID']) && $_REQUEST['Category_ID'] != 0){
+			$category_id = $_REQUEST['Category_ID'];
+		}else{
+			$category_id = '';
+		}
+
+		if(isset($_REQUEST['Gender_ID']) && $_REQUEST['Gender_ID'] != 0){
+			$gender_id = $_REQUEST['Gender_ID'];
+		}else{
+			$gender_id = '';
+		}
+
+		if(isset($_REQUEST['StatusFilter_ID']) && $_REQUEST['StatusFilter_ID'] != 0){
+			$status_id = $_REQUEST['StatusFilter_ID'];
+		}else{
+			$status_id = '';
+		}
+
+		if(isset($_REQUEST['adver_datef']) && isset($_REQUEST['adver_datet'])){
+			$fromdate = $_REQUEST['adver_datef'];
+			$todate = $_REQUEST['adver_datet'];
+		}else{
+			$fromdate = '';
+			$todate = '';
+		}
+		$export='csv';
+		// get data
+		$applicants = $this->Participants_model->get_filteredlist($advertise,$postid,$gender_id,$category_id,$status_id,$fromdate, $todate,$export);
+  
+		// file creation
+		$file = fopen('php://output', 'w');
+        $header =     array ( "application_id", "name", "benchmark", "department", "category_name", "category_attachment", "person_disability", "add_disablity", "dob", "dob_doc", "gender", "marital_status", "father_name", "mother_name", "identity_proof", "adhar_card_number", "adhar_card_doc", "corr_address", "corr_state", "corr_pincode", "perm_address", "perm_state", "perm_pincode", "photograph", "signature", "deg", "year", "sub", "uni", "div", "per", "file_path", "to_date", "organization", "post_held", "pay_scale", "from_date", "post_name", "adver_no", "adver_title");
+		fputcsv($file, $header);
+        $category_attachment= base_url("uploads/category_attachment/");
+		$adhar_card_doc=base_url("uploads/adhar_card_doc/");
+		$person_disability=base_url("uploads/person_disability/");
+		$photograph=base_url("uploads/photograph/");
+		$signature=base_url("uploads/signature/");
+		$dob_proof=base_url("uploads/dob_proof/");
+		$education_proof=base_url("uploads/education_proof/");
+		$organization_file=base_url("uploads/organization_file/");
+
+		foreach ($applicants as $line){
+			
+		   fputcsv($file, [
+				$line->application_id,
+				$line->name,
+				$line->benchmark,
+				$line->department,
+				$line->category_name,
+				$category_attachment.'/'.$line->category_attachment,
+				$line->department,
+				$line->department,
+				$line->department,
+				$line->department,
+				$line->department,
+		   ]);
+		}
+
+		fclose($file);
+		exit;
 	}
 	public function change_pass()
 	{

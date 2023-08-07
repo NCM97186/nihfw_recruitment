@@ -203,6 +203,7 @@
                                         <button type="submit" id="srch" class="btn btn-primary px-4 m-t-30"><i aria-hidden="true" class="fa fa-search"></i> Search</button>
                                     </div>
                                 </div>
+                                
                             </div>
                         </form>
                         <div> <button   id="exportexcel" target="_blank" class="btn btn-info" style="float:right;">Export</button></div>
@@ -244,7 +245,7 @@
                                                 <td><?php echo $applicants->adver_title; ?></td>
                                                 <td><?php echo $applicants->post_name; ?></td>
                                                 <td><?php echo $applicants->category_name; ?></td>
-                                                <td>Male</td>
+                                                <td><?php echo $applicants->gender; ?></td>
                                                 <td><?php echo !empty($qs->status_name)?$qs->status_name:0; ?></td>
                                             </tr>
                                        <?php
@@ -264,58 +265,26 @@
         <!--End Filter-->
     </div>
 </div>
-<table id="default_hiden" style="display:none"class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>S.No</th>
-                                        <th>Name Of The Applicant</th>
-                                        <th>Advertisement title</th>
-                                        <th>POST</th>
-                                        <th>CATEGORY</th>
-                                        <th>GENDER</th>
-                                        <th>STATUS FILTER</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <?php
-                                    if(isset($applicant_list)){
-                                        $i=1;
-                                        foreach($applicant_list as $applicants){
-                                            $catid = $applicants->category_name;
-                                            if($catid != 0){
-                                                $this->db->where('id', $catid);
-                                                // here we select every column of the table
-                                                $q = $this->db->get('category')->row();
-                                            }
-                                            $statusid = $applicants->status_id;
-                                            if($statusid != 0){
-                                                $this->db->where('status_id', $statusid);
-                                                // here we select every column of the table
-                                                $qs = $this->db->get('cand_profile_status_master')->row();
-                                            }
-                                            
-                                            ?>
-                                            <tr>
-                                                <td><?php echo $i; ?></td>
-                                                <td><?php echo $applicants->name; ?></td>
-                                                <td><?php echo $applicants->adver_title; ?></td>
-                                                <td><?php echo $applicants->post_name; ?></td>
-                                                <td><?php echo $applicants->category_name; ?></td>
-                                                <td>Male</td>
-                                                <td><?php echo !empty($qs->status_name)?$qs->status_name:0; ?></td>
-                                            </tr>
-                                       <?php
-                                        $i++;   
-                                    }
-                                    }
-                                    ?>
-                                    
-                                </tbody>
-                            </table>
+
 <script>
-    $(document).ready(function () {  
-        $('#exportexcel').bind('click', function (e) {             
-            $('#default_hiden').tableExport({ type: 'excel', escape: 'false' });  
-        }); 
-    }); 
+   
+jQuery(document).ready(function(){
+    jQuery('#exportexcel').click(function() {
+        var advertisement_ID="<?php echo !empty($_GET['advertisement_ID'])?$_GET['advertisement_ID']:''; ?>";
+        var Post_ID="<?php echo !empty($_GET['Post_ID'])?$_GET['Post_ID']:''; ?>";
+        var Category_ID="<?php echo !empty($_GET['Category_ID'])?$_GET['Category_ID']:''; ?>";
+        var StatusFilter_ID="<?php echo !empty($_GET['StatusFilter_ID'])?$_GET['StatusFilter_ID']:''; ?>";
+        var adver_datef="<?php echo !empty($_GET['Post_ID'])?$_GET['adver_datef']:''; ?>";
+        var adver_datet="<?php echo !empty($_GET['Post_ID'])?$_GET['adver_datet']:''; ?>";
+        var url1='<?=base_url()?>/admin/dashboard/exportcsv';
+    jQuery.ajax({
+            url:'<?=base_url()?>/admin/dashboard/exportcsv',
+            method: 'post',
+            data: {advertisement_ID: advertisement_ID, Post_ID: Post_ID, Category_ID: Category_ID, StatusFilter_ID: StatusFilter_ID, adver_datef: adver_datef, adver_datet: adver_datet},
+            success: function(data) {
+                window.open(url1);
+            }
+        });
+    });
+});
 </script>
