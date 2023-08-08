@@ -94,7 +94,7 @@ Class Participants_model extends CI_Model
             $sqlquery .= ' AND cf.created_on  like "%'.$todate.'%"';
         }
   
-         $sqlquery;
+        //  $sqlquery;
         $query = $this->db->query($sqlquery);
         if($export){
             return $query->result_array();

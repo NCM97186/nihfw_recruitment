@@ -151,11 +151,16 @@ class Dashboard extends CI_Controller {
 		}
 		$export='csv';
 		// get data
-		$applicants = $this->Participants_model->get_filteredlist($advertise,$postid,$gender_id,$category_id,$status_id,$fromdate, $todate,$export);
-  
+		$userdata = $this->Participants_model->get_filteredlist($advertise,$postid,$gender_id,$category_id,$status_id,$fromdate, $todate,$export);
+      //print_r(	$userdata);die();
 		// file creation
 		$file = fopen('php://output', 'w');
-        $header =     array ( "application_id", "name", "benchmark", "department", "category_name", "category_attachment", "person_disability", "add_disablity", "dob", "dob_doc", "gender", "marital_status", "father_name", "mother_name", "identity_proof", "adhar_card_number", "adhar_card_doc", "corr_address", "corr_state", "corr_pincode", "perm_address", "perm_state", "perm_pincode", "photograph", "signature", "deg", "year", "sub", "uni", "div", "per", "file_path", "to_date", "organization", "post_held", "pay_scale", "from_date", "post_name", "adver_no", "adver_title");
+        $header =     array ( "Application ID", "Name", "Benchmark", "Department", "Category Name", "Category Attachment", 
+		"Person Disability", "Disability Details", "DOB", "DOB Documents", "Gender", "Marital Status", "Father Name", "Mother Name",
+		 "Identity Proof", "Identity Number", "Identity Document", "Corr Address", "Corr State", "Corr Pincode", 
+		 "Perm Address", "Perm State", "Perm Pincode", "Photograph", "Signature", "Degree", "Board/ University", "Year", "Max. Marks",
+		 "Marks Obtained", "Percentage", "Certificate / Mark Sheet","Organization", "Post Held", "Pay Scale", "From Date",
+		 "To Date","Appointment Order","Post Name", "Advertise No.", "Advertise Title");
 		fputcsv($file, $header);
         $category_attachment= base_url("uploads/category_attachment/");
 		$adhar_card_doc=base_url("uploads/adhar_card_doc/");
@@ -166,20 +171,49 @@ class Dashboard extends CI_Controller {
 		$education_proof=base_url("uploads/education_proof/");
 		$organization_file=base_url("uploads/organization_file/");
 
-		foreach ($applicants as $line){
+		foreach ($userdata as $line){
 			
 		   fputcsv($file, [
-				$line->application_id,
-				$line->name,
-				$line->benchmark,
-				$line->department,
-				$line->category_name,
-				$category_attachment.'/'.$line->category_attachment,
-				$line->department,
-				$line->department,
-				$line->department,
-				$line->department,
-				$line->department,
+			$line['application_id'],
+			$line['name'],
+			$line['benchmark'],
+			$line['department'],
+			$line['category_name'],
+			$category_attachment.'/'.$line['category_attachment'],
+			$line['person_disability'],
+			$line['add_disablity'],
+			$line['dob'],
+			$dob_proof.'/'.$line['dob_doc'],
+			$line['gender'],
+			$line['marital_status'],
+			$line['father_name'],
+			$line['mother_name'],
+			$line['identity_proof'],
+			$line['adhar_card_number'],
+			$adhar_card_doc.'/'.$line['adhar_card_doc'],
+			$line['corr_address'],
+			$line['corr_state'],
+			$line['corr_pincode'],
+			$line['perm_address'],
+			$line['perm_state'],
+			$line['perm_pincode'],
+			$photograph.'/'.$line['photograph'],
+			$signature.'/'.$line['signature'],
+			$line['deg'],
+			$line['year'],
+			$line['sub'],
+			$line['uni'],
+			$line['div'],
+			$education_proof.'/'.$line['file_path'],
+			$line['organization'],
+			$line['post_held'],
+			$line['pay_scale'],
+			$line['from_date'],
+			$line['to_date'],
+			$organization_file.'/'.$line['file_path'],
+			$line['post_name'],
+			$line['adver_no'],
+			$line['adver_title']
 		   ]);
 		}
 

@@ -14,32 +14,25 @@ $csrf = array(
                     <div class="card-header"><i class="fa fa-table"></i>  Import  </div>
                     <div class="card-body">
 
-                        <form enctype="multipart/form-data" method="post" action="<?php echo site_url('admin/Admitcard/import/') ?>">
+                        <form enctype="multipart/form-data" method="post" action="<?php echo site_url('admin/Payment/import/') ?>">
                         <input type="hidden" name="<?php echo $csrf['name'];?>" value="<?php echo $csrf['hash'];?>" />
                                 <div class="form-group row">
                                     <label class="col-md-3" style="margin-top:10px; text-align: center;">Import CSV <font color="red">*</font></label>
                                    
                                         <div class="col-md-8">
-                                        <p> <a href="<?php echo base_url('/uploads/sample/Admit_card_data.csv'); ?>" >Download Sample</a> </p>  
+                                        <p> <a href="<?php echo base_url('/uploads/sample/payment_data.csv'); ?>" >Download Sample</a> </p>  
                                         <p>Please don't change header</p>
-                                        <input type="File" name="admitcard" id="admitcard" required class="form-control error">
-                                        <span class="form_error"><?php echo form_error('admitcard'); ?></span>
+                                        <input type="File" name="paymentstatus" id="paymentstatus" required class="form-control error">
+                                        <span class="form_error"><?php echo form_error('paymentstatus'); ?></span>
                                     </div>
                                 </div>
-                                <div class="form-group row">
-                                <label class="col-md-3" style="margin-top:10px; text-align: center;">Instructions<font color="red">*</font></label>
-
-                                <div class="col-md-8">
-                                        <textarea name="instruction" rows="12" cols="7" required class="form-control error"> </textarea>
-                                        <span class="form_error"><?php echo form_error('instruction'); ?></span>
-                                </div>
-                                </div>
+                
                                 <div id="dvCSV" class="table-responsive table-basic1" style="overflow-x:auto;"></div>
                                <hr/>
                                     <div class="text-center">
                                         <button type="submit" value="upload" name="upload" id="srch" class="btn btn-primary px-5"><i aria-hidden="true" class="fa fa-paper-plane"></i> Upload</button>
                                         <!--button type="submit" value="confirm" name="confirm" id="confirm" class="btn btn-primary px-5"><i aria-hidden="true" class="fa fa-paper-plane"></i> Confirm</button-->
-                                        <a  href="<?php echo site_url('admin/Admitcard/') ?>" type="reset" id="srchqq" class="btn btn-danger px-5 editLink"><i aria-hidden="true" class="fa fa-paper-plane"></i> Cancel</a>
+                                        <a  href="<?php echo site_url('admin/paymentstatus/') ?>" type="reset" id="srchqq" class="btn btn-danger px-5 editLink"><i aria-hidden="true" class="fa fa-paper-plane"></i> Cancel</a>
                                     </div>
 
                             </div>
@@ -62,8 +55,8 @@ $csrf = array(
 <script type="text/javascript">
   
 
-    $("#admitcard").change(function(e) {
-        var ext = $("input#admitcard").val().split(".").pop().toLowerCase();
+    $("#paymentstatus").change(function(e) {
+        var ext = $("input#paymentstatus").val().split(".").pop().toLowerCase();
         if($.inArray(ext, ["csv"]) == -1) {
         alert('Upload CSV');
         return false;
