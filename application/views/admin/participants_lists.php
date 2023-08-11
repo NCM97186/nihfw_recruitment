@@ -225,8 +225,22 @@ jQuery(document).ready(function(){
             url:'<?=base_url()?>/admin/Participants/exportcsv',
             method: 'post',
             data: {advertisement_ID: advertisement_ID, Post_ID: Post_ID, Category_ID: Category_ID, StatusFilter_ID: StatusFilter_ID, adver_datef: adver_datef, adver_datet: adver_datet},
-            success: function(data) {
-                window.open(url1);
+            success: function(data){
+                var downloadLink = document.createElement("a");
+                var fileData = ['\ufeff'+data];
+
+                var blobObject = new Blob(fileData,{
+                type: "text/csv;charset=utf-8;"
+                });
+
+                var url = URL.createObjectURL(blobObject);
+                downloadLink.href = url;
+                downloadLink.download = "participants.csv";
+
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+
             }
         });
     });

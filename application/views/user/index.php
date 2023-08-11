@@ -175,6 +175,7 @@ $csrf = array(
 jQuery(document).ready(function(){
     jQuery('#refreshCaptcha').on('click', function(){
         jQuery.get('<?php echo base_url().'User/refresh_captcha'; ?>', function(data){
+            console.log(data);
             $('#captImg').html(data);
         });
     });

@@ -74,10 +74,7 @@ class Participants extends CI_Controller
 		$data['jobpost'] = $this->JobPost_model->get_list(); 
 		$data['category'] = $this->Category_model->get_list();
         $data['results']=$this->users->get_user_lists($advertise,$postid,$gender_id,$category_id,$status_id,$fromdate, $todate,$export);
-    // print_r($data);die;
-	//$data['results'] = $this->Participants_model->get_filteredlist($advertise,$postid,$gender_id,$category_id,$status_id,$fromdate, $todate,$export);
-      
-    loadLayout('admin/participants_lists', $data, 'admin');
+     loadLayout('admin/participants_lists', $data, 'admin');
   }
   public function exportcsv(){ 
 	//csv file name
@@ -124,17 +121,17 @@ class Participants extends CI_Controller
 	}
 	$export='csv';
 	// get data
-	$applicants = $this->users->get_user_lists($advertise,$postid,$gender_id,$category_id,$status_id,$fromdate, $todate,$export);
-   
-	// file creation
-	$file = fopen('php://output', 'w');
-        $header =     array ( "Application ID", "Name", "Benchmark", "Department", "Category Name", "Category Attachment", 
+	$participate = $this->users->get_user_lists($advertise,$postid,$gender_id,$category_id,$status_id,$fromdate, $todate,$export);
+     $file = fopen('php://output', 'w');
+        $header =array("Application ID", "Name", "Benchmark", "Department", "Category Name", "Category Attachment", 
 		"Person Disability", "Disability Details", "DOB", "DOB Documents", "Gender", "Marital Status", "Father Name", "Mother Name",
 		 "Identity Proof", "Identity Number", "Identity Document", "Corr Address", "Corr State", "Corr Pincode", 
 		 "Perm Address", "Perm State", "Perm Pincode", "Photograph", "Signature", "Degree", "Board/ University", "Year", "Max. Marks",
 		 "Marks Obtained", "Percentage", "Certificate / Mark Sheet","Organization", "Post Held", "Pay Scale", "From Date",
 		 "To Date","Appointment Order","Post Name", "Advertise No.", "Advertise Title");
-		fputcsv($file, $header);
+
+		 fputcsv($file, $header);
+
         $category_attachment= base_url("uploads/category_attachment/");
 		$adhar_card_doc=base_url("uploads/adhar_card_doc/");
 		$person_disability=base_url("uploads/person_disability/");
@@ -142,10 +139,10 @@ class Participants extends CI_Controller
 		$signature=base_url("uploads/signature/");
 		$dob_proof=base_url("uploads/dob_proof/");
 		$education_proof=base_url("uploads/education_proof/");
-		$organization_file=base_url("uploads/organization_file/");fputcsv($file, $header);
+		$organization_file=base_url("uploads/organization_file/");
 
-	foreach ($applicants as $key=>$line){
-		//print_r($line['dob_doc']);die();
+	foreach ($participate as $line){
+		
 		fputcsv($file, [
 			$line['application_id'],
 			$line['name'],

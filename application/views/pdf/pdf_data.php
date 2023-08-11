@@ -219,8 +219,16 @@ th{
                                                             $days = round(($d / (60 * 60 * 24))); // the rest of days
 
                                                             // Echo all information set
+                                                            if($month==1 && $days==1){
+                                                                $candage =  $years . ' Years - ' . $month . ' Month - ' . $days . ' Day ';
+                                                            }else if(empty($days)){
+                                                                $candage =  $years . ' Years - ' . $month . ' Months - ' . $days . ' Day ';
+                                                            }else{
+                                                                $candage =  $years . ' Years - ' . $month . ' Months - ' . $days . ' Days ';
+                                                            }
+                                                               
 
-                                                            $candage =  $years . ' years - ' . $month . ' month - ' . $days . ' Days ';
+                                                          
                                                             ?>
                                                                                                 ?>
                                                         <td colspan="2" style="width: 25%;"><?php  echo $candage; ?></td>

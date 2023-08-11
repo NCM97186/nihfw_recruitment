@@ -8,6 +8,9 @@ class Payment extends CI_Controller
       $this->load->model('JobPost_model');
       $this->load->model('Payment_model');
       $this->load->library('session');
+      $this->load->model('Participants_model');
+      $this->load->model('Advertisement_model');
+      $this->load->model('Category_model');
       $this->load->helper('common_helper','common',TRUE);
       $this->admin_info     =  $this->common->__check_session();
   }
@@ -15,8 +18,51 @@ class Payment extends CI_Controller
   public function index(){
 
       if(!has_admin_permission_layout('ADMIT_CARD')) { return; }
-      $data = array();
-  // die("Hello");
+      if(isset($_REQUEST['advertisement_ID']) && $_REQUEST['advertisement_ID'] != 0){
+        $advertise = $_REQUEST['advertisement_ID'];
+      }else{
+        $advertise = '';
+      }
+  
+      if(isset($_REQUEST['Post_ID']) && $_REQUEST['Post_ID'] != 0){
+        $postid = $_REQUEST['Post_ID'];
+      }else{
+        $postid = '';
+      }
+  
+      if(isset($_REQUEST['Category_ID']) && $_REQUEST['Category_ID'] != 0){
+        $category_id = $_REQUEST['Category_ID'];
+      }else{
+        $category_id = '';
+      }
+  
+      if(isset($_REQUEST['Gender_ID']) && $_REQUEST['Gender_ID'] != 0){
+        $gender_id = $_REQUEST['Gender_ID'];
+      }else{
+        $gender_id = '';
+      }
+  
+      if(isset($_REQUEST['StatusFilter_ID']) && $_REQUEST['StatusFilter_ID'] != 0){
+        $status_id = $_REQUEST['StatusFilter_ID'];
+      }else{
+        $status_id = '';
+      }
+  
+      if(isset($_REQUEST['adver_datef']) && isset($_REQUEST['adver_datet'])){
+        $fromdate = $_REQUEST['adver_datef'];
+        $todate = $_REQUEST['adver_datet'];
+      }else{
+        $fromdate = '';
+        $todate = '';
+      }
+      $export='';
+      $query=$this->db->get('cand_profile_status_master');
+      $data['candprofilestatus']=$query->result();
+      $data['advertisement'] = $this->Advertisement_model->get_list();
+      $data['jobpost'] = $this->JobPost_model->get_list(); 
+      $data['category'] = $this->Category_model->get_list();
+      $data['applicant_list']=$this->Payment_model->get_card_lists($advertise,$postid,$gender_id,$category_id,$status_id,$fromdate, $todate,$export);
+      
       loadLayout('admin/payment/payment', $data, 'admin');
   }
   public function import()   {
@@ -75,13 +121,15 @@ class Payment extends CI_Controller
          
           foreach ($importData_arr as $importData) {
               $application_id = $importData['0']; 
-              $pay_tx_id =      $importData['1']; 
-              $status =         $importData['2']; 
-              $date =           $importData['3']; 
+              $amount =         $importData['1']; 
+              $pay_tx_id =      $importData['2']; 
+              $status =         $importData['3']; 
+              $date =           $importData['4']; 
               $create_by =      $user_id; 
               $inserteddata=[
-              //'post_id'=>         !empty($post_id)?trim($post_id):'',
+             
               'application_id'=>         !empty($application_id)?trim($application_id):'',
+              'amount'=>                 !empty($amount)?trim($amount):'',
               'pay_tx_id'=>              !empty($pay_tx_id)?trim($pay_tx_id):'',
               'status'=>                 !empty($status)?trim($status):'',
               'date'=>                   !empty($date)?trim($date):'',

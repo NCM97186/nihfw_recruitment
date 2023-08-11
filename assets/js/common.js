@@ -58,14 +58,47 @@ jQuery(function(){
 
     var month = dtToday.getMonth() + 1;// jan=0; feb=1 .......
     var day = dtToday.getDate();
-    var year = dtToday.getFullYear() - 21;
+    var year = dtToday.getFullYear() - 19;
    
     if(month < 10)
         month = '0' + month.toString();
     if(day < 10)
         day = '0' + day.toString();
-    var minDate = year + '-' + month + '-' + day;
-    var maxDate = year + '-' + month + '-' + day;
+      var minDate = year + '-' + month + '-' + day;
+   // var minDate = day + '-' + month + '-' + year;
+     var maxDate = year + '-' + month + '-' + day;
+    //var maxDate = day + '-' + month + '-' + year;
    
     jQuery('#dob').attr('max', maxDate);
+
 });
+
+$(function(){
+    if(!Modernizr.inputtypes.date) { /* Browsers that fail in modernizr detection test for date input type  */
+    $('input[type="date"]').datepicker({ dateFormat: 'dd-mm-yyyy'});
+    }
+});
+function SubmitForm() {
+    var identity_proof = $('input[name="identity_proof"]:checked').val();
+    var identity_number = $('#identity_number').val();
+    if (identity_proof == 'DL') {
+        isValid_License_Number(identity_number);
+    }
+    if (identity_proof == 'Adhaar') {
+        ValidateAadhaar(identity_number);
+    }
+    if (identity_proof == 'Pan') {
+        ValidatePAN(identity_number);
+    }
+    if (identity_proof == 'Passport') {
+        isValidPassportNo(identity_number);
+    }
+    if (identity_proof == 'Voter') {
+        isValidEPICNumber(identity_number);
+    }
+    // alert('Hello');
+    // if(identity_number){  
+    //    $().html('The DOB field is required.');
+    //     return false;  
+    // }  
+}

@@ -277,12 +277,28 @@ jQuery(document).ready(function(){
         var adver_datef="<?php echo !empty($_GET['Post_ID'])?$_GET['adver_datef']:''; ?>";
         var adver_datet="<?php echo !empty($_GET['Post_ID'])?$_GET['adver_datet']:''; ?>";
         var url1='<?=base_url()?>/admin/dashboard/exportcsv';
-    jQuery.ajax({
+        jQuery.ajax({
             url:'<?=base_url()?>/admin/dashboard/exportcsv',
             method: 'post',
             data: {advertisement_ID: advertisement_ID, Post_ID: Post_ID, Category_ID: Category_ID, StatusFilter_ID: StatusFilter_ID, adver_datef: adver_datef, adver_datet: adver_datet},
-            success: function(data) {
-                window.open(url1);
+            // success: function(data) {
+            //     window.open(url1);
+            // }
+            success: function(data){
+                var downloadLink = document.createElement("a");
+                var fileData = ['\ufeff'+data];
+
+                var blobObject = new Blob(fileData,{
+                    type: "text/csv;charset=utf-8;"
+                });
+
+                var url = URL.createObjectURL(blobObject);
+                downloadLink.href = url;
+                downloadLink.download = "user.csv";
+                document.body.appendChild(downloadLink);
+                downloadLink.click();
+                document.body.removeChild(downloadLink);
+
             }
         });
     });

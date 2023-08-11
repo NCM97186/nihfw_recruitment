@@ -786,7 +786,7 @@ echo '</pre>';
                                                                                                     ?></span>
                                                                     </td>
                                                                     <td align="left" style="" valign="top">
-                                                                        <input type="date" class="work_experience_from_<?php echo $i ?>" name="work_experience[from_date][]" onchange="ValidateFromdate(<?php echo $i ?>);" id="work_experience_from_<?php echo $i ?>" value="<?php if (!empty($value->from_date)) {
+                                                                        <input type="date"  min="1980-01-01" max="<?php echo date('Y-m-d'); ?>" class="work_experience_from_<?php echo $i ?>" name="work_experience[from_date][]" onchange="ValidateFromdate(<?php echo $i ?>);" id="work_experience_from_<?php echo $i ?>" value="<?php if (!empty($value->from_date)) {
                                                                                                                                                                                                                                                                                     echo date_convert_normal_to_mysql($value->from_date);
                                                                                                                                                                                                                                                                                 } ?>" class="form-control">
                                                                         <span class="work_experience_From_error_<?php echo $i; ?>" style="color:red;"></span>
@@ -794,7 +794,7 @@ echo '</pre>';
                                                                                                     ?></span>
                                                                     </td>
                                                                     <td align="left" style="" valign="top">
-                                                                        <input type="date" name="work_experience[to_date][]" onchange="ValidateTodate(<?php echo $i ?>);" id="work_experience_to_<?php echo $i ?>" class="work_experience_to_<?php echo $i ?>" value="<?php if (!empty($value->to_date)) {
+                                                                        <input type="date" min="1980-01-01" max="<?php echo date('Y-m-d'); ?>" name="work_experience[to_date][]" onchange="ValidateTodate(<?php echo $i ?>);" id="work_experience_to_<?php echo $i ?>" class="work_experience_to_<?php echo $i ?>" value="<?php if (!empty($value->to_date)) {
                                                                                                                                                                                                                                                                             echo date_convert_normal_to_mysql($value->to_date);
                                                                                                                                                                                                                                                                         } ?>" class="form-control" style="width:100%; float:left">
                                                                         <span class="work_experience_to_error_<?php echo $i; ?>" style="color:red;"></span>
@@ -833,14 +833,14 @@ echo '</pre>';
                                                                                                 ?></span>
                                                                 </td>
                                                                 <td align="left" style="" valign="top">
-                                                                    <input type="date" id="work_experience_from_<?php echo $i; ?>" onchange="ValidateFromdate(<?php echo $i ?>);" id="work_experience_from_<?php echo $i ?>"  name="work_experience[from_date][]" value="" class="form-control">
+                                                                    <input type="date"  min="1980-01-01" max="<?php echo date('Y-m-d'); ?>"  id="work_experience_from_<?php echo $i; ?>" onchange="ValidateFromdate(<?php echo $i ?>);" id="work_experience_from_<?php echo $i ?>"  name="work_experience[from_date][]" value="" class="form-control">
                                                                     <span class="form_error"><?php echo form_error('work_experience[from_date][]'); 
                                                                                                 ?></span>
                                                                     <span class="work_experience_From_error_<?php echo $i; ?>" style="color:red;"></span>
 
                                                                 </td>
                                                                 <td align="left" style="" valign="top">
-                                                                    <input type="date" name="work_experience[to_date][]" onchange="ValidateTodate(<?php echo $i ?>);" id="work_experience_to_<?php echo $i; ?>" value="" class="form-control" style="width:100%; float:left">
+                                                                    <input type="date" min="1980-01-01" max="<?php echo date('Y-m-d'); ?>" name="work_experience[to_date][]" onchange="ValidateTodate(<?php echo $i ?>);" id="work_experience_to_<?php echo $i; ?>" value="" class="form-control" style="width:100%; float:left">
                                                                     <span class="form_error"><?php echo form_error('work_experience[to_date][]'); 
                                                                                                 ?></span>
                                                                                                 <span class="work_experience_to_error_<?php echo $i; ?>" style="color:red;"></span>
@@ -1135,7 +1135,7 @@ echo '</pre>';
 
             $('#addwork').click(function() {
                 b = j + 1;
-                $('#dynamic_field_work').append('<tr id="rowwork' + b + '" class="org_row"><td><input type="text" name="work_experience[organization][]" class="form-control" /></td><td><input type="text" name="work_experience[post_held][]" onkeypress="return ValidateAlphnumeric(event);" class="form-control" /></td><td><input type="text" name="work_experience[pay_scale][]" onkeypress="return validateNumber(event)"  class="form-control" /></td><td><input type="date" onchange="ValidateFromdate(' + b + ');"  id="work_experience_from_' + b + '" name="work_experience[from_date][]" class="form-control" /><span class="work_experience_From_error_' + b + '" style="color:red;"></span></td><td><input type="date" onchange="ValidateTodate(' + b + ');"  id="work_experience_to_' + b + '" name="work_experience[to_date][]" class="form-control" style="width:100%; float:left"/><span class="work_experience_to_error_' + b + '" style="color:red;"></span><td><input type="file" name="organization_file[organization_file][]"  class="form-control" id="organization_doc_' + b + '" onchange="onlyorganizationpdf(this,' + b + ');" /><span class="organization_doc_' + b + '_error" style="color:red;"></span>   <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span><button type="button" name="remove" id="' + b + '" class="btn btn-danger btn_remove_work" style="width:16%;  float:right">X</button></td></tr>');
+                $('#dynamic_field_work').append('<tr id="rowwork' + b + '" class="org_row"><td><input type="text" name="work_experience[organization][]" class="form-control" /></td><td><input type="text" name="work_experience[post_held][]" onkeypress="return ValidateAlphnumeric(event);" class="form-control" /></td><td><input type="text" name="work_experience[pay_scale][]" onkeypress="return validateNumber(event)"  class="form-control" /></td><td><input type="date" min="1980-01-01" max="<?php echo date('Y-m-d'); ?>" onchange="ValidateFromdate(' + b + ');"  id="work_experience_from_' + b + '" name="work_experience[from_date][]" class="form-control" /><span class="work_experience_From_error_' + b + '" style="color:red;"></span></td><td><input type="date" min="1980-01-01" max="<?php echo date('Y-m-d'); ?>" onchange="ValidateTodate(' + b + ');"  id="work_experience_to_' + b + '" name="work_experience[to_date][]" class="form-control" style="width:100%; float:left"/><span class="work_experience_to_error_' + b + '" style="color:red;"></span><td><input type="file" name="organization_file[organization_file][]"  class="form-control" id="organization_doc_' + b + '" onchange="onlyorganizationpdf(this,' + b + ');" /><span class="organization_doc_' + b + '_error" style="color:red;"></span>   <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span><button type="button" name="remove" id="' + b + '" class="btn btn-danger btn_remove_work" style="width:16%;  float:right">X</button></td></tr>');
                 $('#tq_work').val(b);
             });
             $(document).on('click', '.btn_remove', function() {
@@ -1512,25 +1512,7 @@ echo '</pre>';
 
         })
 
-        function SubmitForm() {
-            var identity_proof = $('input[name="identity_proof"]:checked').val();
-            var identity_number = $('#identity_number').val();
-            if (identity_proof == 'DL') {
-                isValid_License_Number(identity_number);
-            }
-            if (identity_proof == 'Adhaar') {
-                ValidateAadhaar(identity_number);
-            }
-            if (identity_proof == 'Pan') {
-                ValidatePAN(identity_number);
-            }
-            if (identity_proof == 'Passport') {
-                isValidPassportNo(identity_number);
-            }
-            if (identity_proof == 'Voter') {
-                isValidEPICNumber(identity_number);
-            }
-        }
+      
     </script>
     <script>
         jQuery(document).ready(function($) {
@@ -1559,10 +1541,14 @@ echo '</pre>';
         });
     </script>
     <script>
-        const datePicker = document.getElementById("dob");
+                // const datePickerf = document.getElementById("work_experience_from");
 
-        datePicker.min = getDate(10000000);
-        datePicker.max = getDate();
+                // datePickerf.min = getDate(10000000);
+                // datePickerf.max = getDate();
+      //  const datePicker = document.getElementById("dob");
+
+        // datePicker.min = getDate(10000000);
+        // datePicker.max = getDate();
 
 
         //const datePickerf = document.getElementById("work_experience_from");

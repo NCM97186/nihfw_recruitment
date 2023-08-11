@@ -86,59 +86,100 @@ class Users_model extends CI_Model
     public function get_user_lists($advertise,$postid,$gender_id,$category_id,$status_id,$fromdate, $todate,$export)
     {
         $sqlquery = '';
-        $sqlquery .= 
-            'select i.*,u.application_id,j.post_name,j.max_age_date,j.min_age_date,a.adver_no,a.adver_title,a.adver_date,
-            u.status_id 
-        from users i inner join users_detail u
-		on u.user_id=i.user_id
-        left join jobpost j on u.post_id=j.post_id
-        inner join advertisement a on j.adver_id=a.adver_id
-where 1'
-        ;
-        if($advertise){
-            $sqlquery .= ' AND a.adver_id = '.$advertise.'';
-        }
-        if($postid){
-           $sqlquery .= ' AND u.post_id = '.$postid.'';
-        }
-        if($category_id){
-            $result = $this->db->select('category')->from('category')->where('id', $category_id)->limit(1)->get()->row();
-            $catname= $result->category;
-            if($catname){
-                $sqlquery .= ' AND u.category_name like "%'.$catname.'%"'; 
-            }
-           
-        }
-        if($status_id){
-            $sqlquery .= ' AND u.status_id = '.$status_id.'';
-        }
-        if($gender_id){
-            if($gender_id=1){
-                $gender="Male";
-            }elseif($gender_id=2){
-                $gender="Female";
-            }else{
-                $gender="Other";
-            }
-            $sqlquery .= ' AND u.gender like "%'.$gender.'%"';
-        }
-        if($fromdate && $todate){
-            $sqlquery .= ' AND u.created_on between "'.$fromdate.' 00:00:00" AND "'.$todate.' 23:59:59"';
-        }
-        elseif($fromdate ){
-            $sqlquery .= ' AND u.created_on like "%'.$fromdate.'%" ';
-        }
-        elseif($todate){
-            $sqlquery .= ' AND u.created_on  like "%'.$todate.'%"';
-        }
-  
-        //echo $sqlquery; die();
-        $query = $this->db->query($sqlquery);
-        if($export){
-            return $query->result_array();
-        }else{
-            return $query->result();
-        }
+        $sqlquery .= 'SELECT i.*,cf.application_id	
+                            ,cf.name	,cf.status_id,cf.post_id
+                            ,cf.benchmark
+                            ,cf.department	
+                            ,cf.category_name	
+                            ,cf.category_attachment	
+                            ,cf.person_disability	
+                            ,cf.add_disablity	
+                            ,cf.dob	
+                            ,cf.dob_doc	
+                            ,cf.gender	
+                            ,cf.marital_status	
+                            ,cf.father_name	
+                            ,cf.mother_name	
+                            ,cf.identity_proof	
+                            ,cf.adhar_card_number	
+                            ,cf.adhar_card_doc	
+                            ,cf.corr_address	
+                            ,cf.corr_state	
+                            ,cf.corr_pincode	
+                            ,cf.perm_address	
+                            ,cf.perm_state	
+                            ,cf.perm_pincode	
+                            ,cf.photograph	
+                            ,cf.signature	
+                            ,udr.deg	
+                            ,udr.year	
+                            ,udr.sub	
+                            ,udr.uni	
+                            ,udr.div	
+                            ,udr.per	
+                            ,udr.file_path
+                            ,uwe.to_date	
+                            ,uwe.organization	
+                            ,uwe.post_held	
+                            ,uwe.pay_scale	
+                            ,uwe.from_date	
+                            ,uwe.file_path	
+                            ,jp.post_name
+                            ,adv.adver_no	
+                            ,adv.adver_title	FROM
+                                    users_detail cf
+                                INNER JOIN jobpost jp ON cf.post_id = jp.post_id
+                                INNER JOIN advertisement adv ON  adv.adver_id = jp.adver_id
+                                INNER JOIN users_degree udr ON  udr.application_id = cf.application_id
+                                left JOIN users_work_experience uwe ON  uwe.application_id = cf.application_id
+                                left JOIN users i ON  i.user_id = cf.user_id
+                                where 1
+                                ';
+                                    if($advertise){
+                                        $sqlquery .= ' AND adv.adver_id = '.$advertise.'';
+                                    }
+                                    if($postid){
+                                    $sqlquery .= ' AND cf.post_id = '.$postid.'';
+                                    }
+                                    if($category_id){
+                                        $result = $this->db->select('category')->from('category')->where('id', $category_id)->limit(1)->get()->row();
+                                        $catname= $result->category;
+                                        if($catname){
+                                            $sqlquery .= ' AND cf.category_name like "%'.$catname.'%"'; 
+                                        }
+                                    
+                                    }
+                                    if($status_id){
+                                        $sqlquery .= ' AND cf.status_id = '.$status_id.'';
+                                    }
+                                    if($gender_id){
+                                        if($gender_id=1){
+                                            $gender="Male";
+                                        }elseif($gender_id=2){
+                                            $gender="Female";
+                                        }else{
+                                            $gender="Other";
+                                        }
+                                        $sqlquery .= ' AND cf.gender like "%'.$gender.'%"';
+                                    }
+                                    if($fromdate && $todate){
+                                        $sqlquery .= ' AND cf.created_on between "'.$fromdate.' 00:00:00" AND "'.$todate.' 23:59:59"';
+                                    }
+                                    elseif($fromdate ){
+                                        $sqlquery .= ' AND cf.created_on like "%'.$fromdate.'%" ';
+                                    }
+                                    elseif($todate){
+                                        $sqlquery .= ' AND cf.created_on  like "%'.$todate.'%"';
+                                    }
+                            
+                                    //  $sqlquery;
+                                    $query = $this->db->query($sqlquery);
+                                    if($export){
+                                        return $query->result_array();
+                                    }else{
+                                        return $query->result();
+                                    }
+                                    
     }
     public function get_candidate($cand_id)
     {
@@ -251,20 +292,40 @@ where 1'
             }
         }
     }
-
+     public function get_old_application_id()
+    {
+        $user_id = $_SESSION['USER']['user_id'];
+        //$status=array(5,6,1);
+        $post_id = isset($_COOKIE['post_id']) ? $_COOKIE['post_id'] : null;
+        $application_id=  $this->db->select('application_id')->from('users_detail')->where(array('user_id'=>$user_id, 'post_id'=>$post_id))->get()->row();
+      //  echo $this->db->last_query();
+        return $application_id->application_id;
+    }
+    // public function get_application_id()
+    // {
+    //     $user_id = $_SESSION['USER']['user_id'];
+    //     if (empty($_SESSION['application_id'])) {
+    //         $pre = 8 - strlen($user_id);
+    //         $application_id = str_pad($user_id, $pre + strlen($user_id), '0', STR_PAD_LEFT) . '-' . time();
+    //         $_SESSION['application_id'] = $application_id;
+    //     } else {
+    //         $application_id = $_SESSION['application_id'];
+    //     }
+    //     return $application_id;
+    // }
     public function get_application_id()
     {
         $user_id = $_SESSION['USER']['user_id'];
-        if (empty($_SESSION['application_id'])) {
+       // if (empty($user_id)) {
             $pre = 8 - strlen($user_id);
-            $application_id = str_pad($user_id, $pre + strlen($user_id), '0', STR_PAD_LEFT) . '-' . time();
-            $_SESSION['application_id'] = $application_id;
-        } else {
-            $application_id = $_SESSION['application_id'];
-        }
+         echo    $application_id = str_pad($user_id, $pre + strlen($user_id), '0', STR_PAD_LEFT) . '-' . time();
+           // $_SESSION['application_id'] = $application_id;
+        // } else {
+        //     $application_id = !empty($application_id)?$application_id:'';
+        // }
         return $application_id;
     }
-
+    
     public function update_user_details($application_id, $post_val)
     {
 

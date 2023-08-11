@@ -11,7 +11,7 @@ $csrf = array(
         <div class="row ">
             <div class="col-lg">
                 <div class="card">
-                    <div class="card-header"><i class="fa fa-table"></i>  Import  </div>
+                    <div class="card-header"><i class="fa fa-table"></i>  Import Payment Status </div>
                     <div class="card-body">
 
                         <form enctype="multipart/form-data" method="post" action="<?php echo site_url('admin/Payment/import/') ?>">
@@ -21,7 +21,7 @@ $csrf = array(
                                    
                                         <div class="col-md-8">
                                         <p> <a href="<?php echo base_url('/uploads/sample/payment_data.csv'); ?>" >Download Sample</a> </p>  
-                                        <p>Please don't change header</p>
+                                        <p style="color:red" >Please don't change header also don't change order of header </p>
                                         <input type="File" name="paymentstatus" id="paymentstatus" required class="form-control error">
                                         <span class="form_error"><?php echo form_error('paymentstatus'); ?></span>
                                     </div>

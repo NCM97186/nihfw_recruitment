@@ -143,16 +143,22 @@ class Dashboard extends CI_Controller
 	}
 
 	public function details()
-	{
+	{    
+		//echo"<pre>";
+		//$application_id =   $this->users->get_application_id(); die();
 		$_SESSION['profile_filled'] = 'N';
 		$data = null;
 		$data['category'] = $this->Category_model->get_list();
 		$user_id = $_SESSION['USER']['user_id'];
 		$post_id = isset($_COOKIE['post_id']) ? $_COOKIE['post_id'] : null;
-		$application_id =   isset($_SESSION['application_id']) ? $_SESSION['application_id'] : null;
-		//echo $application_id;
-		// die();
-		if ($application_id == null && $post_id != null) {
+		//$application_id =   isset($_SESSION['application_id']) ? $_SESSION['application_id'] : null;
+		$status=array(5,6);
+		$id=  $this->db->select('*')->from('users_detail')->where(array('user_id'=>$user_id, 'post_id'=>$post_id))->where_in('status_id', $status)->get()->row();
+		$application_id ='';  
+		if(empty($id)){
+		    $application_id =   $this->users->get_application_id(); //die();
+		   $_SESSION['application_id'] = $application_id;
+		}else {
 			$this->db->select('id,application_id');
 			$this->db->where(array('user_id' => $user_id, 'post_id' => $post_id, 'status_id' => 5));
 			$this->db->order_by('id', 'DESC');
@@ -162,12 +168,12 @@ class Dashboard extends CI_Controller
 				if (!empty($u_details_app_id)) {
 					$application_id = $u_details_app_id->application_id;
 					$_SESSION['application_id'] = $application_id;
+					
 					$_SESSION['users_detail_id'] = $u_details_app_id->id;
 					$_SESSION['existing_application'] = 'Y';
 				}
 			}
-		}
-		if ($application_id != null) {
+			$application_id = $_SESSION['application_id'];
 			$data['user_details']  = $this->users->get_user_details($application_id);
 			
 			$data['post_detail']  = $this->users->get_candidate($data['user_details']->user_id);
@@ -296,10 +302,7 @@ class Dashboard extends CI_Controller
 
 
 
-	if ($this->form_validation->run() != FALSE && !$edu_file_error) {
-			// print_r($this->input->post());
-			// die();
-
+	    if ($this->form_validation->run() != FALSE && !$edu_file_error) {
 			if ($this->input->post('dob') != '' && $this->input->post('post_id')) {
 				$dob_age = "";
 				//$post_detail  = $this->users->get_candidate_dob($this->input->post('dob'),$this->input->post('post_id')); 
@@ -327,15 +330,14 @@ class Dashboard extends CI_Controller
 				//already apply code
              $where = array('application_id' => $application_id,'post_id' => $post_val['post_id']);
 
-				$alreadypost = $this->db->select('post_id')->from('users_detail')->where('status_id',1)->where($where)->get()->row();
+			 $alreadypost = $this->db->select('post_id')->from('users_detail')->where('status_id',1)->where($where)->get()->row();
 				// print_r($alreadypost);
 				// die();
-			if($alreadypost)
-			{
+			if($alreadypost){
 
 				if($post_val['gender'] == "Female"){
 					redirect(base_url('dashboard/already_apply'));
-					}
+				}
 					
 				$cat_result = $this->db->from('category')->select('id')->where('category', $candidate_category)->get()->row();
 				$cat_id = $cat_result->id;
@@ -352,14 +354,7 @@ class Dashboard extends CI_Controller
 				}
 			}
                 // end already apply code
-
-
-
-
-
-
-
-				//calculate from 01 July YYYY
+             //calculate from 01 July YYYY
 				$currentdate = date("Y-07-01");
 				$d1 = $datapost[0]['min_age_date'];
 				$d2 = $datapost[0]['max_age_date'];
@@ -370,8 +365,9 @@ class Dashboard extends CI_Controller
 
 				$datediff = strtotime($currentdate) - strtotime($d1);
 				$minageindaysforpost = round($datediff / (60 * 60 * 24));
-
-				if ($minageindaysforpost >= $candidate_age) {
+				$statusre=false;
+	            
+				if($minageindaysforpost >= $candidate_age) {
 
 
 					$years = ($candidate_age / 365); // days / 365 days
@@ -400,7 +396,12 @@ class Dashboard extends CI_Controller
 					$epostage =  $eyears . ' years - ' . $emonth . ' month - ' . $edays . ' Days ';
 					$this->session->set_flashdata('error', ' you are not elegible to apply this post. because Your Age is ' . $candage . '. you must be ' . $epostage . 'to apply this post.');
 					redirect(base_url('dashboard/details'));
-				}
+					$statusre=false;
+				 }
+				 //else{
+				// 	$status=false;
+				// }
+			
 
 
 
@@ -459,6 +460,7 @@ class Dashboard extends CI_Controller
 						{
 							$this->session->set_flashdata('error', ' You have minimum of ' . $min_experience . ' years of experience for applying for this post.');
 							redirect(base_url('dashboard/details'));
+							$statusre=false;
 					    }
 					}
 					// End Experience Validation
@@ -529,6 +531,7 @@ class Dashboard extends CI_Controller
 						$epostage =  $eyears . ' years - ' . $emonth . ' month - ' . $edays . ' Days ';
 						$this->session->set_flashdata('error', ' you are not elegible to apply this post. because Your Age is ' . $candage . '. you must be ' . $epostage . ' (with age relaxation) to apply this post.');
 						redirect(base_url('dashboard/details'));
+						$statusre=false;
 					}
 				}
 				if (isset($candidate_category) || isset($gen_category)) {
@@ -585,6 +588,8 @@ class Dashboard extends CI_Controller
 						} elseif ($age_rel[0]['catid'] == 18 && $pwbd == 1) {
 							//$candidate_age = $candidate_age + $age_rel[0]['relaxation'];
 							$maxelegbleyearforpost = $maxelegbleyearforpost + ($age_rel[0]['relaxation'] * 365) + $totalexpinday;
+						}else{
+							
 						}
 					}
 
@@ -615,6 +620,7 @@ class Dashboard extends CI_Controller
 
 						$this->session->set_flashdata('error', ' you are not elegible to apply this post. because Your Age is ' . $candage . ' years. you must be ' . $epostage . ' years (with age relaxation) to apply this post.');
 						redirect(base_url('dashboard/details'));
+						$statusre=false;
 					}
 
 
@@ -645,6 +651,7 @@ class Dashboard extends CI_Controller
 						$epostage =  $eyears . ' years - ' . $emonth . ' month ';
 						$this->session->set_flashdata('error', ' you are not elegible to apply this post. because Your Age is ' . $candage . ' years. you must be ' . $epostage . ' years (with age relaxation) to apply this post.');
 						redirect(base_url('dashboard/details'));
+						$statusre=false;
 					}
 				}
 			}
@@ -669,6 +676,7 @@ class Dashboard extends CI_Controller
 				} else {
 					$error = array('error' => $this->upload->display_errors());
 					$label = "Category Attachment";
+					
 				}
 			}
 			if (isset($_FILES['adhar_card_doc']) && $_FILES['adhar_card_doc']['name'] != '') {
@@ -832,7 +840,7 @@ class Dashboard extends CI_Controller
 					redirect(base_url('dashboard/details'));
 				}
 			}
-
+			
 			if (isset($_FILES['education_file'])) {
 				$errorUploadType = $statusMsg = '';
 				//$files = array_filter($_FILES['education_file']['name']);
@@ -853,7 +861,7 @@ class Dashboard extends CI_Controller
 						//$uploadPath = 'uploads/education_proof/';
 						$user_id=$_SESSION['USER']['user_id'];
 						$post_id=$_COOKIE['post_id'];
-						$unlink ='uploads/education_proof/'.$user_id."_".$post_id."_".$_FILES['file']['name'];
+						$unlink ='uploads/education_proof/'.$user_id."_".$post_id."_".$_FILES['file']['name'][$i];
 						if (file_exists($unlink)) {
 							unlink($unlink);
 						}
@@ -863,7 +871,7 @@ class Dashboard extends CI_Controller
 						$config['max_size']    = '1024';
 						//$config['max_width'] = '1024'; 
 						//$config['max_height'] = '768'; 
-						$config['file_name'] = $_FILES['education_file']['name']['education_file'][$i];
+						$config['file_name'] =$user_id."_".$post_id."_".$_FILES['file']['name'][$i];
 
 						// Load and initialize upload library 
 						$this->load->library('upload', $config);
@@ -906,7 +914,7 @@ class Dashboard extends CI_Controller
 					
 					$user_id=$_SESSION['USER']['user_id'];
 					$post_id=$_COOKIE['post_id'];
-					$unlink ='uploads/organization_file/'.$user_id."_".$post_id."_".$_FILES['file']['name'];
+					$unlink ='uploads/organization_file/'.$user_id."_".$post_id."_".$_FILES['file']['name'][$i];
 					if (file_exists($unlink)) {
 						unlink($unlink);
 					}
@@ -915,7 +923,7 @@ class Dashboard extends CI_Controller
 					$config['max_size']    = '1024';
 					//$config['max_width'] = '1024'; 
 					//$config['max_height'] = '768'; 
-					$config['file_name'] = $_FILES['organization_file']['name']['organization_file'][$i];
+					$config['file_name'] = $user_id."_".$post_id."_".$_FILES['file']['name'][$i];
 
 					// Load and initialize upload library 
 					$this->load->library('upload', $config);
@@ -944,13 +952,15 @@ class Dashboard extends CI_Controller
 				if (isset($error) && count($error) > 0) {
 					foreach ($error as $err) {
 						$this->session->set_flashdata('error', $label . "! " . $err);
+						$statusre=false;
 						redirect(base_url('dashboard/details'));
 					}
 				}
 			}
 			$post_val['user_id'] = $user_id;
 
-			$post_val['application_id'] = $this->users->get_application_id(); //'APP-'.rand();
+			$post_val['application_id'] = $application_id; //'APP-'.rand();
+			
 			if (isset($post_val['degree_diploma']) && !empty($post_val['degree_diploma'])) {
 				$post_val['degree_diploma']['file_path'] = $post_val['edu_doc'];
 				$degree_diploma = $post_val['degree_diploma'];
@@ -990,12 +1000,21 @@ class Dashboard extends CI_Controller
 			$post_val['status_id'] = 6;
 			// echo '<pre>';
 			// print_r($post_val);
-			// echo '</pre>';
+			// echo '</pre>';  
 			// die;
-			$this->users->insert_update_user_details($post_val);
+			$res= $this->users->insert_update_user_details($post_val);
 
+			if(isset($candidateorganization) && $candidateorganization== 'Yes'){
+				$statusre=true;
+				redirect(base_url('dashboard/preview'));
+			}
+		//   	print_r($res);die();
 
+        //    print_r($post_val); die();
+		  
 			redirect(base_url('dashboard/preview'));
+		  
+			
 			// else{
 			// 	$this->users->insert_update_user_details($post_val);
 			// 	redirect( base_url('dashboard/preview'));
@@ -1022,7 +1041,7 @@ class Dashboard extends CI_Controller
 					'div' => $_POST['degree_diploma']['div'][$ind],
 					'per' => $_POST['degree_diploma']['per'][$ind]
 				);
-				$post_degree['deg_error'] = empty($post_degree['deg']) ? 'The Degree/Diploma field is required.' : '';
+				$post_degree['deg_error'] =  empty($post_degree['deg']) ? 'The Degree/Diploma field is required.' : '';
 				$post_degree['year_error'] = empty($post_degree['year']) ? 'The Board/University field is required.' : '';
 				$post_degree['sub_error'] = empty($post_degree['sub']) ? 'The Year of Passing field is required.' : '';
 				$post_degree['uni_error'] = empty($post_degree['uni']) ? 'The Max Marks field is required.' : '';
@@ -1046,17 +1065,22 @@ class Dashboard extends CI_Controller
 		$data['get_job_list']  = $this->jobpost->get_list();
 		$data['post_detail']  = $this->users->get_candidate($user_id);
 		$data['basic_info']  = $this->users->get_basicInfo($user_id);
+	
+		// echo"<pre>";
+		// print_r($data);
 		loadLayout('user/details', $data);
 	}
 
 	public function preview()
 	{
+		//print_r($_SESSION);
 		if (!empty($_SESSION['profile_filled']) && $_SESSION['profile_filled'] == 'Y') {
 			redirect('https://www.onlinesbi.sbi/sbicollect/icollecthome.htm?corpID=5451210', 'refresh');
 		}
 		$data = null;
 		$user_id = $_SESSION['USER']['user_id'];
-		$application_id = $_SESSION['application_id'];
+		//$application_id = $_SESSION['application_id'];
+		$application_id = 	$this->users->get_old_application_id();
 
 		$post_val['agree'] = $this->input->post('agree');
 		$query = $this->db->query("SELECT * FROM users_detail ORDER BY id DESC LIMIT 1");
@@ -1133,8 +1157,8 @@ class Dashboard extends CI_Controller
 	{
 		$data = null;
 		$user_id = $_SESSION['USER']['user_id'];
-		$application_id = $_SESSION['application_id'];
-
+		//$application_id = $_SESSION['application_id'];
+		$application_id = 	$this->users->get_old_application_id();
 		$post_val['agree'] = $this->input->post('agree');
 		$post_val['status_id'] = 5;
 		if ($this->input->post()) {
@@ -1162,7 +1186,8 @@ class Dashboard extends CI_Controller
 		$senderid = 1107168187211745344;
 		$data = [];
 		$user_id = $_SESSION['USER']['user_id'];
-		$application_id = $_SESSION['application_id'];
+		//$application_id = $_SESSION['application_id'];
+		$application_id = 	$this->users->get_old_application_id();
 		$data['user_details']  = $this->users->get_user_details($application_id);
 		$data['basic_info']= $this->db->select('cand_mob')->from('users')->where('user_id',$user_id)->get()->row();
 		$data['post_detail']= $this->db->select('post_name')->from('jobpost')->where('post_id',$data['user_details']->post_id)->get()->row();

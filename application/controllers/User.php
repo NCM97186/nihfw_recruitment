@@ -30,18 +30,18 @@ class User extends CI_Controller {
 	
 	public function getlogin(){
         $data = null;
+		$sessCaptcha = $this->session->userdata('captchaCode');
          $data['result']=$this->Notifications_model->get_list();
         if($this->input->post('login')) {
-			    $this->session->set_userdata('captcha_answer',$this->input->post('code'));
+			    //$this->session->set_userdata('captcha_answer',$this->input->post('code'));
 
 				$this->form_validation->set_rules('cand_mob', 'Mobile', 'trim|required');
 				$this->form_validation->set_rules('password', 'Password', 'trim|required');
 	            $this->form_validation->set_rules('captcha', 'Captcha', 'trim|required');
-	                $data['captcha'] =  $this->captcha();
+	                //$data['captcha'] =  $this->captcha();
 				if($this->form_validation->run() != FALSE ){
-
-
-					if($this->input->post('captcha') != $this->session->userdata('captcha_answer')){
+					
+					if($this->input->post('captcha') != $this->session->userdata('captchaCode')){
 						$this->session->set_flashdata('message', 'Captcha incorrect');
 					}else{
 					 $credentials  =   array(
@@ -195,13 +195,13 @@ class User extends CI_Controller {
 	    $data = null;
 		
 	    if($this->input->post('register')) {
-			$this->session->set_userdata('captcha_answer',$this->input->post('code'));
+			//$this->session->set_userdata('captcha_answer',$this->input->post('code'));
 			
 				$where= array('cand_mob' => $this->input->post('cand_mob'), 'verified' => 0);
 				$res= $this->db->select('*')->from('users')->where($where)->get()->row();
 				
 				if($res){
-					if($this->input->post('captcha') != $this->session->userdata('captcha_answer')){
+					if($this->input->post('captcha') != $this->session->userdata('captchaCode')){
 						$this->session->set_flashdata('error', 'Captcha incorrect');
 						redirect('user/registration');
 					}
@@ -229,7 +229,7 @@ class User extends CI_Controller {
 			  
 				if($this->form_validation->run() != FALSE ){
 						
-					if($this->input->post('captcha') != $this->session->userdata('captcha_answer')){
+					if($this->input->post('captcha') != $this->session->userdata('captchaCode')){
 						
 						$this->session->set_flashdata('error', 'Captcha incorrect');
 						redirect('user/registration');
@@ -305,7 +305,7 @@ class User extends CI_Controller {
 	
 	public function check_captcha($string)
 		{
-		   if($string != $this->session->userdata('captcha_answer')):
+		   if($string != $this->session->userdata('captchaCode')):
 		      $this->form_validation->set_message('check_captcha', 'captcha incorrect');
 		      return false;
 		   else:
@@ -377,7 +377,8 @@ class User extends CI_Controller {
 	}
     function refresh_captcha(){
         $captcha =  $this->captcha();
-		
+		$this->session->unset_userdata('captchaCode');
+        $this->session->set_userdata('captchaCode',$captcha['word']);
         echo  $captcha['image'];
 		// die();
     }

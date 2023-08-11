@@ -78,6 +78,7 @@ $csrf = array(
                                             <table align="left" class="table table-bordered" style="width: 100%" id="tblcndt">
                                                 <tbody>
                                                     <tr>
+                                                       
                                                         <th style="width: 40%;">Registration Number</th>
                                                         <th style="width: 40%;"><?php echo set_value('registration_number', @$basic_info->registration_number);?></th>
                                                         <th rowspan="5" align="center"><img src="<?= base_url('uploads/photograph/').@$user_details->photograph; ?>" alt="user" class="img-responsive" style="width:150px; margin: 0 auto;"></th>

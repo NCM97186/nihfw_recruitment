@@ -21,7 +21,7 @@ $csrf = array(
                                    
                                         <div class="col-md-8">
                                         <p> <a href="<?php echo base_url('/uploads/sample/Admit_card_data.csv'); ?>" >Download Sample</a> </p>  
-                                        <p>Please don't change header</p>
+                                        <p style="color:red" > Please don't change header also don't change order of header</p>
                                         <input type="File" name="admitcard" id="admitcard" required class="form-control error">
                                         <span class="form_error"><?php echo form_error('admitcard'); ?></span>
                                     </div>

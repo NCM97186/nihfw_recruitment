@@ -52,31 +52,30 @@ class Login extends CI_Controller {
 					);
 
         $data['remember_me']=$this->input->post('remember_me');
-        $this->session->set_userdata('captcha_answer',$this->input->post('code'));
+       // $this->session->set_userdata('captcha_answer',$this->input->post('code'));
         $this->form_validation->set_rules('username', 'Username', 'trim|required|xss_clean');
         $this->form_validation->set_rules('password', 'Password', 'trim|required|xss_clean|callback_validatelogin');
 
         $captcha_error = false;
 
         $Captchapost = $this->input->post('captcha');
-        if( $Captchapost != $this->session->userdata('captcha_answer')){
+        if( $Captchapost != $this->session->userdata('captchaCode')){
 						
             $captcha_error = true;
         }
         
 
         if($captcha_error) {
-
+          
             $message="captcha is not matched";
             $this->session->set_flashdata('message', $message);
             redirect(base_url('login'));
-        }
-        else if($this->form_validation->run() == FALSE ){
+        } else if($this->form_validation->run() == FALSE ){
+          
             $message    = "Invalid Login Details";
             $this->session->set_flashdata('message', $message);          
             redirect(base_url('login'));
-        }
-        else{
+        }else{
             audit_trail($audit_data);
             if($this->input->post('remember_me')){
                $admin_id=$_SESSION['ADMIN']['admin_id'];
@@ -139,6 +138,8 @@ class Login extends CI_Controller {
     function refresh_captcha(){
 
         $captcha = $this->captcha();
+        $this->session->unset_userdata('captchaCode');
+        $this->session->set_userdata('captchaCode',$captcha['word']);
         echo $captcha['image'];
     }
     public function forgotpassword()
