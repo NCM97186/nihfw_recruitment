@@ -62,7 +62,7 @@ echo '</pre>';
                                                         </td>
                                                         <td align="left" style="width: 20%;">
                                                             <?php $post_id = set_value('post_id', $_COOKIE['post_id']); ?>
-                                                            <select name="post_id" class="form-control" style="width: 40%;">
+                                                            <select name="post_id" class="form-control" disabled style="width: 40%;">
 
                                                                 <?php
                                                                 if (isset($get_job_list) && !empty($get_job_list)) {
@@ -786,7 +786,7 @@ echo '</pre>';
                                                                                                     ?></span>
                                                                     </td>
                                                                     <td align="left" style="" valign="top">
-                                                                        <input type="date"  min="1980-01-01" max="<?php echo date('Y-m-d'); ?>" class="work_experience_from_<?php echo $i ?>" name="work_experience[from_date][]" onchange="ValidateFromdate(<?php echo $i ?>);" id="work_experience_from_<?php echo $i ?>" value="<?php if (!empty($value->from_date)) {
+                                                                        <input type="date"  min="1940-01-01" max="<?php echo date('Y-m-d'); ?>" class="work_experience_from_<?php echo $i ?>" name="work_experience[from_date][]" onchange="ValidateFromdate(<?php echo $i ?>);" id="work_experience_from_<?php echo $i ?>" value="<?php if (!empty($value->from_date)) {
                                                                                                                                                                                                                                                                                     echo date_convert_normal_to_mysql($value->from_date);
                                                                                                                                                                                                                                                                                 } ?>" class="form-control">
                                                                         <span class="work_experience_From_error_<?php echo $i; ?>" style="color:red;"></span>
@@ -1135,7 +1135,7 @@ echo '</pre>';
 
             $('#addwork').click(function() {
                 b = j + 1;
-                $('#dynamic_field_work').append('<tr id="rowwork' + b + '" class="org_row"><td><input type="text" name="work_experience[organization][]" class="form-control" /></td><td><input type="text" name="work_experience[post_held][]" onkeypress="return ValidateAlphnumeric(event);" class="form-control" /></td><td><input type="text" name="work_experience[pay_scale][]" onkeypress="return validateNumber(event)"  class="form-control" /></td><td><input type="date" min="1980-01-01" max="<?php echo date('Y-m-d'); ?>" onchange="ValidateFromdate(' + b + ');"  id="work_experience_from_' + b + '" name="work_experience[from_date][]" class="form-control" /><span class="work_experience_From_error_' + b + '" style="color:red;"></span></td><td><input type="date" min="1980-01-01" max="<?php echo date('Y-m-d'); ?>" onchange="ValidateTodate(' + b + ');"  id="work_experience_to_' + b + '" name="work_experience[to_date][]" class="form-control" style="width:100%; float:left"/><span class="work_experience_to_error_' + b + '" style="color:red;"></span><td><input type="file" name="organization_file[organization_file][]"  class="form-control" id="organization_doc_' + b + '" onchange="onlyorganizationpdf(this,' + b + ');" /><span class="organization_doc_' + b + '_error" style="color:red;"></span>   <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span><button type="button" name="remove" id="' + b + '" class="btn btn-danger btn_remove_work" style="width:16%;  float:right">X</button></td></tr>');
+                $('#dynamic_field_work').append('<tr id="rowwork' + b + '" class="org_row"><td><input type="text" name="work_experience[organization][]" class="form-control" /></td><td><input type="text" name="work_experience[post_held][]" onkeypress="return ValidateAlphnumeric(event);" class="form-control" /></td><td><input type="text" name="work_experience[pay_scale][]" onkeypress="return validateNumber(event)"  class="form-control" /></td><td><input type="date" min="1940-01-01" max="<?php echo date('Y-m-d'); ?>" onchange="ValidateFromdate(' + b + ');"  id="work_experience_from_' + b + '" name="work_experience[from_date][]" class="form-control" /><span class="work_experience_From_error_' + b + '" style="color:red;"></span></td><td><input type="date" min="1980-01-01" max="<?php echo date('Y-m-d'); ?>" onchange="ValidateTodate(' + b + ');"  id="work_experience_to_' + b + '" name="work_experience[to_date][]" class="form-control" style="width:100%; float:left"/><span class="work_experience_to_error_' + b + '" style="color:red;"></span><td><input type="file" name="organization_file[organization_file][]"  class="form-control" id="organization_doc_' + b + '" onchange="onlyorganizationpdf(this,' + b + ');" /><span class="organization_doc_' + b + '_error" style="color:red;"></span>   <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span><button type="button" name="remove" id="' + b + '" class="btn btn-danger btn_remove_work" style="width:16%;  float:right">X</button></td></tr>');
                 $('#tq_work').val(b);
             });
             $(document).on('click', '.btn_remove', function() {
@@ -1618,15 +1618,15 @@ echo '</pre>';
                 fd.append('post_id',post_id);
                 fd.append('path',path);
 
-                $.ajax({
-                    url: "<?php echo base_url(); ?>/dashboard/upload_pdf",
-                    type: "POST",
-                    data:fd,
-                  //  data: "myFile="+myFile+"user_id="+user_id+"post_id="+post_id+"path="+path+",
-                    contentType: false,
-                    cache: false,
-                    processData:false,
-                });
+                // $.ajax({
+                //     url: "<?php echo base_url(); ?>/dashboard/upload_pdf",
+                //     type: "POST",
+                //     data:fd,
+                //   //  data: "myFile="+myFile+"user_id="+user_id+"post_id="+post_id+"path="+path+",
+                //     contentType: false,
+                //     cache: false,
+                //     processData:false,
+                // });
                 if (Filevalidation(data.id)) {
                     return true
                 }
@@ -1740,7 +1740,7 @@ echo '</pre>';
                     const fsize = fi.files.item(i).size;
                     const file = Math.round((fsize / 1024));
                     // The size of the file.
-                    if (file >= 2048) {
+                    if (file >= 1024) {
                         $("#" + id).val("");
                         $('.' + id + '_error').html('File too Big.');
                     

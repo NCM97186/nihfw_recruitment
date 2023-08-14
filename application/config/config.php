@@ -26,8 +26,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 //$config['base_url'] = 'http://localhost/demo/';
  //$root=(isset($_SERVER['HTTPS']) ? "https://" : "https://").$_SERVER['HTTP_HOST'];
 //$root.= str_replace(basename($_SERVER['SCRIPT_NAME']), '', $_SERVER['SCRIPT_NAME']);
-$root = 'http://125.20.102.83/nihfw_recruitment/';
-//$root = 'http://localhost/nihfw_recruitment/';
+//$root = 'http://125.20.102.83/nihfw_recruitment/';
+$root = 'http://localhost/nihfw_recruitment/';
 $config['base_url'] = $root;
 
 $config['assets-url-admin'] = $config['base_url'].'assets/';

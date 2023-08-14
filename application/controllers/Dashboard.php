@@ -145,7 +145,7 @@ class Dashboard extends CI_Controller
 	public function details()
 	{    
 		//echo"<pre>";
-		//$application_id =   $this->users->get_application_id(); die();
+		//echo $application_id =   $this->users->get_application_id(); //die();
 		$_SESSION['profile_filled'] = 'N';
 		$data = null;
 		$data['category'] = $this->Category_model->get_list();
@@ -159,8 +159,9 @@ class Dashboard extends CI_Controller
 		    $application_id =   $this->users->get_application_id(); //die();
 		   $_SESSION['application_id'] = $application_id;
 		}else {
+			//print_r(array('user_id' => $user_id, 'post_id' => $post_id, 'status_id' => 5));
 			$this->db->select('id,application_id');
-			$this->db->where(array('user_id' => $user_id, 'post_id' => $post_id, 'status_id' => 5));
+			$this->db->where(array('user_id' => $user_id, 'post_id' => $post_id));
 			$this->db->order_by('id', 'DESC');
 			$q = $this->db->get('users_detail');
 			if ($q) {
@@ -173,7 +174,8 @@ class Dashboard extends CI_Controller
 					$_SESSION['existing_application'] = 'Y';
 				}
 			}
-			$application_id = $_SESSION['application_id'];
+			//print_r($application_id); die();
+			///$application_id = $_SESSION['application_id'];
 			$data['user_details']  = $this->users->get_user_details($application_id);
 			
 			$data['post_detail']  = $this->users->get_candidate($data['user_details']->user_id);
@@ -396,6 +398,7 @@ class Dashboard extends CI_Controller
 					$epostage =  $eyears . ' years - ' . $emonth . ' month - ' . $edays . ' Days ';
 					$this->session->set_flashdata('error', ' you are not elegible to apply this post. because Your Age is ' . $candage . '. you must be ' . $epostage . 'to apply this post.');
 					redirect(base_url('dashboard/details'));
+					//loadLayout('user/details', $data);
 					$statusre=false;
 				 }
 				 //else{
@@ -460,6 +463,7 @@ class Dashboard extends CI_Controller
 						{
 							$this->session->set_flashdata('error', ' You have minimum of ' . $min_experience . ' years of experience for applying for this post.');
 							redirect(base_url('dashboard/details'));
+						//loadLayout('user/details', $data);
 							$statusre=false;
 					    }
 					}
@@ -531,6 +535,7 @@ class Dashboard extends CI_Controller
 						$epostage =  $eyears . ' years - ' . $emonth . ' month - ' . $edays . ' Days ';
 						$this->session->set_flashdata('error', ' you are not elegible to apply this post. because Your Age is ' . $candage . '. you must be ' . $epostage . ' (with age relaxation) to apply this post.');
 						redirect(base_url('dashboard/details'));
+						//loadLayout('user/details', $data);
 						$statusre=false;
 					}
 				}
@@ -620,6 +625,7 @@ class Dashboard extends CI_Controller
 
 						$this->session->set_flashdata('error', ' you are not elegible to apply this post. because Your Age is ' . $candage . ' years. you must be ' . $epostage . ' years (with age relaxation) to apply this post.');
 						redirect(base_url('dashboard/details'));
+						//loadLayout('user/details', $data);
 						$statusre=false;
 					}
 
@@ -651,12 +657,13 @@ class Dashboard extends CI_Controller
 						$epostage =  $eyears . ' years - ' . $emonth . ' month ';
 						$this->session->set_flashdata('error', ' you are not elegible to apply this post. because Your Age is ' . $candage . ' years. you must be ' . $epostage . ' years (with age relaxation) to apply this post.');
 						redirect(base_url('dashboard/details'));
+						//loadLayout('user/details', $data);
 						$statusre=false;
 					}
 				}
 			}
 			if (isset($_FILES['category_attachment']) && $_FILES['category_attachment']['name'] != '') {
-				$file_name = $_FILES["category_attachment"]['name'];
+				$file_name = str_replace(' ','_',$_FILES["category_attachment"]['name']);
 				$user_id=$_SESSION['USER']['user_id'];
 				$post_id=$_COOKIE['post_id'];
 				$unlink ='uploads/category_attachment/'.$user_id."_".$post_id."_".$file_name;
@@ -680,7 +687,7 @@ class Dashboard extends CI_Controller
 				}
 			}
 			if (isset($_FILES['adhar_card_doc']) && $_FILES['adhar_card_doc']['name'] != '') {
-				$file_name = $_FILES["adhar_card_doc"]['name'];
+				$file_name = str_replace(' ','_',$_FILES["adhar_card_doc"]['name']);
 				$user_id=$_SESSION['USER']['user_id'];
 				$post_id=$_COOKIE['post_id'];
 				$unlink ='uploads/adhar_card_doc/'.$user_id."_".$post_id."_".$file_name;
@@ -703,7 +710,7 @@ class Dashboard extends CI_Controller
 				}
 			}
 			if (isset($_FILES['person_disability']) && $_FILES['person_disability']['name'] != '') {
-				$file_name =$_FILES["person_disability"]['name'];
+				$file_name =str_replace(' ','_',$_FILES["person_disability"]['name']);
 				$user_id=$_SESSION['USER']['user_id'];
 				$post_id=$_COOKIE['post_id'];
 				$unlink ='uploads/person_disability/'.$user_id."_".$post_id."_".$file_name;
@@ -726,7 +733,7 @@ class Dashboard extends CI_Controller
 				}
 			}
 			if (isset($_FILES['photograph']) && $_FILES['photograph']['name'] != '') {
-				$file_name = $_FILES["photograph"]['name'];
+				$file_name = str_replace(' ','_',$_FILES["photograph"]['name']);
 				$user_id=$_SESSION['USER']['user_id'];
 				$post_id=$_COOKIE['post_id'];
 				$unlink ='uploads/photograph/'.$user_id."_".$post_id."_".$file_name;
@@ -751,7 +758,7 @@ class Dashboard extends CI_Controller
 				}
 			}
 			if (isset($_FILES['signature']) && $_FILES['signature']['name'] != '') {
-				$file_name = $_FILES["signature"]['name'];
+				$file_name = str_replace(' ','_',$_FILES["signature"]['name']);
 				$user_id=$_SESSION['USER']['user_id'];
 				$post_id=$_COOKIE['post_id'];
 				$unlink ='uploads/signature/'.$user_id."_".$post_id."_".$file_name;
@@ -778,7 +785,7 @@ class Dashboard extends CI_Controller
 				}
 			}
 			if (isset($_FILES['dob_doc']) && $_FILES['dob_doc']['name'] != '') {
-				$file_name = $_FILES["dob_doc"]['name'];
+				$file_name = str_replace(' ','_',$_FILES["dob_doc"]['name']);
 				$user_id=$_SESSION['USER']['user_id'];
 				$post_id=$_COOKIE['post_id'];
 				$unlink ='uploads/dob_proof/'.$user_id."_".$post_id."_".$file_name; //die();
@@ -789,7 +796,7 @@ class Dashboard extends CI_Controller
 				$config['upload_path'] = 'uploads/dob_proof/';
 				$config['allowed_types'] = 'pdf';
 				$config['max_size'] = '1024';
-				$config['file_name'] = $user_id."_".$post_id."_".$file_name;;
+				$config['file_name'] = $user_id."_".$post_id."_".$file_name;
 				$this->load->library('upload', $config);
 				$this->upload->initialize($config);
 				if ($this->upload->do_upload('dob_doc')) {
@@ -806,6 +813,7 @@ class Dashboard extends CI_Controller
 				if (!preg_match('/^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/', $identity_number)) {
 					$this->session->set_flashdata('error', 'Invalid driving license.');
 					redirect(base_url('dashboard/details'));
+						//loadLayout('user/details', $data);
 				}
 			}
 
@@ -814,6 +822,7 @@ class Dashboard extends CI_Controller
 				if (!preg_match('/^([0-9]{4}[0-9]{4}[0-9]{4}$)|([0-9]{4}\s[0-9]{4}\s[0-9]{4}$)|([0-9]{4}-[0-9]{4}-[0-9]{4}$)/', $identity_number)) {
 					$this->session->set_flashdata('error', 'Invalid Aadhar card number.');
 					redirect(base_url('dashboard/details'));
+						//loadLayout('user/details', $data);
 				}
 			}
 
@@ -822,6 +831,7 @@ class Dashboard extends CI_Controller
 				if (!preg_match('/([A-Z]){5}([0-9]){4}([A-Z]){1}$/', $identity_number)) {
 					$this->session->set_flashdata('error', 'Invalid Pan card number.');
 					redirect(base_url('dashboard/details'));
+						//loadLayout('user/details', $data);
 				}
 			}
 
@@ -830,6 +840,7 @@ class Dashboard extends CI_Controller
 				if (!preg_match('/^[A-PR-WY][1-9]\d\s?\d{4}[1-9]$/', $identity_number)) {
 					$this->session->set_flashdata('error', 'Invalid Passport number.');
 					redirect(base_url('dashboard/details'));
+						//loadLayout('user/details', $data);
 				}
 			}
 
@@ -838,6 +849,7 @@ class Dashboard extends CI_Controller
 				if (!preg_match('/^[A-Z]{3}[0-9]{7}$/', $identity_number)) {
 					$this->session->set_flashdata('error', 'Invalid Voter Id.');
 					redirect(base_url('dashboard/details'));
+						//loadLayout('user/details', $data);
 				}
 			}
 			
@@ -954,6 +966,7 @@ class Dashboard extends CI_Controller
 						$this->session->set_flashdata('error', $label . "! " . $err);
 						$statusre=false;
 						redirect(base_url('dashboard/details'));
+						//loadLayout('user/details', $data);
 					}
 				}
 			}
@@ -1004,10 +1017,10 @@ class Dashboard extends CI_Controller
 			// die;
 			$res= $this->users->insert_update_user_details($post_val);
 
-			if(isset($candidateorganization) && $candidateorganization== 'Yes'){
-				$statusre=true;
-				redirect(base_url('dashboard/preview'));
-			}
+			// if(isset($candidateorganization) && $candidateorganization== 'Yes'){
+			// 	$statusre=true;
+			// 	redirect(base_url('dashboard/preview'));
+			// }
 		//   	print_r($res);die();
 
         //    print_r($post_val); die();
@@ -1119,9 +1132,9 @@ class Dashboard extends CI_Controller
 			redirect(base_url('dashboard/success'));
 		}
 			if($gid->fee_applicable == 1){
-				echo "hiii1";
+				//echo "hiii1";
 				if($data['fee'] == ""){
-					echo "hiii222";
+				//	echo "hiii222";
 				$status_id = 1;
 				$this->db->where('application_id', $application_id);
 				$this->db->update('users_detail', array('status_id' => $status_id));
@@ -1264,9 +1277,9 @@ class Dashboard extends CI_Controller
 	{
 		$res = $this->db->from('users')->get()->result();
 
-		echo "<pre";
-		print_r($res);
-		echo "<br>";
+		// echo "<pre";
+		// print_r($res);
+		// echo "<br>";
 		die();
 	}
 	public function admit_card()

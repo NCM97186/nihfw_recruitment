@@ -77,6 +77,8 @@ class Users_model extends CI_Model
     }
     public function get_user_details($application_id)
     {
+        // $this->db->get_where('users_detail', array('application_id' => $application_id))->row();echo $this->db->last_query();
+
         return $this->db->get_where('users_detail', array('application_id' => $application_id))->row();
     }
     public function get_preview_user_details($application_id)
@@ -318,7 +320,7 @@ class Users_model extends CI_Model
         $user_id = $_SESSION['USER']['user_id'];
        // if (empty($user_id)) {
             $pre = 8 - strlen($user_id);
-         echo    $application_id = str_pad($user_id, $pre + strlen($user_id), '0', STR_PAD_LEFT) . '-' . time();
+             $application_id = str_pad($user_id, $pre + strlen($user_id), '0', STR_PAD_LEFT) . '-' . time();
            // $_SESSION['application_id'] = $application_id;
         // } else {
         //     $application_id = !empty($application_id)?$application_id:'';

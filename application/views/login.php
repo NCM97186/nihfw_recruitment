@@ -59,7 +59,7 @@
 
 		</div>
       
-    <input type="submit" class="btn btn-danger" id="loginform" onclick="return getPass();" value="Log In">
+    <input type="submit" class="btn btn-danger" id="loginform"  value="Log In">
 	<?php echo form_close();?>
      </div>
     </div>

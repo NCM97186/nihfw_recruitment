@@ -12,7 +12,7 @@ Class loginmodel extends CI_Model{
         $this->db->from('tbl_admin_login');
         $this->db->where($username);
         $res = $this->db->get()->row_array();
-        $pass= $res['password'].$_SESSION['salt'];
+        $pass= $res['password'];
         $dbpass   = strtoupper($pass);
         $postpass = $password;
         if($dbpass != ''){
