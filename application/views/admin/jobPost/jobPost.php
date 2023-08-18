@@ -62,20 +62,23 @@
                                                 <td><?php if($val->post_status==1){
                                                               echo "Enabled";}else{echo "Disabled";} ?></td>
                                                 <td><?php echo $val->title ?></td>
-                                                <?php $date = date("Y-m-d");
-                                                    $startdate= date("Y-m-d",strtotime($start_date));
-                                                 if($startdate > $date){ ?>
+                                                <?php //$date = date("Y-m-d");
+                                                   // $startdate= date("Y-m-d",strtotime($start_date));
+                                                 //if($startdate > $date){ ?>
                                              <td>
+                                             <button type="button" class="btn btn-success btn-sm waves-effect waves-light m-1 viewUser" data-toggle="modal" data-target="#largesizemodal" value="<?php echo $val->post_id; ?>"><i class="fa fa-eye" aria-hidden="true"></i></button>
+
+                                             <!-- <a style="margin-bottom:5px"  href="<?php echo site_url('admin/JobPost/view/' . $val->post_id) ?>" class=" btn btn-primary btn-sm editLink"><i class="fa fa-pencil"></i></a> -->
                                                        <a style="margin-bottom:5px"  href="<?php echo site_url('admin/JobPost/edit/' . $val->post_id) ?>" class=" btn btn-primary btn-sm editLink"><i class="fa fa-pencil"></i></a>
                                                        <a href="<?php echo site_url('admin/JobPost/delete/' . $val->post_id); ?>" class="btn btn-danger btn-sm deleteLink" onclick="return confirm('Are you sure you want to delete Job')"><i class="fa fa-trash-o"></i></a>
                                                    </td>
-                                                <?php }
-                                                else{ ?>
-                                                       <td>
+                                                <?php //}
+                                                //else{ ?>
+                                                       <!-- <td>
                                                         
-                                                       </td>                          
+                                                       </td>                           -->
                                                        
-                                             <?php   } ?>
+                                             <?php   //} ?>
                                             </tr>
 
                                         <?php  } ?>
@@ -95,3 +98,54 @@
 
 
     </div>
+
+
+      <!-- Modal -->
+      <div class="modal fade" id="largesizemodal">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Post Detail</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body" id='model_data_ajax'></div>
+				</div>
+			</div>
+		</div>
+        <!-- Modal -->
+
+        <script type="text/javascript" src="js/script.js"></script>
+    <script type="text/javascript">
+
+    $(document).ready(function () {
+
+  
+        //$(".getUserId").click(function () {
+
+		 $('body').on('click', '.viewUser',function(e){
+		    e.preventDefault();
+			console.log('view job');
+            var uId = $(this).val();
+            var url = "<?php echo base_url() . 'admin/JobPost/view/' ?>"+uId;
+            $.ajax({
+                type: "POST",
+                url: url,
+                data: {'layout_type':'popup'},
+                success: function (data) {
+                    $("#model_data_ajax").html(data);
+                },
+                 beforeSend: function () {
+                    $("#model_data_ajax").html('Please wait...');
+                 },
+                failure: function (data) {
+                    alert('Failure!');
+                }
+            });
+
+        });
+
+    });
+
+        </script>

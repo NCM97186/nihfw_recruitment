@@ -1,10 +1,35 @@
 <?php
-$last_date=$post_detail->last_date;
 
-$dob_age="";
-if(isset($user_details->dob)&&!empty($user_details->dob)){
-    $dob_age=cal_diff_in_ymd_format($user_details->dob,$last_date);
+$dob_array = explode('-',$user_details->dob);
+$dobdate = (int) $dob_array[2];
+$dobmonth = (int) $dob_array[1]-1;
+$dobyear = (int) $dob_array[0];
+$currentmonth =  $month = date('m');
+$calculated_days=0;
+if($dobdate>1){
+    $calculated_days = 31-$dobdate;
+    $dobmonth = $dobmonth+1;
 }
+if($dobmonth<=6){
+    $calculated_month = 6-$dobmonth;
+}else{
+    $calculated_month = 18-$dobmonth;
+    $dobyear = $dobyear+1;
+}
+if($currentmonth <= 7){
+    $yyyy = (int)date('Y');             
+}else{
+    $yyyy = (int)date('Y');    
+
+}
+$last_date = '01-07-'.$yyyy; 
+$calculated_year = $yyyy-$dobyear;
+$dob_age = $calculated_year;
+$dob_age .= $calculated_year>1?' Years ':' Year ';
+$dob_age .=$calculated_month;
+$dob_age .= $calculated_month>1?' Months ':' Month ';
+$dob_age .=$calculated_days;
+$dob_age .= $calculated_days>1?' Days':' Day';
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -151,13 +176,15 @@ th{
                                                     <tr>
                                                         <td ><b>First Name</b></td>
                                                         <td ><?php echo $user_details->first_name; ?></td>
-                                                        <td ><b>Last Name</b></td>
-                                                        <td ><?php echo $user_details->last_name; ?></td>
+                                                        <td ><b>Middle Name</b></td>
+                                                        <td ><?php echo $user_details->middel_name; ?></td>
                                                     </tr>
-                                                    <!-- <tr>
+                                                    <tr>
                                                         <td style="width: 20%;"><b>Last Name</b></td>
                                                         <td><?php echo $user_details->last_name; ?></td>
-                                                    </tr> -->
+                                                        <td style="width: 20%;"><b>PWBD</b></td>
+                                                        <td><?php echo $user_details->benchmark; ?></td>
+                                                    </tr>
                                                     <tr>
                                                         <td ><b>Mobile</b></td>
                                                         <td ><?php echo $user_details->cand_mob; ?></td>
@@ -171,10 +198,18 @@ th{
                                                         
                                                     </tr> -->
                                                     <tr>
-                                                        <td style="width: 20%;"><b>Category</b></td>
-                                                        <td colspan="3"><?php echo $category_name; ?></td>
+                                                        <td style="width: 10%;"><b>Category</b></td>
+                                                        <td colspan="2"><?php echo $category_name; ?></td>
+                                                        <td style="width: 10%;"><b>Department</b></td>
+                                                        <td colspan="2"><?php if($user_details->department == '2') { 
+                                                            echo "NO"; 
+                                                        }else{
+                                                               echo "YES"; 
+                                                            }?></td>
                                                         <td  style="width: 5%;"><img src="<?= base_url('uploads/signature/').@$user_details->signature; ?>" alt="user" class="img-responsive" style="width:100px; margin: 0 auto;"></td>
                                                         <!-- <th ><img src="blank.jpg" alt="user" class="img-responsive" style="width:150px; margin: 0 auto;"></th> -->
+
+                                                       
                                                     </tr>
                                                     
                                                                                                
@@ -204,34 +239,7 @@ th{
                                                                    ?>
                                                         <td colspan="2" style="width: 25%;"><?php echo $dob; ?></td>
                                                         <td  style="width: 25%;"><b>Age</b></td>
-                                                        <?php 
-                                                            $d = $user_details->candtotal_age;
-                                                            // $y = (int)($d / 365);
-                                                            // $w = (int)(($d % 365) / 7);
-                                                            // $d = (int)($d - (($y * 365) + ($w)));
-
-                                                            $years = ($d / 365); // days / 365 days
-                                                            $years = floor($years); // Remove all decimals
-
-                                                            $month = ($d % 365) / 30.5; // I choose 30.5 for Month (30,31) ;)
-                                                            $month = floor($month); // Remove all decimals
-
-                                                            $days = round(($d / (60 * 60 * 24))); // the rest of days
-
-                                                            // Echo all information set
-                                                            if($month==1 && $days==1){
-                                                                $candage =  $years . ' Years - ' . $month . ' Month - ' . $days . ' Day ';
-                                                            }else if(empty($days)){
-                                                                $candage =  $years . ' Years - ' . $month . ' Months - ' . $days . ' Day ';
-                                                            }else{
-                                                                $candage =  $years . ' Years - ' . $month . ' Months - ' . $days . ' Days ';
-                                                            }
-                                                               
-
-                                                          
-                                                            ?>
-                                                                                                ?>
-                                                        <td colspan="2" style="width: 25%;"><?php  echo $candage; ?></td>
+                                                        <td colspan="2" style="width: 25%;"><?php  echo $dob_age; ?></td>
                                                       
                                                         
                                                     </tr>
@@ -307,7 +315,7 @@ th{
                                                             <td  style="font-weight: bold; color: #000;" valign="top">Year</td>
                                                             <td  style="font-weight: bold; color: #000;" valign="top">Max Marks</td>
                                                             <td  style="font-weight: bold; color: #000;" valign="top">Obtained Marks</td>
-                                                            <!-- <td  style="font-weight: bold; color: #000;" valign="top">Education certificates</td> -->
+                                                            <td  style="font-weight: bold; color: #000;" valign="top">Percentage</td>
                                                         </tr>
 														<?php 
                                                         $i=1;
@@ -324,6 +332,7 @@ th{
                                                             <td align="left"><?php echo set_value('sub',@$value->sub); ?></td>
                                                             <td align="left"><?php echo set_value('uni',@$value->uni); ?></td>
                                                             <td align="left"><?php echo set_value('div',@$value->div); ?></td>
+                                                            <td align="left"><?php echo set_value('div',@$value->per); ?></td>
                                                         </tr>
                                                         
 														<?php

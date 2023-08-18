@@ -26,7 +26,7 @@
                                             <th>Advertisement Title</th>
                                             <th>View Advertisement</th>
                                             <th>Advertisement Date</th>
-                                            <!-- <th>Action</th> -->
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -48,11 +48,11 @@
 															<a href="<?= base_url('uploads/link_to_pdf/').@$val->link_to_pdf; ?>" target="_blank" class="btn btn-info">View</a>
 														<?php }?></td>
                                                 <td><?php echo $Date?></td>
-                                                <!-- <td style="display: flex;">
-                                                    <a  href="<?php //echo site_url('admin/Advertisement/edit/' . $val->adver_id) ?>" class=" btn btn-primary btn-sm editLink"><i class="fa fa-pencil"></i></a>
+                                                <td style="display: flex;">
+                                                    <a  href="<?php echo site_url('admin/Advertisement/edit/' . $val->adver_id) ?>" class=" btn btn-primary btn-sm editLink"><i class="fa fa-pencil"></i></a>
                                                     &nbsp;&nbsp;
-                                                    <a href="<?php //echo site_url('admin/Advertisement/delete/' . $val->adver_id); ?>" class="btn btn-danger btn-sm deleteLink" onclick="return confirm('Are you sure you want to delete Advertisement')"><i class="fa fa-trash-o"></i></a>
-                                                </td> -->
+                                                    <a href="<?php echo site_url('admin/Advertisement/delete/' . $val->adver_id); ?>" class="btn btn-danger btn-sm deleteLink" onclick="return confirm('Are you sure you want to delete Advertisement')"><i class="fa fa-trash-o"></i></a>
+                                                </td>
                                             </tr>
 
                                         <?php  } ?>

@@ -430,9 +430,9 @@ echo '</pre>';
                                                             <?php $identity_pr = set_value('identity_proof', @$user_details->identity_proof); ?>
                                                             <input name="identity_proof" type="radio" value="DL" <?php if ($identity_pr == 'DL') { ?> checked <?php } ?>> DL
                                                             <!-- <input name="identity_proof" type="radio" value="Adhaar" <?php //if ($gender == 'Adhaar') { ?> checked <?php //} ?>> Adhaar -->
-                                                            <input name="identity_proof" type="radio" value="Pan" <?php if ($identity_pr == 'Pan') { ?> checked <?php } ?>> Pan
-                                                            <input name="identity_proof" type="radio" value="Passport" <?php if ($identity_pr == 'Passport') { ?> checked <?php } ?>> Passport <br>
-                                                            <input name="identity_proof" type="radio" value="Voter" <?php if ($identity_pr == 'Voter') { ?> checked <?php } ?>> Voter Id
+                                                            <input name="identity_proof" type="radio" value="PAN" <?php if ($identity_pr == 'PAN') { ?> checked <?php } ?>> Pan
+                                                            <input name="identity_proof" type="radio" value="PASSPORT" <?php if ($identity_pr == 'PASSPORT') { ?> checked <?php } ?>> Passport <br>
+                                                            <input name="identity_proof" type="radio" value="VOTER" <?php if ($identity_pr == 'VOTER') { ?> checked <?php } ?>> Voter Id
                                                             <span class="form_error"><?php echo form_error('identity_proof'); ?></span>
                                                         </td>
                                                         

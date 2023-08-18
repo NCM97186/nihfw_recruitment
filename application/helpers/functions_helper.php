@@ -41,6 +41,16 @@ function get_advertisement_list() {
     }
     return $adver;
 }
+function get_fee_data($group_id) {
+    $CI =& get_instance();
+    $query = " SELECT  fee.*,category.category
+    FROM  fee
+    inner join groups on fee.group_id=groups.id
+    left join category on  fee.cat_id = category.id
+    where fee.group_id = '" . $group_id . "'   ";
+     $query = $CI->db->query($query);
+     return   $query->result_array();
+}
 function get_cand_profile_status_list() {
     $CI =& get_instance();
    $query = "SELECT status_id,status_name FROM cand_profile_status_master order by status_order";

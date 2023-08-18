@@ -220,7 +220,7 @@ $data = $query->result_array();
             <hr>
             <div class="d-flex p30">
             <i class="fa fa-solid fa-question" style="color:white;"></i>
-                <a target="_blank" href="<?php echo base_url() . "user/help"; ?>">Help</a>
+                <a href="<?php echo base_url() . "user/help"; ?>">Help</a>
             </div>
             <hr>
             <div class="d-flex p30">

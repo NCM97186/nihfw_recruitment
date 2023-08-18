@@ -1,3 +1,11 @@
+<style>
+    .copy-right-area{
+        position:absolute;
+        bottom:0;
+        left:0;
+        right:0;
+    }
+</style>
 <div class="contact-page-area container-fluid padding-bottom">
     <div class="container">
         <div id="national_form" class="container" style="text-align: center">

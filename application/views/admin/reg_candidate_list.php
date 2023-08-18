@@ -8,10 +8,7 @@
                 <div class="card-header">
                     <div class="row">
                         <div class="col-md-8">
-                            <i class="fa fa-table"></i> Groups
-                        </div>
-                        <div class="col-md-4 text-right">
-                            <a href="<?php echo base_url('admin/Groups/edit'); ?>" class="editLink btn btn-success btn-sm ">+ Add</a>
+                            <i class="fa fa-table"></i> Registered Candidates
                         </div>
                     </div>
                     </div>
@@ -22,27 +19,27 @@
                                     <thead>
                                         <tr>
                                             <th>S.No</th>
-                                            <th>Groups Name</th>
-                                            <th>Action</th>
+                                            <th>Registration Number</th>
+                                            <th>Full Name</th>
+                                            <th>E-mail</th>
+                                            <th>Mobile Number</th>
                                         </tr>
                                     </thead>
                                     <tbody>
 
-                                        <?php
+                                         <?php
                                         $i = 1;                                                                              
-                                        foreach ($ddata  as $val) {   ?>
+                                       foreach ($ddata  as $val) {   ?>
 
                                             <tr>
                                                 <td><?php echo $i++; ?></td>
-                                                <td><?php echo $val->name ?></td>
-                                                <td>
-                                                    <a  href="<?php echo site_url('admin/Groups/edit/' . $val->id) ?>" class=" btn btn-primary btn-sm editLink"><i class="fa fa-pencil"></i></a>
-                                                    &nbsp;&nbsp;
-                                                    <!-- <a href="<?php //echo site_url('admin/Groups/delete/' . $val->id); ?>" class="btn btn-danger btn-sm deleteLink" onclick="return confirm('Are you sure you want to delete Group')"><i class="fa fa-trash-o"></i></a> -->
-                                                </td> 
+                                                <td><?php echo $val->registration_number;?></td>
+                                                <td><?php echo $val->first_name." ".$val->middel_name." ".$val->last_name; ?></td>
+                                                <td><?php echo $val->cand_email ?></td>
+                                                <td><?php echo $val->cand_mob ?></td>
                                             </tr>
 
-                                        <?php  } ?>
+                                        <?php  } ?> 
 
                                     </tbody>
                                 </table>

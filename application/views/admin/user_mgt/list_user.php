@@ -111,7 +111,7 @@
                                                         <a class="btn btn-warning btn-sm waves-effect waves-light m-1 edituser" data-toggle="modal" data-target="#largesizemodal" value="<?php echo $ulist['admin_id']; ?>" 
 														href="<?php echo base_url() . 'admin/user/add_edit_user/'. $ulist['admin_id'] ;?>"
 														>Edit</a>
-														<?php } ?>
+			  											<?php } ?>
                                                       
                                                     </td>                                              
                                                    

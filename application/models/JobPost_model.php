@@ -45,5 +45,11 @@ Class JobPost_model extends CI_Model
         return $result;
 
     }
+    // public function view_jobPost()
+    // {
+    //     $this->db->select('*');
+    //     $this->db->from('jobpost');
+    //     $this->db->join('category', 'jobpost.cat_id = category.id');
+    // }
 
     }

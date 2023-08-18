@@ -215,7 +215,7 @@ class User extends CI_Controller {
 						$this->db->where('user_id',$res->user_id)->update('users',array('otp' => $otp,'currenttime'=>$_SERVER["REQUEST_TIME"]));
 						$this->session->set_userdata('cand_mobile', $mobile);
 						$this->sendOTP($cid,$mobile, $otp,$registration_number,$senderid,$smscurl );
-						$this->session->set_flashdata('success', 'Registration Successfully. An otp  has send to your mobile No. Plz verify to login. ');
+						$this->session->set_flashdata('success', 'An otp  has send to your mobile No. Plz verify to login. ');
 						redirect('verify');
 				
 				}else{
@@ -258,7 +258,7 @@ class User extends CI_Controller {
 						//$otp = rand(100000, 999999);
 						$this->session->set_userdata('cand_mobile', $post_val['cand_mob']);
 						$this->sendOTP($cid,$mobile, $otp,$registration_number,$senderid,$smscurl );
-						$this->session->set_flashdata('success', 'Registration Successfully. An otp  has send to your mobile No. Plz verify to login. ');
+						$this->session->set_flashdata('success', 'An otp  has send to your mobile No. Plz verify to login. ');
 						
 					//$_SESSION['user_otp'] = $otp;
 					// $mobile=$post_val['cand_mob'];

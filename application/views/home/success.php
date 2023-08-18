@@ -5,7 +5,10 @@
         left:0;
         right:0;
     }
-</style>
+    a:hover {
+  color: red;
+}
+</style>   
 <div class="btn offbtn">
 <a href="<?php echo base_url() . "user/logout"; ?>"">Logout</a>
     </div>
@@ -33,10 +36,11 @@
                         </form>
 
                     </div>
-                </div>
-
+                    </div>
             </div>
+            <b><a target="_blank" href="<?php  echo site_url('Dashboard/get_all_data/' .base64_encode($_SESSION['application_id'])); ?>">Please Click Here To Download The Application Form</b>
         </div>
+        
         <!-- Main body End Here -->
     </div>
 </div>

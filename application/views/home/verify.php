@@ -5,6 +5,14 @@ $csrf = array(
 );
 
 ?>
+<style>
+    .copy-right-area{
+        position:absolute;
+        bottom:0;
+        left:0;
+        right:0;
+    }
+</style>
 <div class="contact-page-area padding-bottom">
     <div class="container-fluid">
         <div id="national_form" style="text-align: center">

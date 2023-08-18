@@ -174,6 +174,7 @@ class Participants extends CI_Controller
 			$line['sub'],
 			$line['uni'],
 			$line['div'],
+			$line['per'],
 			$education_proof.'/'.$line['file_path'],
 			$line['organization'],
 			$line['post_held'],
@@ -512,5 +513,14 @@ class Participants extends CI_Controller
 				$this->db->where('user_id',$user_id);
 				$this->db->delete('users_degree');
 	  }
+  }
+
+  public function reg_candidates()
+  {
+	if(!has_admin_permission('REG_CANDIDATES')) { return; }  
+      $data = array();
+      $result = $this->Participants_model->get_reg_candidates();
+      $data['ddata']=$result;   
+      loadLayout('admin/reg_candidate_list', $data, 'admin');
   }
 }

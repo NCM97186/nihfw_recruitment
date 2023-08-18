@@ -7,7 +7,7 @@ $user_id = $_SESSION['USER']['user_id'];
 
 
 // here we select every column of the table
-$status = array(5,1);
+$status = array(5,1,7);
 
 // $this->db->where('status_id',5);
 $this->db->where('user_id', $user_id);
@@ -85,7 +85,7 @@ $data = $q->result_array();
                                         }
                                         ?></td>
                                         <td><?php echo $application['created_on']; ?></td>
-                                        <?php if($application['status_id']== 1){ ?>
+                                        <?php if($application['status_id']== 1 || $application['status_id'] == 7){ ?>
                                         <td><a target="_blank" href="<?php  echo site_url('Dashboard/get_all_data/' .base64_encode($application['application_id'])); ?>">Download</td>
                                      <?php }else{?> 
                                     

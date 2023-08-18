@@ -132,7 +132,7 @@ setInterval(hearbeat, 30000);
 
       <li><a href="javaScript:void();" class="waves-effect"><i class="zmdi zmdi-map"></i> <span>Reports</span> <i class="fa fa-angle-left pull-right"></i></a>
           <ul class="sidebar-submenu">
-        <li><a href="#" class="waves-effect">
+        <li><a href="<?php echo base_url('admin/Participants/reg_candidates'); ?>" class="waves-effect">
             <i class="zmdi zmdi-map"></i> <span>Registered Candidate</span></a></li>
      
           </ul>

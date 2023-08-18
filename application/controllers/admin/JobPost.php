@@ -175,5 +175,28 @@ class JobPost extends CI_Controller
     echo json_encode($res);die;
 
   }
+  public function groupby_fee($id)
+  {
+    $res = $this->JobPost_model->groupbyfee($id);
+   
+
+  }
+  public function view($post_id)
+  {
+    $data = array();
+      $result =  $this->JobPost_model->get_jobPost($post_id);
+      if(!$result) { ("Invalid Data");}
+      $data['ddata']= $result;
+      $data['categories'] = $this->Category_model->get_list();
+      $data['group'] = $this->Groups_model->get_list();
+ 
+    // $data = $this->User_model->getUser($uId);
+		if(!empty($data)) {
+		 $this->load->view('admin/jobPost/view_job', $data);
+		 return;
+		}
+		echo '<h3 class="text-danger">Record not found!</h3>';
+   
+  }
 
 }

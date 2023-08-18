@@ -23,7 +23,7 @@
                                         <tr>
                                             <th>S.No</th>
                                             <th>Category Name</th>
-                                            <!-- <th>Action</th> -->
+                                            <th>Action</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -35,11 +35,11 @@
                                             <tr>
                                                 <td><?php echo $i++; ?></td>
                                                 <td><?php echo $val->category ?></td>
-                                                <!-- <td>
-                                                    <a  href="<?php //echo site_url('admin/Category/edit/' . $val->id) ?>" class=" btn btn-primary btn-sm editLink"><i class="fa fa-pencil"></i></a>
+                                                <td>
+                                                    <a  href="<?php echo site_url('admin/Category/edit/' . $val->id) ?>" class=" btn btn-primary btn-sm editLink"><i class="fa fa-pencil"></i></a>
                                                     &nbsp;&nbsp;
-                                                    <a href="<?php //echo site_url('admin/Category/delete/' . $val->id); ?>" class="btn btn-danger btn-sm deleteLink" onclick="return confirm('Are you sure you want to delete Category')"><i class="fa fa-trash-o"></i></a>
-                                                </td> -->
+                                                    <!-- <a href="<?php //echo site_url('admin/Category/delete/' . $val->id); ?>" class="btn btn-danger btn-sm deleteLink" onclick="return confirm('Are you sure you want to delete Category')"><i class="fa fa-trash-o"></i></a> -->
+                                                </td> 
                                             </tr>
 
                                         <?php  } ?>

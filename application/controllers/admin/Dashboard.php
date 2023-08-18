@@ -204,6 +204,7 @@ class Dashboard extends CI_Controller {
 			$line['sub'],
 			$line['uni'],
 			$line['div'],
+			$line['per'],
 			$education_proof.'/'.$line['file_path'],
 			$line['organization'],
 			$line['post_held'],

@@ -1466,7 +1466,7 @@ class Dashboard extends CI_Controller
 				'error'   => true,
 				'post_id_error' => form_error('post_id'),
 				'dob_error' => form_error('dob'),
-				'subject_error' => form_error('subject'),
+				'dob_doc_error' => 'PDF required',
 				'message_error' => form_error('message')
 			);
 		}

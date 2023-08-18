@@ -165,6 +165,12 @@ ON
         );
       return $query->row();
     }
+    public function get_reg_candidates(){
+        $this->db->select('*');
+        $this->db->from('users');
+        $query = $this->db->get();
+        return $query->result();
+    }
     public function getQualification($cand_id){
       $query=$this->db->query('select * from qualification where cand_id='.$cand_id);
       return $query->result();

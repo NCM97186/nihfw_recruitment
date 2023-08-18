@@ -75,6 +75,14 @@ $this->load->view('common/messages.php');
                                                         <td><a href="<?= base_url('uploads/person_disability/').@$user_details->person_disability; ?>" target="_blank" class="btn btn-info">View</a></td>
                                                     </tr>
 													<?php }?>
+                                                    <tr>
+                                                    <th>Department</td>
+                                                        <td colspan="2"><?php if($user_details->department == '2') { 
+                                                            echo "NO"; 
+                                                        }else{
+                                                               echo "YES"; 
+                                                            }?></td>
+                                                    </tr>
                             
                         </table>
                     </div>
@@ -94,7 +102,7 @@ $this->load->view('common/messages.php');
                             $dob = date("d-m-Y", strtotime($dobformat));
                             ?>
                     			<th >Date Of Birth (DD/MM/YYYY)</th>
-                                <td><?php echo set_value('dob', $dob);?><a href="<?= base_url('uploads/dob_proof/').@$user_details->dob_doc; ?>" target="_blank" class="btn btn-info">View</a></td>
+                                <td><?php echo set_value('dob', $dob);?>  <a href="<?= base_url('uploads/dob_proof/').@$user_details->dob_doc; ?>" target="_blank" class="btn btn-info">View</a></td>
                     			<!-- <td><?php //echo set_value('dob', @$basic_info->first_name);?> <?php //echo set_value('middel_name', @$basic_info->middel_name);?> <?php //echo set_value('last_name', @$basic_info->last_name);?></td> -->
                                 <th >Age completed as on <?php echo $last_date;?></th>
                                 <td><?php echo $dob_age; ?></td>
@@ -121,7 +129,7 @@ $this->load->view('common/messages.php');
                     		</tr>
 							<tr>
                     			<th>Identity Proof</th>
-                    			<td><?php echo set_value('adhar_card_number', @$user_details->adhar_card_number);?><a href="<?= base_url('uploads/adhar_card_doc/').@$user_details->adhar_card_doc; ?>" target="_blank" class="btn btn-info">View</a></td>
+                    			<td><?php echo set_value('adhar_card_number', @$user_details->adhar_card_number);?>   <a href="<?= base_url('uploads/adhar_card_doc/').@$user_details->adhar_card_doc; ?>" target="_blank" class="btn btn-info">View</a></td>
                                 <td>Present postal Address</td>
                                 <td><?php echo set_value('corr_address', @$user_details->corr_address);?></td>
                     		</tr>
@@ -138,7 +146,22 @@ $this->load->view('common/messages.php');
                                 <th>PIN Code</th>
                                 <td><?php echo set_value('corr_pincode', @$user_details->corr_pincode);?></td>
                              </tr>
+
+                             <?php
+                                $this->db->where('id', $user_details->perm_state);
+                                $qs = $this->db->get('tbl_states');
+                                $datastates = $qs->result_array();
+                                ?>
+                             <tr>
+                             <th>Permanent Address </th>
+                                <td><?php echo set_value('perm_address', @$user_details->perm_address);?></td>
+                                <th>Permanent State</th>
+                                <td><?php echo set_value('perm_state', $datastates[0]['name']);?></td>
+                               
+                             </tr>
                     		<tr>
+                            <th>Permanent PIN Code</th>
+                                <td><?php echo set_value('corr_pincode', @$user_details->corr_pincode);?></td>
                     		</tr>
                     		 
                                   <th><b> Contact Details</b></th>
@@ -166,7 +189,8 @@ $this->load->view('common/messages.php');
                                 <th>Board/ University</th>
                                 <th>Year of Passing</th>
                                 <th>Max. Marks</th>
-                                <th>Percentage /Marks Obtained</th>
+                                <th>Marks Obtained</th>
+                                <th>Percentage</th>
                                 <th>Certificate / Mark Sheet</th>
                             </tr>
 							<?php 
@@ -182,6 +206,7 @@ $this->load->view('common/messages.php');
 								<td><?php echo set_value('sub',@$value->sub); ?></td>
 								<td><?php echo set_value('uni',@$value->uni); ?></td>
 								<td><?php echo set_value('div',@$value->div); ?></td>
+                                <td><?php echo set_value('per',@$value->per); ?></td>
                                 <td><?php if(!empty($value->file_path)){ ?><a href="<?php echo base_url(); ?>/uploads/education_proof/<?php  echo $value->file_path; ?>" target="_blank" class="btn btn-info">View</a><?php } ?></td>
 							</tr>
 							<?php $i++; }}  ?>
