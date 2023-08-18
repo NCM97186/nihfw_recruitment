@@ -1373,7 +1373,7 @@ class Dashboard extends CI_Controller
 				}
 			}
 			
-			$this->form_validation->set_rules('post_id', 'Post ID', 'required');
+			///$this->form_validation->set_rules('cat_doc', 'Post ID', 'required');
 			$this->form_validation->set_rules('dob', 'DOB', 'required');
 			$this->form_validation->set_rules('department', 'Department', 'required');
 			$this->form_validation->set_rules('gender', 'Gender ', 'required');
@@ -1443,20 +1443,6 @@ class Dashboard extends CI_Controller
 				}
 			}
 
-        // if ($this->form_validation->run() == FALSE){
-        //     $errors = validation_errors();
-        //     echo json_encode(['error'=>$errors]);
-        // }else{
-			
-		// 	if (isset($_FILES['dob_doc']) && $_FILES['dob_doc']['name'] != '') {
-
-		// 		$filename = str_replace(' ','_',$_FILES["dob_doc"]['name']);
-		// 		$path ='dob_proof'; //die();
-		// 		$input='dob_doc';
-		// 		$dob_doc= $this->upload_pdf($filename,$path,$input);
-		// 	}
-        //    echo json_encode(['success'=>'Record added successfully.']);
-        // }
 		if($this->form_validation->run()){
 			$array = array(
 				'success' => '<div class="alert alert-success">Thank you for Contact Us</div>'
@@ -1464,10 +1450,23 @@ class Dashboard extends CI_Controller
 		}else{
 			$array = array(
 				'error'   => true,
-				'post_id_error' => form_error('post_id'),
 				'dob_error' => form_error('dob'),
-				'dob_doc_error' => 'PDF required',
-				'message_error' => form_error('message')
+				'dob_doc_error' => form_error('dob_doc'),
+				'category_name_error' => form_error('category_name'),
+				'add_disablity_error' => form_error('add_disablity'),
+				'gender_error' => form_error('gender'),
+				'marital_status_error' => form_error('marital_status'),
+				'father_name_error' => form_error('father_name'),
+				'mother_name_error' => form_error('mother_name'),
+				'identity_proof_error' => form_error('identity_proof'),
+				'identity_error' => form_error('adhar_card_number'),
+				'corr_address_error' => form_error('corr_address'),
+				'corr_state_error' => form_error('corr_state'),
+				'corr_pincode' => form_error('corr_pincode'),
+				'perm_address_error' => form_error('perm_address'),
+				'perm_state_error' => form_error('perm_state'),
+				'perm_pincode' => form_error('perm_pincode_error')
+				
 			);
 		}
 
