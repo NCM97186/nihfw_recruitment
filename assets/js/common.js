@@ -73,12 +73,9 @@ jQuery(function(){
 
 });
 
-$(function(){
-    if(!Modernizr.inputtypes.date) { /* Browsers that fail in modernizr detection test for date input type  */
-    $('input[type="date"]').datepicker({ dateFormat: 'dd-mm-yyyy'});
-    }
-});
+
 function SubmitForm() {
+
     var identity_proof = $('input[name="identity_proof"]:checked').val();
     var identity_number = $('#identity_number').val();
     if (identity_proof == 'DL') {
@@ -96,9 +93,34 @@ function SubmitForm() {
     if (identity_proof == 'Voter') {
         isValidEPICNumber(identity_number);
     }
-    // alert('Hello');
-    // if(identity_number){  
-    //    $().html('The DOB field is required.');
-    //     return false;  
-    // }  
+    var categorys = $('#categorys').val();
+    var category_name = $('.category_name').val();
+   // alert(category_name);
+    if (categorys == 1) {
+        
+        if(category_name){
+            $('.category_name_error').html('The Category  field is required.');
+        }else{
+            $('.category_name_error').html('');  
+        }
+        
+        $('.cat_doc_error').html('The Category Attachment field is required.');
+    }else{
+        $('.cat_doc_error').html(''); 
+        $('.category_name_error').html('');
+    }
+      
+}
+var categorys = $('#categorys').val();
+if (categorys == 1) {
+    document.getElementById('a1').style.display = "block"
+} else if (categorys == 2) {
+    document.getElementById('a1').style.display = "none"
+}
+
+var benchmark_yes = $('#benchmark_yes').val();
+if (benchmark_yes == true) {
+    document.getElementById('a2').style.display = "block"
+} else {
+    document.getElementById('a2').style.display = "none"
 }

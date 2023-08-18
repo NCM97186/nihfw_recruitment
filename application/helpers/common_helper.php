@@ -129,4 +129,41 @@ if(!function_exists('audit_trail'))
 // 		// die();  
 //     }
 // }
+if ( ! function_exists('age_calculate')){
 
+     function age_calculate( $date, $month, $years){
+
+            $dobdate = (int) !empty($date)?$date:0;
+            $dobmonth = (int) !empty($month)?$month:0; 
+            $dobyear = (int) !empty($years)?$years:0; 
+            $currentmonth =  $month = date('m');
+            $calculated_days=0;
+            if($dobdate>1){
+                $calculated_days = 31-$dobdate;
+                $dobmonth = $dobmonth+1;
+            }
+            if($dobmonth<=6){
+                $calculated_month = 6-$dobmonth;
+            }else{
+                $calculated_month = 18-$dobmonth;
+                $dobyear = $dobyear+1;
+            }
+            if($currentmonth <= 7){
+                $yyyy = (int)date('Y');             
+            }else{
+                $yyyy =  !empty($dobyear)?((int)date('Y')):0;    
+
+            }
+            $calculated_month= !empty($dobyear)?($calculated_month):0;
+            $dob_age ='';
+            $last_date = '01-07-'.$yyyy; 
+            $calculated_year = $yyyy-$dobyear;
+            $dob_age = $calculated_year;
+            $dob_age .= $calculated_year>1?' Years ':' Year ';
+            $dob_age .=$calculated_month;
+            $dob_age .= $calculated_month>1?' Months ':' Month ';
+            $dob_age .=$calculated_days;
+            $dob_age .= $calculated_days>1?' Days':' Day';
+            return $dob_age ;
+    }
+}

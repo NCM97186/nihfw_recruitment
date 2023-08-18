@@ -76,7 +76,13 @@ class Dashboard extends CI_Controller
 
 		$data = null;
 		$user_id = $_SESSION['USER']['user_id'];
-		if ($this->input->post('basicinfo')) {
+		$post_id = isset($_COOKIE['post_id']) ? $_COOKIE['post_id'] : null;
+		$application_id =   $this->users->get_application_id();
+		$this->form_validation->set_rules('first_name', 'First Name', 'required');
+		$this->form_validation->set_rules('cand_mob', 'Phone No.', 'required');
+		$this->form_validation->set_rules('cand_email', 'Email ID ', 'required');
+		if ($this->input->post('basicinfo') && $this->form_validation->run() != FALSE) {
+			
 			$post_val = $this->input->post();
 			$update_array = array(
 				'first_name' => $post_val['first_name'],
@@ -86,11 +92,18 @@ class Dashboard extends CI_Controller
 			$this->db->where("user_id", $user_id);
 			$this->db->update("users", $update_array);
 			$this->session->set_flashdata('success', 'Data saved Successfully');
-			redirect(base_url('dashboard/details'));
+			$val=array(
+				'application_id' => $application_id,
+				'user_id' => $user_id,
+				'post_id' => $post_id
+		    );
+			$this->users->insert_update_user_details($val);
+			redirect(base_url('dashboard/basic_details'));
 		}
 		if ($user_id != 0) {
 			$data['basic_info']  = $this->users->get_basicInfo($user_id);
 		}
+
 		loadLayout('user/basicInfo', $data);
 	}
 
@@ -121,24 +134,10 @@ class Dashboard extends CI_Controller
 	public function photo_signature()
 	{
 		$user_id = $_SESSION['USER']['user_id'];
-		$data = null;
+		$data = array();
 
-		if ($this->input->post('photo_sign')) {
-			$this->load->library('form_validation');
+		$data['basic_info']  = $this->users->get_basicInfo($user_id);
 
-			//$this->form_validation->set_rules('photograph', 'photograph', 'required');
-			//$this->form_validation->set_rules('signature', 'signature', 'required');
-			//$this->form_validation->run();
-			if (!empty($_FILES['photograph']['name']) || !empty($_FILES['signature']['name'])) {
-				$this->users->insert_update_photo_signature();
-				$this->session->set_flashdata('success', 'Data saved Successfully');
-				redirect(base_url('dashboard/details'));
-			}
-			redirect(base_url('dashboard/details'));
-		}
-		if ($user_id != 0) {
-			$data['photo_signature']  = $this->users->get_photo_signature($user_id);
-		}
 		loadLayout('user/photo_signature', $data);
 	}
 
@@ -1083,6 +1082,60 @@ class Dashboard extends CI_Controller
 		// print_r($data);
 		loadLayout('user/details', $data);
 	}
+	public function qualifications_employer(){
+		$data['user_details'] = empty($data['user_details']) ? [] : $data['user_details'];
+		$data['work_experience'] = empty($data['work_experience']) ? [] : $data['work_experience'];
+		loadLayout('user/qualifications_employer', $data);
+	}
+	public function basic_details(){
+		// $this->load->library('form_validation');
+		$data = null;
+		$user_id = $_SESSION['USER']['user_id'];
+		$post_id = isset($_COOKIE['post_id']) ? $_COOKIE['post_id'] : null;
+		$data['category'] = $this->Category_model->get_list();
+		$data['state_list']  = $this->db->get('tbl_states')->result();
+		$data['get_job_list']  = $this->jobpost->get_list();
+		$status=array(5,6);
+		$id=  $this->db->select('*')->from('users_detail')->where(array('user_id'=>$user_id, 'post_id'=>$post_id))->where_in('status_id', $status)->get()->row();
+		$application_id =''; 
+		$status=array(5,6);
+		$id=  $this->db->select('*')->from('users_detail')->where(array('user_id'=>$user_id, 'post_id'=>$post_id))->where_in('status_id', $status)->get()->row();
+		$application_id ='';  
+		if(empty($id)){
+		    $application_id =   $this->users->get_application_id(); //die();
+		   $_SESSION['application_id'] = $application_id;
+		}else {
+			//print_r(array('user_id' => $user_id, 'post_id' => $post_id, 'status_id' => 5));
+			$this->db->select('id,application_id');
+			$this->db->where(array('user_id' => $user_id, 'post_id' => $post_id));
+			$this->db->order_by('id', 'DESC');
+			$q = $this->db->get('users_detail');
+			if ($q) {
+				$u_details_app_id = $q->row();
+				if (!empty($u_details_app_id)) {
+					$application_id = $u_details_app_id->application_id;
+					$_SESSION['application_id'] = $application_id;
+					
+					$_SESSION['users_detail_id'] = $u_details_app_id->id;
+					$_SESSION['existing_application'] = 'Y';
+				}
+			}
+			
+			$data['user_details']  = $this->users->get_user_details($application_id);
+			
+			$data['post_detail']  = $this->users->get_candidate($data['user_details']->user_id);
+
+			$data['basic_info']  = $this->users->get_basicInfo($data['user_details']->user_id);
+			
+			
+		}
+		
+		$data['basic_info']  = $this->users->get_basicInfo($user_id);
+		 
+
+		loadLayout('user/basic_details', $data);
+	}
+	
 
 	public function preview()
 	{
@@ -1125,17 +1178,15 @@ class Dashboard extends CI_Controller
 
 		if($data['user_details']->gender == "Female"){
 			
-			$status_id = 1;
+			$status_id = 7;
 			$this->db->where('application_id', $application_id);
 			$this->db->update('users_detail', array('status_id' => $status_id));
 			$this->users->update_user_details($application_id, $post_val);
 			redirect(base_url('dashboard/success'));
 		}
 			if($gid->fee_applicable == 1){
-				//echo "hiii1";
 				if($data['fee'] == ""){
-				//	echo "hiii222";
-				$status_id = 1;
+				$status_id = 7;
 				$this->db->where('application_id', $application_id);
 				$this->db->update('users_detail', array('status_id' => $status_id));
 				$this->users->update_user_details($application_id, $post_val);
@@ -1151,7 +1202,7 @@ class Dashboard extends CI_Controller
 			redirect('https://www.onlinesbi.sbi/sbicollect/icollecthome.htm?corpID=5451210', 'refresh');
 		}else{
 			// echo "hii333";
-			$status_id = 1;
+			$status_id = 7;
 			$this->db->where('application_id', $application_id);
 			$this->db->update('users_detail', array('status_id' => $status_id));
 			// echo $this->db->last_query();
@@ -1201,6 +1252,7 @@ class Dashboard extends CI_Controller
 		$user_id = $_SESSION['USER']['user_id'];
 		//$application_id = $_SESSION['application_id'];
 		$application_id = 	$this->users->get_old_application_id();
+		$data['application_id']  = $application_id;
 		$data['user_details']  = $this->users->get_user_details($application_id);
 		$data['basic_info']= $this->db->select('cand_mob')->from('users')->where('user_id',$user_id)->get()->row();
 		$data['post_detail']= $this->db->select('post_name')->from('jobpost')->where('post_id',$data['user_details']->post_id)->get()->row();
@@ -1237,7 +1289,7 @@ class Dashboard extends CI_Controller
 		}
 
 		curl_close($ch);
-		$this->session->unset_userdata('application_id');
+		//$this->session->unset_userdata('application_id');
 
 		loadLayout('home/success', $data);
 	}
@@ -1290,39 +1342,164 @@ class Dashboard extends CI_Controller
 		$html = $this->load->view('user/admitcard',$data, true);
 		$this->pdf->createPDF($html, 'admincard', false, "A4");
 	}
-	public function upload_pdf($application_id='',$filename='',$tempname='',$path='',$msg='')
-	{
-		print_r($_FILES);die();
-		$user_id=$_REQUEST['user_id'];
-		$post_id=$_REQUEST['post_id'];
-		$filename=$_FILES["file"]["name"] ;
-		$tempname=$_FILES["file"]["tmp_name"];
-		$path=$_REQUEST['path'];
-		$msg='update';
-		if ($tempname != '') {
-			$file_name = $tempname;
-			$unlink= 'uploads/'.$path.'/'.$user_id.'_'.$post_id.'_'.$file_name;
-			if($unlink){
-				unlink($unlink);
+	
+	public function basic_details_save(){
+	
+		$post_val = $this->input->post();
+		
+			$this->form_validation->set_rules('category', 'Category', 'required');
+			if ($this->input->post('category') == '1') {
+				$this->form_validation->set_rules('category_name', 'Category', 'required');
+				if (empty($_FILES['category_attachment']['name']) && empty($this->input->post('old_category_attachment'))) {
+					$this->form_validation->set_rules('category_attachment', 'Category Attachment', 'required');
+				}
 			}
-			echo $unlink; 
-			$config['upload_path'] = $unlink;
-			$config['allowed_types'] = 'pdf';
-			$config['max_size'] = '1024';
-			$config['file_name'] = $user_id."_".$post_id."_".$file_name;
-			$this->load->library('upload', $config);
-			print_r($config);
-			$this->upload->initialize($config);
-			if ($this->upload->do_upload($path)) {
-				$upload_data = $this->upload->data();
-				$pdf_response = $upload_data['file_name'];
-				return $pdf_response;
-			} else {
-				$error = array('error' => $this->upload->display_errors());
-				$label = $msg;
+
+			$this->form_validation->set_rules('benchmark', 'Benchmark', 'required');
+
+			if ($this->input->post('benchmark') == 'Yes') {
+				if (empty($_FILES['person_disability']['name']) && empty($this->input->post('old_person_disability'))) {
+					$this->form_validation->set_rules('person_disability', 'Person Disability', 'required');
+				}
+				if (empty($this->input->post('add_disablity'))) {
+					$this->form_validation->set_rules('add_disablity', 'Enter Disability', 'required');
+				}
+			}
+
+			if ($this->input->post('adhar_card_number') != '') {
+				if (empty($_FILES['adhar_card_doc']['name']) && empty($this->input->post('old_adhar_card_doc'))) {
+					$this->form_validation->set_rules('adhar_card_doc', 'Adhar Card Document', 'required');
+					
+				}
 			}
 			
+			$this->form_validation->set_rules('post_id', 'Post ID', 'required');
+			$this->form_validation->set_rules('dob', 'DOB', 'required');
+			$this->form_validation->set_rules('department', 'Department', 'required');
+			$this->form_validation->set_rules('gender', 'Gender ', 'required');
+			$this->form_validation->set_rules('department', 'Department ', 'required');
+			$this->form_validation->set_rules('marital_status', 'Marital status', 'required');
+			$this->form_validation->set_rules('father_name', 'Father name', 'required');
+			$this->form_validation->set_rules('mother_name', 'Mother name', 'required');
+			$this->form_validation->set_rules('identity_proof', 'Identity proof', 'required');
+			$this->form_validation->set_rules('adhar_card_number', 'Adhar Card Number', 'required');
+			$this->form_validation->set_rules('corr_address', 'Present Postal Address', 'required');
+			$this->form_validation->set_rules('corr_state', 'State', 'required');
+			$this->form_validation->set_rules('corr_pincode', 'Pincode', 'required');
+			$this->form_validation->set_rules('perm_address', 'Permanent Address', 'required');
+			$this->form_validation->set_rules('perm_state', 'Permanent State', 'required');
+			$this->form_validation->set_rules('perm_pincode', 'Permanent Pincode', 'required');
+			// print_r($this->form_validation->run());
+			// die();
+			
+			// if (isset($_FILES['dob_doc']) && $_FILES['dob_doc']['name'] != '') {
+
+			// 	$this->form_validation->set_rules('dob_doc', 'DOB Document', 'required');
+			// 	$filename = str_replace(' ','_',$_FILES["dob_doc"]['name']);
+			// 	$path ='dob_proof'; //die();
+			// 	$input='dob_doc';
+			// 	$dob_doc= $this->upload_pdf($filename,$path,$input);
+			// }
+			if ($this->input->post('identity_proof') == 'DL') {
+				$identity_number = $this->input->post('adhar_card_number');
+				if (!preg_match('/^(([A-Z]{2}[0-9]{2})( )|([A-Z]{2}-[0-9]{2}))((19|20)[0-9][0-9])[0-9]{7}$/', $identity_number)) {
+					$this->session->set_flashdata('error', 'Invalid driving license.');
+					  //redirect(base_url('dashboard/details'));
+						//loadLayout('user/details', $data);
+						$response='Invalid driving license.';
+						
+				}
+			}
+
+			if ($this->input->post('identity_proof') == 'Adhaar') {
+				$identity_number = $this->input->post('adhar_card_number');
+				if (!preg_match('/^([0-9]{4}[0-9]{4}[0-9]{4}$)|([0-9]{4}\s[0-9]{4}\s[0-9]{4}$)|([0-9]{4}-[0-9]{4}-[0-9]{4}$)/', $identity_number)) {
+					$this->session->set_flashdata('error', 'Invalid Aadhar card number.');
+					$response='Invalid Aadhar card number.';
+				}
+			}
+
+			if ($this->input->post('identity_proof') == 'Pan') {
+				$identity_number = $this->input->post('adhar_card_number');
+				if (!preg_match('/([A-Z]){5}([0-9]){4}([A-Z]){1}$/', $identity_number)) {
+					$this->session->set_flashdata('error', 'Invalid Pan card number.');
+					$response='Invalid Pan card number.';
+				}
+			}
+
+			if ($this->input->post('identity_proof') == 'Passport') {
+				$identity_number = $this->input->post('adhar_card_number');
+				if (!preg_match('/^[A-PR-WY][1-9]\d\s?\d{4}[1-9]$/', $identity_number)) {
+					$this->session->set_flashdata('error', 'Invalid Passport number.');
+					$response='Invalid Passport number.';
+				}
+			}
+
+			if ($this->input->post('identity_proof') == 'Voter') {
+				$identity_number = $this->input->post('adhar_card_number');
+				if (!preg_match('/^[A-Z]{3}[0-9]{7}$/', $identity_number)) {
+					$this->session->set_flashdata('error', 'Invalid Voter Id.');
+					$response='Invalid Voter Id.';
+				}
+			}
+
+        // if ($this->form_validation->run() == FALSE){
+        //     $errors = validation_errors();
+        //     echo json_encode(['error'=>$errors]);
+        // }else{
+			
+		// 	if (isset($_FILES['dob_doc']) && $_FILES['dob_doc']['name'] != '') {
+
+		// 		$filename = str_replace(' ','_',$_FILES["dob_doc"]['name']);
+		// 		$path ='dob_proof'; //die();
+		// 		$input='dob_doc';
+		// 		$dob_doc= $this->upload_pdf($filename,$path,$input);
+		// 	}
+        //    echo json_encode(['success'=>'Record added successfully.']);
+        // }
+		if($this->form_validation->run()){
+			$array = array(
+				'success' => '<div class="alert alert-success">Thank you for Contact Us</div>'
+			);
+		}else{
+			$array = array(
+				'error'   => true,
+				'post_id_error' => form_error('post_id'),
+				'dob_error' => form_error('dob'),
+				'subject_error' => form_error('subject'),
+				'message_error' => form_error('message')
+			);
 		}
+
+			echo json_encode($array);
+
+	}
+	public function upload_pdf($filename,$path,$input){
+		      
+		 $user_id=$_SESSION['USER']['user_id'];
+		 $post_id=$_COOKIE['post_id'];
+		
+		        $file_name = str_replace(' ','_',$filename);
+				
+				$unlink ='uploads/'.$path.'/'.$user_id."_".$post_id."_".$file_name; //die();
+				
+				if (file_exists($unlink)) {
+					unlink($unlink);
+				}
+				$config['upload_path'] = 'uploads/'.$path.'/';
+				$config['allowed_types'] = 'pdf';
+				$config['max_size'] = '1024';
+				$config['file_name'] = $user_id."_".$post_id."_".$file_name;
+				$this->load->library('upload', $config);
+				$this->upload->initialize($config);
+				if ($this->upload->do_upload($input)) {
+					$upload_data = $this->upload->data();
+					$dob_doc = $upload_data['file_name'];
+				   return   $user_id."_".$post_id."_".$file_name;
+				} else {
+					$error = array('error' => $this->upload->display_errors());
+					//$label = "Date Of Birth Document";
+				}
 
 	}
 }
