@@ -83,10 +83,10 @@ th{
     background-color: #fff;
 }
 .table-bordered {
-    border: 1px solid #ddd;
+    border: 2px solid #c7c2c2;
 }
 .table>tbody>tr>td, .table>tbody>tr>th, .table>tfoot>tr>td, .table>tfoot>tr>th, .table>thead>tr>td, .table>thead>tr>th {
-    padding: 8px;
+    padding: 5px;
     line-height: 1.42857143;
     vertical-align: top;
     border-top: 1px solid #ddd;
@@ -158,20 +158,20 @@ th{
                     <div id="" style="text-align: left; background-color: #fff; width: 100%">
 
                         <form method="post" id="notification-form">    
-                        <table class="table table-bordered" id="tbl_Candidate">
+                        <table class="" style="width: 100%;" id="tbl_Candidate">
                                 <tbody>
                                     <!-- <tr> -->
                                         <td colspan="2" style="text-align: left; width: 100%;">
-                                            <table  class="table table-bordered" style="width: 100%" id="tblcndt">
+                                            <table  class="table table-bordered" style="width: 100%; border: 2px solid #c7c2c2;" id="tblcndt">
                                                 <tbody>
                                                     <tr style="color: #000;">
                                                         <th >Application ID</th>
                                                         <th colspan="4"><?php echo $user_details->application_id; ?></th>
                                                     </tr>
                                                     <tr>
-                                                        <td style="width: 20%;"><b>Post</b></td>
+                                                        <td ><b>Post</b></td>
                                                         <td colspan="3"><?php echo $user_details->post_name; ?></td>
-                                                        <td rowspan="3"><img src="<?= base_url('uploads/photograph/'.$user_details->photograph); ?>" alt="user" class="img-responsive" style="width:100px; margin: 0 auto;"></td>
+                                                        <td rowspan="5"><img src="<?= base_url('uploads/photograph/'.$user_details->photograph); ?>" alt="user" class="img-responsive" style="width:125px; margin: 0 auto; aspect-ratio:3/3.5; object-fit:cover;"></td>
                                                     </tr>
                                                     <tr>
                                                         <td ><b>First Name</b></td>
@@ -199,15 +199,14 @@ th{
                                                     </tr> -->
                                                     <tr>
                                                         <td style="width: 10%;"><b>Category</b></td>
-                                                        <td colspan="2"><?php echo $category_name; ?></td>
+                                                        <td colspan=""><?php echo $category_name; ?></td>
                                                         <td style="width: 10%;"><b>Department</b></td>
-                                                        <td colspan="2"><?php if($user_details->department == '2') { 
+                                                        <td colspan=""><?php if($user_details->department == '2') { 
                                                             echo "NO"; 
                                                         }else{
                                                                echo "YES"; 
                                                             }?></td>
-                                                        <td  style="width: 5%;"><img src="<?= base_url('uploads/signature/').@$user_details->signature; ?>" alt="user" class="img-responsive" style="width:100px; margin: 0 auto;"></td>
-                                                        <!-- <th ><img src="blank.jpg" alt="user" class="img-responsive" style="width:150px; margin: 0 auto;"></th> -->
+                                                        
 
                                                        
                                                     </tr>
@@ -221,41 +220,42 @@ th{
                                         </td>
                                     </tr>
 
-                                    <tr class="bg-info">
-                                        <th colspan="2" class="heading2">
-                                            <span style="color: #000;">Personal Details ↓ </span>
-                                        </th>
-                                    </tr>
+                                    
 
                                     <tr>
                                         <td colspan="2"  style="text-align: left; width: 100%;">
-                                            <table  class="table table-bordered" style="width: 100%" id="tblcndt">
+                                            <table  class="table table-bordered" style="width: 100%; border: 2px solid #c7c2c2;" id="tblcndt">
                                                 <tbody>
+                                                <tr class="bg-info">
+                                        <th colspan="6" class="heading2" style="text-align: left; width: 100%;">
+                                            <span style="color: #000;">Personal Details ↓ </span>
+                                        </th>
+                                    </tr>
                                                     <tr>
                                                         
                                                         <td  style="width: 25%;"><b>Date Of Birth</b></td>
                                                         <?php $dbdateofbirth = $user_details->dob;
 		                                                           $dob = date("d-m-Y", strtotime($dbdateofbirth));
                                                                    ?>
-                                                        <td colspan="2" style="width: 25%;"><?php echo $dob; ?></td>
+                                                        <td colspan="" style="width: 25%;"><?php echo $dob; ?></td>
                                                         <td  style="width: 25%;"><b>Age</b></td>
-                                                        <td colspan="2" style="width: 25%;"><?php  echo $dob_age; ?></td>
+                                                        <td colspan="3" style="width: 25%;"><?php  echo $dob_age; ?></td>
                                                       
                                                         
                                                     </tr>
                                                    
                                                     <tr>
                                                         <td  style="width: 25%;"><b>Gender</b></td>
-                                                        <td colspan="2" style="width: 25%;"><?php echo $user_details->gender; ?></td>
+                                                        <td colspan="" style="width: 25%;"><?php echo $user_details->gender; ?></td>
                                                         <td  style="width: 25%;"><b>Marital Status</b></td>
-                                                        <td colspan="2" style="width: 25%;"><?php echo $user_details->marital_status; ?></td>
+                                                        <td colspan="3" style="width: 25%;"><?php echo $user_details->marital_status; ?></td>
                                                         
                                                     </tr>
                                                     <tr>
                                                         <td  style="width: 25%;"><b>Father's Name</b></td>
-                                                        <td colspan="2" style="width: 25%;"><?php echo $user_details->father_name; ?></td>
+                                                        <td colspan="" style="width: 25%;"><?php echo $user_details->father_name; ?></td>
                                                         <td  style="width: 25%;"><b>Mother's Name</b></td>
-                                                        <td colspan="2" style="width: 25%;"><?php echo $user_details->mother_name; ?></td>
+                                                        <td colspan="3" style="width: 25%;"><?php echo $user_details->mother_name; ?></td>
                                                     </tr>
                                                     <tr>
                                                         
@@ -266,8 +266,8 @@ th{
                                                         <?php $res= $this->db->select('name')->from('tbl_states')->where('id',$user_details->corr_state)->get()->row(); ?> 
                                                         <td  style="width: 25%;"><b>State</b></td>
                                                         <td  style="width: 25%;"><?php echo $res->name; ?></td>
-                                                        <td  style="width: 25%;"><b>Pincode</b></td>
-                                                        <td  style="width: 25%;"><?php echo $user_details->corr_pincode; ?></td>
+                                                        <td  style="width: 15%;"><b>Pincode</b></td>
+                                                        <td  style="width: 15%;"><?php echo $user_details->corr_pincode; ?></td>
                                                         
                                                     </tr>    
                                                     <tr>
@@ -276,16 +276,16 @@ th{
                                                         <?php $state = $this->db->select('name')->from('tbl_states')->where('id',$user_details->perm_state)->get()->row(); ?> 
                                                         <td  style="width: 25%;"><b>State</b></td>
                                                         <td  style="width: 25%;"><?php echo $state->name; ?></td>
-                                                        <td  style="width: 25%;"><b>Pincode</b></td>
-                                                        <td  style="width: 25%;"><?php echo $user_details->perm_pincode; ?></td>
+                                                        <td  style="width: 15%;"><b>Pincode</b></td>
+                                                        <td  style="width: 15%;"><?php echo $user_details->perm_pincode; ?></td>
                                                        
                                                     </tr>
                                                     <tr>
                                                         
                                                         <td  style="width: 25%;"><b>Identity Proof</b></td>
-                                                        <td colspan="2" style="width: 25%;"><?php echo $user_details->identity_proof; ?></td>
+                                                        <td colspan="" style="width: 25%;"><?php echo $user_details->identity_proof; ?></td>
                                                         <td  style="width: 25%;"><b>Identity Number</b></td>
-                                                        <td colspan="2" style="width: 25%;"><?php echo $user_details->adhar_card_number; ?></td>
+                                                        <td colspan="3" style="width: 25%;"><?php echo $user_details->adhar_card_number; ?></td>
                                                     </tr>
                                                  
 
@@ -297,18 +297,19 @@ th{
                                         </td>
                                     </tr>
 
-                                    <tr class="bg-info">
-                                        <th colspan="2" class="heading2">
-                                            <span style="color: #000;">Details of Educational and other professional / Technical qualifications ↓ </span>
-                                            <input type="hidden" name="trow" id="tq" value="5">
-                                        </th>
-                                    </tr>
+                                   
 
                                     <tr style="font-size: 12pt">
                                         <td colspan="2" style="text-align: left">
                                             <div style="text-align: left">
-                                                <table id="dynamic_field" class="table table-bordered" style="width: 100%">
+                                                <table id="dynamic_field" class="table table-bordered" style="width: 100%; border: 2px solid #c7c2c2;">
                                                     <tbody>
+                                                    <tr class="bg-info">
+                                        <th colspan="6" class="heading2" style="text-align: left; width: 100%;">
+                                            <span style="color: #000;">Details of Educational and other professional / Technical qualifications ↓ </span>
+                                            <input type="hidden" name="trow" id="tq" value="5">
+                                        </th>
+                                    </tr>
                                                     <tr class="bg-danger">
                                                             <td  style="font-weight: bold; color: #000;" valign="top">Degree/Diploma</td>
                                                             <td  style="font-weight: bold; color: #000;" valign="top">Board/University</td>
@@ -345,17 +346,18 @@ th{
                                         </td>
                                     </tr>
 
-                                    <tr class="bg-info">
-                                        <th colspan="2" class="heading2">
-                                            <span style="color: #000;">Work Experience details (Start from present Employer) ↓ </span>
-                                        </th>
-                                    </tr>
+                                    
 
                                     <tr style="font-size: 12pt">
                                         <td colspan="2" style="text-align: left">
                                             <div style="text-align: left">
-                                                <table id="dynamic_field" class="table table-bordered" style="width: 100%">
+                                                <table id="dynamic_field" class="table table-bordered" style="width: 100%; border: 2px solid #c7c2c2;">
                                                     <tbody>
+                                                    <tr class="bg-info">
+                                        <th colspan="5" class="heading2" style="text-align: left; width: 100%;">
+                                            <span style="color: #000;">Work Experience details (Start from present Employer) ↓ </span>
+                                        </th>
+                                    </tr>
                                                     <tr class="bg-danger">
                                                             <td  style="font-weight: bold; color: #000;" valign="top">Organization</td>
                                                             <td  style="font-weight: bold; color: #000;" valign="top">Post Held</td>
@@ -386,29 +388,47 @@ th{
                                         </td>
                                     </tr>
 
-                                    <tr>
-                                        <td colspan="2"><b>Date:</b> <?php echo date('d-m-Y')?></td>
-                                    </tr>
-                                    <tr>
-                                        <td  ><b>Fee</b></td>
-                                        <td align="left" style="width: 70%;"><?php
-                                                    if($user_details->gender == "Female"){
-                                                        echo "Exempted";
-                                                    }else{
-                                                            if($fee_applicable == 1){
-                                                            if($fee == ""){
-                                                               echo "Exempted";
-                                                            }else{
-                                                           echo $fee->fee; }
-                                                            }else{
-                                                                echo "Exempted";
-                                                            }
-                                                        }
-                                                           ?>
-                                                            </td>
-                                    </tr>
+                                    
+                                    
+                                    
                                 </tbody>
                             </table>
+                            <table class="table table-bordered" style="width: 100%; border: 2px solid #c7c2c2;">
+                            <tr style="width: 100%; border: 2px solid #c7c2c2;">
+                                <td  ><b>Fee</b></td>
+                                <td align="left" ><?php
+                                            if($user_details->gender == "Female"){
+                                                echo "Exempted";
+                                            }else{
+                                                    if($fee_applicable == 1){
+                                                    if($fee == ""){
+                                                       echo "Exempted";
+                                                    }else{
+                                                   echo $fee->fee; }
+                                                    }else{
+                                                        echo "Exempted";
+                                                    }
+                                                }
+                                                   ?>
+                                                    </td>
+                            </tr>
+                            </table>
+                            <table class="table-bordered" style="border: 2px solid #c7c2c2;border-collapse: collapse;">
+                                    <tr class="bg-info" >
+                                        <th colspan="2" class="heading2" style="text-align: left; width: 100%;">
+                                            <span style="color: #000; padding:5px;">Declaration</span>
+                                        </th>
+                                    </tr>
+                                    <tr >
+                                    <td colspan="2"><p style="padding:5px; margin:0; ">I hereby declare that I am a citizen of India. The entries in this application form are complete, true and correct to the best of my knowledge and belief. I have read carefully all the examination rules and provisions related to this advertisement and I promise to follow these and also promise that I will not use any unfair means during examination. <br>
+                                    I fulfil all the eligibility criteria i.e. age limit, educational qualification today as prescribed in the advertisement. I have all the eligibility certificates, whenever the NIHFW will ask for it I will produce the same failing which my candidature can be cancelled by the NIHFW at any time. In case of any information provided by me found to be false or Incorrect before or after the examination, the NIHFW can cancel my candidature. I declare that I have filled only one application form for this examination.</p></td>
+                                    </tr>
+                                    <tr>
+                                        <td><b style="padding-left:5px;">Date:</b> <?php echo date('d-m-Y')?></td>                                    
+                                        <td ><img src="<?= base_url('uploads/signature/').@$user_details->signature; ?>" alt="user" class="img-responsive" style="width:100px; margin: 0 auto;"></td>
+                                                        <!-- <th ><img src="blank.jpg" alt="user" class="img-responsive" style="width:150px; margin: 0 auto;"></th> -->
+                                    </tr>
+                                    </table>
                         </form>
 
                     </div>

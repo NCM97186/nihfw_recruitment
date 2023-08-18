@@ -395,7 +395,7 @@ class Dashboard extends CI_Controller
 					// Echo all information set
 
 					$epostage =  $eyears . ' years - ' . $emonth . ' month - ' . $edays . ' Days ';
-					$this->session->set_flashdata('error', ' you are not elegible to apply this post. because Your Age is ' . $candage . '. you must be ' . $epostage . 'to apply this post.');
+					$this->session->set_flashdata('error', ' you are not eligible to apply this post. because Your Age is ' . $candage . '. you must be ' . $epostage . 'to apply this post.');
 					redirect(base_url('dashboard/details'));
 					//loadLayout('user/details', $data);
 					$statusre=false;
@@ -532,7 +532,7 @@ class Dashboard extends CI_Controller
 						// Echo all information set
 
 						$epostage =  $eyears . ' years - ' . $emonth . ' month - ' . $edays . ' Days ';
-						$this->session->set_flashdata('error', ' you are not elegible to apply this post. because Your Age is ' . $candage . '. you must be ' . $epostage . ' (with age relaxation) to apply this post.');
+						$this->session->set_flashdata('error', ' you are not  to apply this post. because Your Age is ' . $candage . '. you must be ' . $epostage . ' (with age relaxation) to apply this post.');
 						redirect(base_url('dashboard/details'));
 						//loadLayout('user/details', $data);
 						$statusre=false;
@@ -622,7 +622,7 @@ class Dashboard extends CI_Controller
 
 						$epostage =  $eyears . ' years - ' . $emonth . ' month - ' . $edays . ' Days ';
 
-						$this->session->set_flashdata('error', ' you are not elegible to apply this post. because Your Age is ' . $candage . ' years. you must be ' . $epostage . ' years (with age relaxation) to apply this post.');
+						$this->session->set_flashdata('error', ' you are not  to apply this post. because Your Age is ' . $candage . ' years. you must be ' . $epostage . ' years (with age relaxation) to apply this post.');
 						redirect(base_url('dashboard/details'));
 						//loadLayout('user/details', $data);
 						$statusre=false;
@@ -654,7 +654,7 @@ class Dashboard extends CI_Controller
 						// Echo all information set
 
 						$epostage =  $eyears . ' years - ' . $emonth . ' month ';
-						$this->session->set_flashdata('error', ' you are not elegible to apply this post. because Your Age is ' . $candage . ' years. you must be ' . $epostage . ' years (with age relaxation) to apply this post.');
+						$this->session->set_flashdata('error', ' you are not eligible to apply this post. because Your Age is ' . $candage . ' years. you must be ' . $epostage . ' years (with age relaxation) to apply this post.');
 						redirect(base_url('dashboard/details'));
 						//loadLayout('user/details', $data);
 						$statusre=false;
@@ -1322,7 +1322,7 @@ class Dashboard extends CI_Controller
 		$html = $this->load->view('pdf/pdf_data', $data, true);
 		$this->pdf->createPDF($html, 'mypdf', false,"A3");
 
-		//$this->load->view('pdf/pdf_data', $data);
+		// $this->load->view('pdf/pdf_data', $data);
 	}
 
 	public function checkdata()

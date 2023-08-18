@@ -6677,6 +6677,8 @@ float: right;
     .nav-tabs.wizard > li > a {
       opacity: 1;
       font-size: 14px;
+      width: fit-content;
+      padding: 10px;
     }
     
     .nav-tabs.wizard a:hover {
@@ -6707,22 +6709,22 @@ float: right;
         position: relative;
         padding: 0;
         margin: 0px 0px 0px 0;
-        width: 20.6%;
+        width: unset;
         display: inline-block;
         text-align: center;
       }
-      .nav-tabs.wizard li.active a {
+      /* .nav-tabs.wizard li.active a {
         padding-top: .5em;
-      }
+      } */
       .nav-tabs.wizard li::after,
       .nav-tabs.wizard li>*::after {
         content: '';
         position: absolute;
-        top: 1px;
+        top: 0px;
         left: 100%;
         height: 0;
         width: 0;
-        border: 23px solid transparent;
+        border: 20px solid transparent;
         border-right-width: 0;
         /*border-left-width: 20px*/
       }
