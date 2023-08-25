@@ -12,6 +12,7 @@ class Login extends CI_Controller {
         // Load the captcha helper
         $this->load->helper('captcha');
         $this->load->helper('cookie');
+        $this->generateSalt();
     }
 	
     public function index(){
