@@ -114,19 +114,24 @@ $csrf = array(
                                                                         $years = (int) $dob_array[0];
                                                                         ?>
                                                                 <input type="date" name="dob" id="dob" class="form-control" value="<?php echo set_value('dob', @$dob); ?>">
+                                                             
+                                                         
                                                                 <span style="color:Black;font-family:Times New Roman;font-weight:normal;"></span>
                                                                 <br>
                                                                 <em><span style="color: #7d7e7f; font-size:13px">( Please Select your DOB As given in Matriculation Certificate.
                                                                         )</span></em>
-                                                                <span class="form_error"><?php echo form_error('dob'); ?></span>
+                                                                        <br/>
                                                                 <span id="dob_error" class="form_error"></span>
-                                                            </div>
+                                                               
+                                                                  </div>
                                                             <input type="hidden" name="old_dob_doc" value="<?php echo @$user_details->dob_doc; ?>">
                                                             <input type="file" name="dob_doc" id="dob_doc" onchange="onlyDobpdf(this);" />
                                                             <span class="form_error"><?php echo form_error('dob_doc'); ?></span>
 
-                                                            <span class="dob_doc_error" style="color:red;"></span>
                                                             <span style="font-size:13px">Please select pdf format file<br>Max file size 1 MB</span>
+                                                            <br>
+                                                            <span class="dob_doc_error form_error" id="dob_doc_error" style="color:red;"></span>
+                                                           
                                                         </td>
 
                                                         <td align="left" style="">
@@ -154,58 +159,39 @@ $csrf = array(
                                                             <table class="" id="a1" name="category_proof" style="display:none;">
                                                                 <tr>
                                                                     <td align="left" style="">
-                                                                        <!-- <input type="radio" name="category_name" value="GENERAL" <?php // echo set_radio('category', 'GENERAL'); 
-                                                                                                                                        ?>> GENERAL 
-                                                        <input type="radio" name="category_name" value="EWS" <?php //echo set_radio('category', 'EWS'); 
-                                                                                                                ?>> EWS-->
-                                                         <?php 
-                                                            if(isset($_POST['category_name'])){
-                                                                $cat_name=$_POST['category_name'];
-                                                            } else{
-                                                                $cat_name="";
-                                                            }
-                                                            $category_name1=!empty(@$user_details->category_name)?@$user_details->category_name:$cat_name; 
-                                                        ?>
+                                                                        <?php 
+                                                                                if(isset($_POST['category_name'])){
+                                                                                    $cat_name=$_POST['category_name'];
+                                                                                } else{
+                                                                                    $cat_name="";
+                                                                                }
+                                                                                $category_name1=!empty(@$user_details->category_name)?@$user_details->category_name:$cat_name; 
+                                                                            ?>
 
                                                                         <?php $category_name = set_value('category_name', @$category_name1); ?>
-                                                                        <input type="radio" name="category_name" value="OBC" <?php if ($category_name == 'OBC') { ?> checked <?php } ?> <?php //echo set_radio('category', 'OBC'); 
+                                                                        <input type="radio" name="category_name" class="category_name" value="OBC" <?php if ($category_name == 'OBC') { ?> checked <?php } ?> <?php //echo set_radio('category', 'OBC'); 
                                                                                                                                                                                         ?>> OBC
-                                                                        <input type="radio" name="category_name" value="ST" <?php if ($category_name == 'ST') { ?> checked <?php } ?> <?php //echo set_radio('category', 'ST'); 
+                                                                        <input type="radio" name="category_name" class="category_name" value="ST" <?php if ($category_name == 'ST') { ?> checked <?php } ?> <?php //echo set_radio('category', 'ST'); 
                                                                                                                                                                                         ?>> ST
-                                                                        <input type="radio" name="category_name" value="SC" <?php if ($category_name == 'SC') { ?> checked <?php } ?> <?php //echo set_radio('category', 'SC'); 
+                                                                        <input type="radio" name="category_name" class="category_name" value="SC" <?php if ($category_name == 'SC') { ?> checked <?php } ?> <?php //echo set_radio('category', 'SC'); 
                                                                                                                                                                                         ?>> SC
-                                                                        <input type="radio" name="category_name" value="EWS" <?php if ($category_name == 'EWS') { ?> checked <?php } ?> <?php //echo set_radio('category', 'SC'); 
-                                                                                                                                                                                    ?>> EWS
-                                                                        <!-- <input type="radio" name="category" value="OH" > OH -->
-                                                                        <!-- <?php //$category_name = set_value('category_name', @$user_details->category_name); 
-                                                                                ?>
-                                                  <?php  //foreach($category as $value) { 
-                                                    ?>
-                                                            
-
-
-                                                   <input type="radio" name="category_name" value="<?php // echo $value->id;
-                                                                                                    ?>" <?php //if($category_name  == $value->id) { echo 'checked'; }  
-                                                                                                        ?>
-                                                            >> <?php //echo $value->category;
-                                                                ?> 
-                                                           
-                                  <?php //} 
-                                    ?>
-                                                        <span class="form_error"><?php //echo form_error('category_name'); 
-                                                                                    ?></span>
-														 </td></tr> -->
+                                                                        <input type="radio" name="category_name" class="category_name" value="EWS" <?php if ($category_name == 'EWS') { ?> checked <?php } ?> <?php //echo set_radio('category', 'SC'); 
+                                                                                                                                                                             ?>> EWS
+                                                                     
+                                                                     
+                                                                       
 
 
                                                                 <tr>
                                                                     <td align="left" style="">
                                                                         <span style="font-size:13px">(Self Attested copy of latest certificate to be attached):</span>
-
+                                                                        <br>  
+                                                                     <span class="form_error" id="category_name_error"></span>
                                                                         <input type="hidden" name="old_category_attachment" value="<?php echo @$user_details->category_attachment; ?>">
                                                                         <input type="file" onchange="onlyCatpdf(this);" name="category_attachment" id="cat_doc" />
                                                                         <span class="form_error"><?php echo form_error('category_attachment'); ?></span>
-                                                                        <span class="cat_doc_error" style="color:red;"></span>
                                                                         <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span>
+                                                                    <br><span class="cat_doc_error form_error" id="cat_doc_error" style="color:red;"></span>
                                                                     </td>
                                                                 </tr>
                                                             </table>
@@ -280,8 +266,8 @@ $csrf = array(
                                                             
                                                             $benchmark = set_value('benchmark', @$benchmark1); ?>
                                                             <input name="benchmark" id="benchmark_yes" class="benchmark" type="radio" value="Yes" <?php if ($benchmark == 'Yes') { ?> checked <?php } ?>> Yes
-                                                            <input name="benchmark" id="benchmark_no" class="benchmark" type="radio" value="No" <?php if ($benchmark == 'No') { ?> checked <?php } ?>> No
-                                                            <span class="form_error"><?php echo form_error('benchmark'); ?></span>
+                                                            <input name="benchmark" id="benchmark_no" class="benchmark" type="radio" checked value="No" <?php if ($benchmark == 'No') { ?> checked <?php } ?>> No
+                                                            <span class="form_error" id="benchmark_error"><?php echo form_error('benchmark'); ?></span>
                                                             <table class="" id="a2" name="disability_proof" style="display:none;">
                                                                 <tr>
                                                                     <td align="left" style="">
@@ -300,8 +286,8 @@ $csrf = array(
                                                                         }
                                                                         $add_disablity1=!empty(@$user_details->add_disablity)?@$user_details->add_disablity:$add_dis; 
                                                                     ?>
-                                                                        <input style="margin-top:5px; margin-bottom:5px;" name="add_disablity" type="text" value="<?php echo set_value("add_disablity", @$add_disablity1); ?>">
-                                                                        <span class="form_error"><?php echo form_error('add_disablity'); ?></span>
+                                                                        <input style="margin-top:5px; margin-bottom:5px;" class="form-control" id ="add_disablity" name="add_disablity" type="text" value="<?php echo set_value("add_disablity", @$add_disablity1); ?>">
+                                                                        <span class="form_error" id ="add_disablity_error" ><?php echo form_error('add_disablity'); ?></span>
                                                                      <?php 
                                                                         if(isset($_POST['person_disability'])){
                                                                             $person_dis=$_POST['person_disability'];
@@ -312,11 +298,12 @@ $csrf = array(
                                                                     ?>
 
                                                                         <input type="hidden" name="old_person_disability" value="<?php echo @$person_disability1; ?>">
-                                                                        <input type="file" onchange="onlyDisablitypdf(this);" name="person_disability" id="person_disability" class="form-control" style="width: 100%;" />
-                                                                        <span class="form_error"><?php echo form_error('person_disability'); ?></span>
-                                                                        <span class="person_disability_error" style="color:red;"></span>
+                                                                        <input type="file" onchange="onlyDisablitypdf(this);" name="person_disability" id="person_disability"  style="width: 100%;" />
                                                                         <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span>
-
+                                                                            <br>
+                                                                        <span class="person_disability_error form_error"  id="person_disability_error" style="color:red;"></span>
+                                                                      
+                                                                       
                                                                     </td>
 
                                                                 </tr>
@@ -361,7 +348,7 @@ $csrf = array(
                                                             <input name="gender" type="radio" value="Male" <?php if ($gender == 'Male') { ?> checked <?php } ?>> Male
                                                             <input name="gender" type="radio" value="Female" <?php if ($gender == 'Female') { ?> checked <?php } ?>> Female
                                                             <input name="gender" type="radio" value="Others" <?php if ($gender == 'Others') { ?> checked <?php } ?>> Others
-                                                            <span class="form_error"><?php echo form_error('gender'); ?></span>
+                                                            <br><span class="form_error" id ="gender_error"><?php echo form_error('gender'); ?></span>
                                                         </td>
                                                         
                                                         <td align="left" style="width: 25%;">
@@ -384,7 +371,7 @@ $csrf = array(
                                                             <input name="marital_status" type="radio" value="Widower" <?php if ($marital_status == 'Widower') { ?> checked <?php } ?>> Widower
                                                             <input name="marital_status" type="radio" value="Divorced" <?php if ($marital_status == 'Divorced') { ?> checked <?php } ?>> Divorced
                                                             <!-- <input name="marital_status" type="radio" value="Judicially Separated" <?php if ($marital_status == 'Judicially Separated') { ?> checked <?php } ?>> Judicially Separated -->
-                                                            <span class="form_error"><?php echo form_error('marital_status'); ?></span>
+                                                           <br> <span id ="marital_status_error" class="form_error"><?php echo form_error('marital_status'); ?></span>
                                                         </td>
                                                    
                                                     <tr>
@@ -401,8 +388,8 @@ $csrf = array(
                                                             $father_name1=!empty(@$user_details->father_name)?@$user_details->father_name:$father; 
                                                         ?>
                                                         <td align="left" style="">
-                                                            <input name="father_name" type="text" onkeypress="return onlyAlphabets(event,this);" maxlength="50" title="Please Type Father's Name, Do not entered Mr./Mrs./Km./Dr./Er. etc. in Prefix of your Name " class="CapLetter form-control" style=" width:70%; display: inline" value="<?php echo set_value("father_name", @$father_name1); ?>">
-                                                            <span class="form_error"><?php echo form_error('father_name'); ?></span>
+                                                            <input name="father_name" id="father_name" type="text" onkeypress="return onlyAlphabets(event,this);" maxlength="50" title="Please Type Father's Name, Do not entered Mr./Mrs./Km./Dr./Er. etc. in Prefix of your Name " class="CapLetter form-control" style=" width:70%; display: inline" value="<?php echo set_value("father_name", @$father_name1); ?>">
+                                                           <br> <span  id="father_name_error" class="form_error"><?php echo form_error('father_name'); ?></span>
                                                         </td>
                                                         <td align="left" style="">
                                                             <span id="">Mother's Name </span>
@@ -417,8 +404,8 @@ $csrf = array(
                                                             $mother_name=!empty(@$user_details->mother_name)?@$user_details->mother_name:$mother; 
                                                         ?>
                                                         <td align="left" style="">
-                                                            <input name="mother_name" onkeypress="return onlyAlphabets(event,this);" type="text" maxlength="50" class="CapLetter form-control" style=" width:70%;display: inline" value="<?php echo set_value("mother_name", @$mother_name); ?>">
-                                                            <span class="form_error"><?php echo form_error('mother_name'); ?></span>
+                                                            <input id="mother_name" name="mother_name" onkeypress="return onlyAlphabets(event,this);" type="text" maxlength="50" class="CapLetter form-control" style=" width:70%;display: inline" value="<?php echo set_value("mother_name", @$mother_name); ?>">
+                                                            <br> <span  id="mother_name_error" class="form_error"><?php echo form_error('mother_name'); ?></span>
                                                         </td>
                                                     </tr>
 
@@ -444,7 +431,8 @@ $csrf = array(
                                                             <input name="identity_proof" type="radio" value="Pan" <?php if ($identity_pr == 'Pan') { ?> checked <?php } ?>> Pan
                                                             <input name="identity_proof" type="radio" value="Passport" <?php if ($identity_pr == 'Passport') { ?> checked <?php } ?>> Passport <br>
                                                             <input name="identity_proof" type="radio" value="Voter" <?php if ($identity_pr == 'Voter') { ?> checked <?php } ?>> Voter Id
-                                                            <span class="form_error"><?php echo form_error('identity_proof'); ?></span>
+                                                           <br>
+                                                            <span id="identity_proof_error" class="form_error" ><?php echo form_error('identity_proof'); ?></span>
                                                         </td>
                                                         
                                                         <td align="left" style="">
@@ -463,14 +451,16 @@ $csrf = array(
                                                         ?>
                                                             <input name="adhar_card_number" id="identity_number" type="text" maxlength="16" title="" class="form-control" 
                                                             style=" width:70%; display: inline" value="<?php echo set_value("adhar_card_number", @$adhar_card_number); ?>">
-                                                            <span class="identity_error" style="color:red;"></span>
-                                                            <span class="form_error"><?php echo form_error('adhar_card_number'); ?></span>
+                                                            
+                                                            <br><span class="identity_error form_error" id="identity_error" style="color:red;"></span>
+                                                          
                                                             <input type="hidden" name="old_adhar_card_doc" value="<?php echo @$user_details->adhar_card_doc; ?>">
                                                           
                                                             <input  style="margin-top: 15px;" type="file" onchange="onlyIdentitypdf(this);" name="adhar_card_doc" id="identity_doc" />
                                                             <span class="form_error"><?php echo form_error('adhar_card_doc'); ?></span>
-                                                            <span class="identity_doc_error" style="color:red;"></span>
+                                                            
                                                             <span style="font-size:13px">Please select pdf format file<br>max file size 1MB</span>
+                                                           <br> <span id="identity_doc_error" class="form_error" ></span>
                                                         </td>
                                                     
                                                   
@@ -489,7 +479,7 @@ $csrf = array(
                                                         ?>
                                                         <td align="left" style="">
                                                             <textarea name="corr_address" id="corr_address" type="text" rows="4" class="CapLetter form-control" style="width: 100%;"><?php echo set_value("corr_address", @$corr_address); ?></textarea>
-                                                            <span class="form_error"><?php echo form_error('corr_address'); ?></span>
+                                                            <span id="corr_address_error" class="form_error"><?php echo form_error('corr_address'); ?></span>
                                                         </td>
 
                                                         <td align="left" style="">
@@ -507,7 +497,7 @@ $csrf = array(
                                                         <td align="left" style="">
                                                             <textarea name="perm_address" id="perm_address" type="text" rows="4" class="CapLetter form-control" style="width: 100%;"><?php echo set_value('perm_address', @$perm_address);
                                                                                                                                                                                     ?></textarea>
-                                                            <span class="form_error"><?php echo form_error('perm_address');
+                                                          <br> <span id="perm_address_error" class="form_error"><?php echo form_error('perm_address');
                                                                                         ?></span>
                                                         </td>
                                                     </tr>
@@ -541,7 +531,7 @@ $csrf = array(
                                                                 <?php }
                                                                 } ?>
                                                             </select>
-                                                            <span class="form_error"><?php echo form_error('corr_state'); ?></span>
+                                                            <span id="corr_state_error" class="form_error"><?php echo form_error('corr_state'); ?></span>
                                                         </td>
                                                         <!-- <td align="left" style="width: 70%;">
                                                         <input name="corr_state" id="corr_state" type="text" class="CapLetter form-control" style=" width:30%; display: inline;" value="<?php echo set_value("corr_state", @$user_details->corr_state); ?>">
@@ -574,7 +564,7 @@ $csrf = array(
                                                                 <?php }
                                                                 } ?>
                                                             </select>
-                                                            <span class="form_error"><?php echo form_error('perm_state'); ?></span>
+                                                            <span id="perm_state_error" class="form_error"><?php echo form_error('perm_state'); ?></span>
                                                         </td>
                                                     </tr>
 
@@ -593,7 +583,7 @@ $csrf = array(
                                                         ?>
                                                         <td align="left" style="">
                                                             <input name="corr_pincode" id="corr_pincode" type="text" maxlength="6" onkeypress="return validateNumber(event)" value="<?php echo set_value('corr_pincode', @$corr_pincode); ?>" class="CapLetter form-control" style=" width:40%; display: inline;"> (6 Digits)
-                                                            <span class="form_error"><?php echo form_error('corr_pincode') ?></span>
+                                                            <br>   <span id="corr_pincode_error"  class="form_error"><?php echo form_error('corr_pincode') ?></span>
                                                         </td>
 
                                                         <td align="left" style="">
@@ -610,8 +600,8 @@ $csrf = array(
                                                         ?>
                                                         <td align="left" style="">
                                                             <input name="perm_pincode" id="perm_pincode" maxlength="6" type="text" onkeypress="return validateNumber(event)" class="CapLetter form-control" style=" width:40%; display: inline;" value="<?php echo set_value('perm_pincode', @$user_details->perm_pincode);
-                                                                                                                                                                                                                                                        ?>"> (6 Digits)
-                                                            <span class="form_error"><?php echo form_error('perm_pincode');
+                                                                                                                                                                                                                                                 ?>"> (6 Digits)
+                                                                <br>    <span id="perm_pincode_error"  class="form_error"><?php echo form_error('perm_pincode');
                                                                                         ?></span>
                                                         </td>
                                                     </tr>
@@ -676,53 +666,350 @@ $csrf = array(
         $(document).ready(function() {
             var inputCaptcha = $("#captcha").val();
             var sessCaptcha = '<?php echo $this->session->userdata('captchaCode') ?>';
+
             $("#details_forms").on('submit', function(e){
                 e.preventDefault();
+                var error =false;
+                var dob_doc = $("#dob_doc").val();
                 
-
-                $.ajax({
+                if(this.dob.value == "") {
+                    $('#dob_error').html("Please Select Date Of Birth");
+                    e.preventDefault();
+                    error =true;
+                    
+                }else{
+                    $('#dob_error').html();
+                }
+                if(document.getElementById("dob_doc").files.length == 0 ) {
+                    $('#dob_doc_error').html("The DOB Document field is required.");
+                     e.preventDefault();
+                     error =true;
+                }else{
+                    $('#dob_doc_error').html();  
+                }
+                var identity_proof = $('input[name="identity_proof"]:checked').val();
+                var identity_number = $('#identity_number').val();
+                if (identity_proof == 'DL') {
+                    isValid_License_Number(identity_number);
+                }
+                if (identity_proof == 'Adhaar') {
+                    ValidateAadhaar(identity_number);
+                }
+                if (identity_proof == 'Pan') {
+                    ValidatePAN(identity_number);
+                }
+                if (identity_proof == 'Passport') {
+                    isValidPassportNo(identity_number);
+                }
+                if (identity_proof == 'Voter') {
+                    isValidEPICNumber(identity_number);
+                }
+                var categorys = $('#categorys').val();
+             
+                
+                
+                if (categorys == 1) {
+                    var selected = document.querySelector('input[type=radio][name=category_name]:checked');
+                   // alert(selected);
+                    if(selected==null){
+                      
+                        $('#category_name_error').html('The Category  field is required.');
+                        e.preventDefault();
+                        error =true;
+                    }else{
+                        $('#category_name_error').html('');  
+                    }
+                    if(document.getElementById("dob_doc").files.length == 0 ) {
+                        $('#cat_doc_error').html("The Category Attachment field is required.");
+                        e.preventDefault();
+                        error =true;
+                    }else{
+                        $('#cat_doc_error').html();  
+                    }
+                    
+                }else{
+                    $('.cat_doc_error').html(''); 
+                   // $('.category_name_error').html('');
+                }
+                var benchmark =  document.querySelector('input[type=radio][name=benchmark]:checked');
+             // alert(benchmark.value);
+                if(benchmark.value=='Yes'){
+                    var add_disablity = document.getElementById('add_disablity').value;
+                    
+                    if(add_disablity== ""){
+                      
+                        $('#add_disablity_error').html('The Disablity  field is required.');
+                        e.preventDefault();
+                        error =true;
+                    }else{
+                        $('#add_disablity_error').html('');  
+                    }
+                    if(document.getElementById("person_disability").files.length == 0 ) {
+                        $('#person_disability_error').html("The Disability Attachment field is required.");
+                        e.preventDefault();
+                        error =true;
+                    }else{
+                        $('#person_disability_error').html();  
+                    }
+                  
+                }
+                var gender = document.querySelector('input[type=radio][name=gender]:checked');
                
-                    url:'<?=base_url()?>dashboard/basic_details_save',
-                       type: 'POST', 
-                        data: new FormData(this),
-                        dataType: 'json',
-                        contentType: false,
-                        cache: false,
-                        processData:false,
-                        beforeSend:function(){
-                            $('#contact').attr('disabled', 'disabled');
-                        },
-                        success:function(data) {
-                            if(data.error){
-                                if(data.post_id_error != ''){
-                                    $('#post_id_error').html(data.post_id_error);
-                                } else {
-                                    $('#post_id_error').html('');
-                                }if(data.email_error != ''){
-                                    $('#dob_error').html(data.dob_error);
-                                } else {
-                                    $('#dob_error').html('');
-                                }if(data.subject_error != '') {
-                                $('#subject_error').html(data.subject_error);
-                                }    else {
-                                    $('#subject_error').html('');
-                                }if(data.message_error != '') {
-                                    $('#message_error').html(data.message_error);
-                                }else {
-                                    $('#message_error').html('');
+                if(gender== null){
+                    $('#gender_error').html('The Gender  field is required.');
+                    e.preventDefault();
+                    error =true;
+                }else{
+                    $('#gender_error').html('');  
+                }
+                var marital_status = document.querySelector('input[type=radio][name=marital_status]:checked');
+               
+                if(marital_status== null){
+                    $('#marital_status_error').html('The Marital status  field is required.');
+                    e.preventDefault();
+                    error =true;
+                }else{
+                    $('#marital_status_error').html('');  
+                }
+                var father_name = $("#father_name").val();
+                
+                if(this.father_name.value == "") {
+                    $('#father_name_error').html("The Father name  field is required.");
+                    e.preventDefault();
+                    error =true;
+                    
+                }else{
+                    $('#father_name_error').html();
+                }
+                var mother_name = $("#mother_name").val();
+                
+                if(this.mother_name.value == "") {
+                    $('#mother_name_error').html("The Father name  field is required.");
+                    e.preventDefault();
+                    error =true;
+                    
+                }else{
+                    $('#mother_name_error').html();
+                }
+                var identity_proof = document.querySelector('input[type=radio][name=identity_proof]:checked');
+               
+                if(identity_proof== null){
+                    $('#identity_proof_error').html('The Identity proof  field is required.');
+                    e.preventDefault();
+                    error =true;
+                }else{
+                    $('#identity_proof_error').html('');  
+                }
+                var identity_number = $("#identity_number").val();
+                
+                if(identity_number == "") {
+                    $('#identity_error').html("The Identity number  field is required.");
+                    e.preventDefault();
+                    error =true;
+                    
+                }else{
+                    $('#identity_error').html();
+                }
+                if(document.getElementById("identity_doc").files.length == 0 ) {
+                        $('#identity_doc_error').html("The Identity Attachment field is required.");
+                        e.preventDefault();
+                        error =true;
+                }else{
+                    $('#identity_doc_error').html();  
+                }
+                var corr_address = $("#corr_address").val();
+                
+                if(corr_address == "") {
+                    $('#corr_address_error').html("The Address  field is required.");
+                    e.preventDefault();
+                    error =true;
+                    
+                }else{
+                    $('#corr_address_error').html();
+                }
+                var corr_state = $("#corr_state").val();
+                
+                if(corr_state == "") {
+                    $('#corr_state_error').html("The State number  field is required.");
+                    e.preventDefault();
+                    error =true;
+                    
+                }else{
+                    $('#corr_state_error').html();
+                }
+
+                var corr_pincode = $("#corr_pincode").val();
+                
+                if(corr_pincode == "") {
+                    $('#corr_pincode_error').html("The Pincode  field is required.");
+                    e.preventDefault();
+                    error =true;
+                    
+                }else{
+                    $('#corr_pincode_error').html();
+                }
+                var perm_address = $("#perm_address").val();
+                
+                if(perm_address == "") {
+                    $('#perm_address_error').html("The Address  field is required.");
+                    e.preventDefault();
+                    error =true;
+                    
+                }else{
+                    $('#perm_address_error').html();
+                }
+                var perm_state = $("#perm_state").val();
+                
+                if(perm_state == "") {
+                    $('#perm_state_error').html("The State number  field is required.");
+                    e.preventDefault();
+                    error =true;
+                    
+                }else{
+                    $('#perm_state_error').html();
+                }
+
+                var perm_pincode = $("#perm_pincode").val();
+                
+                if(perm_pincode == "") {
+                    $('#perm_pincode_error').html("The Pincode  field is required.");
+                    e.preventDefault();
+                    error =true;
+                    
+                }else{
+                    $('#perm_pincode_error').html();
+                }
+               
+                if(error ==false){
+
+                        $.ajax({
+                    
+                            url:'<?=base_url()?>dashboard/basic_details_save',
+                            type: 'POST', 
+                                data: new FormData(this),
+                                dataType: 'json',
+                                contentType: false,
+                                cache: false,
+                                processData:false,
+                                beforeSend:function(){
+                                    $('#validate').attr('disabled', 'disabled');
+                                },
+                                success:function(data) {
+                                    if(data.error){
+                                        if(data.email_error != ''){
+                                            $('#dob_error').html(data.dob_error);
+                                        } else {
+                                            $('#dob_error').html('');
+                                        }
+                                        if(data.subject_error != '') {
+                                             $('#dob_doc_error').html(data.dob_doc_error);
+                                        }else {
+                                            $('#dob_doc_error').html('');
+                                        }
+                                        if(data.category_name_error != '') {
+                                            $('#category_name_error').html(data.category_name_error);
+                                        }else {
+                                            $('#category_name_error').html('');
+                                        }
+
+                                        if(data.benchmark_error != '') {
+                                            $('#benchmark_error').html(data.benchmark_error);
+                                        }else {
+                                            $('#benchmark_error').html('');
+                                        }
+                                        if(data.add_disablity_error != '') {
+                                            $('#add_disablity_error').html(data.add_disablity_error);
+                                        }else {
+                                            $('#add_disablity_error').html('');
+                                        }
+                                        if(data.gender_error != '') {
+                                            $('#gender_error').html(data.gender_error);
+                                        }else {
+                                            $('#gender_error').html('');
+                                        }
+                                        if(data.marital_status_error != '') {
+                                            $('#marital_status_error').html(data.marital_status_error);
+                                        }else {
+                                            $('#marital_status_error').html('');
+                                        }
+                                        if(data.father_name_error != '') {
+                                            $('#father_name_error').html(data.father_name_error);
+                                        }else {
+                                            $('#father_name_error').html('');
+                                        }
+                                        if(data.mother_name_error != '') {
+                                            $('#mother_name_error').html(data.mother_name_error);
+                                        }else {
+                                            $('#mother_name_error').html('');
+                                        }
+                                        
+                                        if(data.identity_proof_error != '') {
+                                            $('#identity_proof_error').html(data.identity_proof_error);
+                                        }else {
+                                            $('#identity_proof_error').html('');
+                                        }
+                                        if(data.identity_error != '') {
+                                            $('#identity_error').html(data.identity_error);
+                                        }else {
+                                            $('#identity_error').html('');
+                                        }
+                                        if(data.corr_address_error != '') {
+                                            $('#corr_address_error').html(data.corr_address_error);
+                                        }else {
+                                            $('#corr_address_error').html('');
+                                        }
+                                        if(data.corr_state_error != '') {
+                                            $('#corr_state_error').html(data.corr_state_error);
+                                        }else {
+                                            $('#corr_state_error').html('');
+                                        }
+                                        if(data.corr_pincode_error != '') {
+                                            $('#corr_pincode_error').html(data.corr_pincode_error);
+                                        }else {
+                                            $('#corr_pincode_error').html('');
+                                        }
+                                        if(data.perm_address_error != '') {
+                                            $('#perm_address_error').html(data.perm_address_error);
+                                        }else {
+                                            $('#perm_address_error').html('');
+                                        }
+                                        if(data.perm_state_error != '') {
+                                            $('#perm_state_error').html(data.perm_state_error);
+                                        }else {
+                                            $('#perm_state_error').html('');
+                                        }
+                                        if(data.perm_pincode_error != '') {
+                                            $('#perm_pincode_error').html(data.perm_pincode_error);
+                                        }else {
+                                            $('#perm_pincode_error').html('');
+                                        }
+                                    }
+                                    if(data.success){
+                                        $('#success_message').html(data.success);
+                                        $('#dob_doc_error').html('');
+                                        $('#dob_error').html('');
+                                        $('#category_name_error').html('');
+                                        $('#benchmark_error').html('');
+                                        $('#add_disablity_error').html('');
+                                        $('#gender_error').html('');
+                                        $('#marital_status_error').html('');
+                                        $('#father_name_error').html('');
+                                        $('#mother_name_error').html('');
+                                        $('#identity_proof_error').html('');
+                                        $('#identity_error').html('');
+                                        $('#corr_address_error').html('');
+                                        $('#corr_state_error').html('');
+                                        $('#corr_pincode_error').html('');
+                                        $('#perm_address_error').html('');
+                                        $('#perm_state_error').html('');
+                                        $('#perm_pincode_error').html('');
+                                        $('#identity_doc_error').html();  
+                                       
+                                    }
+                                    $('#validate').attr('disabled', false);
                                 }
-                            }
-                            if(data.success){
-                                $('#success_message').html(data.success);
-                                $('#post_id_error').html('');
-                                $('#dob_error').html('');
-                                $('#subject_error').html('');
-                                $('#message_error').html('');
-                                $('#contact_form')[0].reset();
-                            }
-                            $('#contact').attr('disabled', false);
-                        }
-                });
+                        });
+                    }
 
 
             });
@@ -1164,23 +1451,12 @@ $csrf = array(
         function onlyDobpdf(data) {
             // alert(val);
             // var myFile="";
-            var myFile = data.value;8
+            var myFile = data.value;
            
 
             var upld = myFile.split('.').pop();
             if (upld == 'pdf') {
                 $('.dob_doc_error').html('');
-                //$("#dob_doc") new FormData($("#multiFiles"));
-                // var fd = new FormData($("#dob_doc"));
-                // //fd.append('file',myFile);
-                
-                // var user_id=<?php echo $_SESSION['USER']['user_id']; ?>;
-                // var post_id=<?php echo $_COOKIE['post_id']; ?>;
-                // var path='dob_proof';
-                // fd.append('user_id',user_id);
-                // fd.append('post_id',post_id);
-                // fd.append('path',path);
-
                 if (Filevalidation(data.id)) {
                     return true
                 }
